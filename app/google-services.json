@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:227954837766:android:e51e07acaa6fae78717687",
         "android_client_info": {
-          "package_name": "com.example.trackandtrigger"
+          "package_name": "com.oopcows.trackandtrigger"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "227954837766-cubssh7cfclbra4rslnruqi819d45cnc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.trackandtrigger",
+            "package_name": "com.oopcows.trackandtrigger",
             "certificate_hash": "3311e1e7a0007cbd130a9b2293eb6c0534512cc5"
           }
         },
