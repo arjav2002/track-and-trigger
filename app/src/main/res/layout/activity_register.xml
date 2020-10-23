@@ -1,14 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".RegisterActivity">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_sign_in_button"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lin_all"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/usernameField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/username_hint"
+            android:autofillHints="username"
+            android:inputType="textPersonName"
+            android:maxEms="10"
+            android:minEms="10"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/usernameLabel"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="132dp"
+            android:hint="@string/password_hint"
+            android:autofillHints="password"
+            android:inputType="textPassword"
+            android:maxEms="10"
+            android:minEms="10"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/gmailField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/gmail_id_hint"
+            android:autofillHints="email"
+            android:inputType="textEmailAddress"
+            android:maxEms="10"
+            android:minEms="10"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
+        <EditText
+            android:id="@+id/phnoField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/phno_hint"
+            android:autofillHints="phone number"
+            android:inputType="number"
+            android:maxEms="10"
+            android:minEms="10"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gmailField" />
+
+
+        <TextView
+            android:id="@+id/gmailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/gmail_label"
+            app:layout_constraintBaseline_toBaselineOf="@+id/gmailField"
+            app:layout_constraintEnd_toStartOf="@+id/passwordField" />
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:text="@string/password_label"
+            app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
+            app:layout_constraintEnd_toStartOf="@+id/usernameField" />
+
+
+        <TextView
+            android:id="@+id/phnoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            android:text="@string/phno_label"
+            app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
+            app:layout_constraintEnd_toStartOf="@+id/gmailField"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/usernameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="11dp"
+            android:text="@string/username_label"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toStartOf="@+id/usernameField" />
+
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_in_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/phnoLabel"
+            app:layout_constraintTop_toBottomOf="@+id/phnoField">
+
+        </com.google.android.gms.common.SignInButton>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
