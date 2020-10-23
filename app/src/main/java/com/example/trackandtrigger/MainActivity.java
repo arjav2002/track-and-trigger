@@ -13,5 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
         this.startActivity(registerIntent);
+        finish();
     }
 }
