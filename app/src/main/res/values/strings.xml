@@ -4,6 +4,7 @@
     <string name="password_label">Password</string>
     <string name="gmail_label">Gmail ID</string>
     <string name="phno_label">Phone Number</string>
+    <string name="register_label">Register</string>
     <string name="username_hint">Username here</string>
     <string name="password_hint">Password here</string>
     <string name="gmail_id_hint">Gmail ID here</string>

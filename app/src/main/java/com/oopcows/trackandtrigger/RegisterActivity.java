@@ -77,10 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else {
             Intent dashboardIntent = new Intent(getBaseContext(), DashboardActivity.class);
-            dashboardIntent.putExtra("Google", gAccount);
+            dashboardIntent.putExtra("gmail", gAccount.getEmail());
+            //dashboardIntent.putExtra("")
             startActivity(dashboardIntent);
             finish();
-            System.out.println("lolxd");
         }
     }
 }
