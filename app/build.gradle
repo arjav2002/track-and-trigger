@@ -32,6 +32,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+apply plugin: 'com.google.gms.google-services'
 
 dependencies {
 
@@ -40,4 +41,5 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
 }
