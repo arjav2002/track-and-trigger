@@ -1,4 +1,4 @@
-package com.example.trackandtrigger;
+package com.oopcows.trackandtrigger;
 
 import org.junit.Test;
 

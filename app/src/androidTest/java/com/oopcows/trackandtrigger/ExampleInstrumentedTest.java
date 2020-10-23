@@ -1,4 +1,4 @@
-package com.example.trackandtrigger;
+package com.oopcows.trackandtrigger;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
