@@ -5,9 +5,11 @@
     <string name="gmail_label">Gmail ID</string>
     <string name="phno_label">Phone Number</string>
     <string name="register_label">Register</string>
+    <string name="otp_label">OTP</string>
     <string name="username_hint">Username here</string>
     <string name="password_hint">Password here</string>
     <string name="gmail_id_hint">Gmail ID here</string>
     <string name="phno_hint">Phone Number here</string>
+    <string name="otp_hint">OTP here</string>
 
 </resources>
