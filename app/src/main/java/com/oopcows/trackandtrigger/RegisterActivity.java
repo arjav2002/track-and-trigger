@@ -2,10 +2,17 @@ package com.oopcows.trackandtrigger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -13,6 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final int G_SIGN_IN = 1;
     private ActivityRegisterBinding binding;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +31,42 @@ public class RegisterActivity extends AppCompatActivity {
 
         binding.signInButton.setOnClickListener(signInListener());
         binding.registerButton.setOnClickListener(registerButtonListener());
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        binding.gSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, G_SIGN_IN);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == G_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            processGoogleAccount(account, R.string.g_siginin_fail);
+        } catch (ApiException e) {
+            Log.w("GoogleSignIn", "signInResult:failed code=" + e.getStatusCode());
+            binding.errorLabel.setText(R.string.g_siginin_fail);
+        }
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        processGoogleAccount(account, R.string.g_signin_suggestion);
     }
 
     private View.OnClickListener registerButtonListener() {
@@ -32,10 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
-                Intent otpActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
-                otpActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", new UserAccount(username, password, "", ""));
-                startActivity(otpActivity);
-                finish();
+                goToActivity(new UserAccount(username, password, "", ""), EmailOtpActivity.class);
             }
         };
     }
@@ -48,11 +89,27 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 UserAccount userAccount = null; // fill this with that
-                Intent dashboardIntent = new Intent(getBaseContext(), DashboardActivity.class);
-                dashboardIntent.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
-                startActivity(dashboardIntent);
-                finish();
+                goToActivity(userAccount, DashboardActivity.class);
             }
         };
+    }
+
+    private void goToActivity(UserAccount userAccount, Class activity) {
+        Intent nextActivity = new Intent(getBaseContext(), activity);
+        nextActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
+        startActivity(nextActivity);
+        finish();
+    }
+
+    private void processGoogleAccount(GoogleSignInAccount account, int errorMsg) {
+        // @vraj check if account with this gmail account exists
+        boolean accountExists = false;
+        UserAccount userAccount = null; // fill it up from firebase @vraj
+        if(accountExists) {
+            goToActivity(userAccount, DashboardActivity.class);
+        }
+        else {
+            binding.errorLabel.setText(errorMsg);
+        }
     }
 }

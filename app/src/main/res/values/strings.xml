@@ -10,6 +10,8 @@
     <string name="otp_label">OTP</string>
     <string name="get_otp_label">Get OTP</string>
     <string name="reg_and_login_label">Register and Login</string>
+    <string name="g_signin_suggestion">Use Google Sign-in to login to your registered account</string>
+    <string name="g_siginin_fail">Google Sign-in failed</string>
     <string name="username_hint">Username here</string>
     <string name="password_hint">Password here</string>
     <string name="gmail_id_hint">Gmail ID here</string>
