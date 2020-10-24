@@ -6,7 +6,10 @@
     <string name="phno_label">Phone Number</string>
     <string name="register_label">Register</string>
     <string name="signin_label">Sign In</string>
+    <string name="next_label">Next</string>
     <string name="otp_label">OTP</string>
+    <string name="get_otp_label">Get OTP</string>
+    <string name="reg_and_login_label">Register and Login</string>
     <string name="username_hint">Username here</string>
     <string name="password_hint">Password here</string>
     <string name="gmail_id_hint">Gmail ID here</string>
