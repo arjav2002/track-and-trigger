@@ -9,6 +9,8 @@ import android.view.View;
 import com.oopcows.trackandtrigger.databinding.ActivityOtpBinding;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
+
 public class EmailOtpActivity extends AppCompatActivity {
 
     //@vraj make this work
@@ -39,7 +41,7 @@ public class EmailOtpActivity extends AppCompatActivity {
                 if(otp != null && otp.length() == binding.otpField.getText().length() && otp.contains(binding.otpField.getText())) {
                     userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), String.valueOf(binding.gmailIdField.getText()), "", null);
                     Intent phnoActivity = new Intent(getBaseContext(), PhNoOtpActivity.class);
-                    phnoActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
+                    phnoActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(phnoActivity);
                 }
                 else {

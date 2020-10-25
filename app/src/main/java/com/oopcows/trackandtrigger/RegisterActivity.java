@@ -15,11 +15,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
+import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
+
+import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private static final int G_SIGN_IN = 1;
     private ActivityRegisterBinding binding;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -97,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void goToActivity(UserAccount userAccount, Class activity) {
         Intent nextActivity = new Intent(getBaseContext(), activity);
-        nextActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
+        nextActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
         startActivity(nextActivity);
         finish();
     }

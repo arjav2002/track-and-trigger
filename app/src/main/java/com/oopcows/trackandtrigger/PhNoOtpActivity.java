@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,19 +14,18 @@ import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.oopcows.trackandtrigger.databinding.ActivityOtpBinding;
 import com.oopcows.trackandtrigger.databinding.ActivityPhNoOtpBinding;
+import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
+
 public class PhNoOtpActivity extends AppCompatActivity {
 
-    private static final int TIME_TAKEN_TO_RESEND_OTP=60, OTP_LENGTH=6;
-    private static final String COUNTRY_CODE="+91";
     private String verificationCodeBySystem;
     private FirebaseAuth firebaseAuth;
     private UserAccount userAccount;
@@ -112,7 +110,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                         System.out.println("Success");
                         userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), userAccount.getGmailId(), String.valueOf(binding.phnoField.getText()), null);
                         Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
-                        dashboardActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
+                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                         startActivity(dashboardActivity);
                     } else {
                         Toast.makeText(PhNoOtpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
