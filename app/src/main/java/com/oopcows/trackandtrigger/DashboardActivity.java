@@ -16,5 +16,8 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         userAccount = getIntent().getExtras().getParcelable("com.oopcows.trackandtrigger.helpers.UserAccount");
+
+        // @subs make UI to select Profession from a drop down (if profession is null)
+        // check Profession enum
     }
 }

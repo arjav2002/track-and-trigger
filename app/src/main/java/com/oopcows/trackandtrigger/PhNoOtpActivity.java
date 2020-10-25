@@ -110,7 +110,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         System.out.println("Success");
-                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), userAccount.getGmailId(), String.valueOf(binding.phnoField.getText()));
+                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), userAccount.getGmailId(), String.valueOf(binding.phnoField.getText()), null);
                         Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
                         dashboardActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
                         startActivity(dashboardActivity);

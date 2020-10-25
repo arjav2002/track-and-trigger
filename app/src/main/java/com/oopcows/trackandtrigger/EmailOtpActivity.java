@@ -37,7 +37,7 @@ public class EmailOtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(otp != null && otp.length() == binding.otpField.getText().length() && otp.contains(binding.otpField.getText())) {
-                    userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), String.valueOf(binding.gmailIdField.getText()), "");
+                    userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), String.valueOf(binding.gmailIdField.getText()), "", null);
                     Intent phnoActivity = new Intent(getBaseContext(), PhNoOtpActivity.class);
                     phnoActivity.putExtra("com.oopcows.trackandtrigger.helpers.UserAccount", userAccount);
                     startActivity(phnoActivity);

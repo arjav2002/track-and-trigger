@@ -9,12 +9,14 @@ public class UserAccount implements Parcelable {
     private String password;
     private String gmailId;
     private String phno;
+    private Profession profession;
 
-    public UserAccount(String username, String password, String gmailId, String phno) {
+    public UserAccount(String username, String password, String gmailId, String phno, Profession profession) {
         this.username = username;
         this.password = password;
         this.gmailId = gmailId;
         this.phno = phno;
+        this.profession = profession;
     }
 
     public UserAccount(Parcel in) {
@@ -22,6 +24,7 @@ public class UserAccount implements Parcelable {
         password = in.readString();
         gmailId = in.readString();
         phno = in.readString();
+        profession = Profession.valueOf(in.readString());
     }
 
     public String getUsername() {
@@ -40,6 +43,8 @@ public class UserAccount implements Parcelable {
         return phno;
     }
 
+    public Profession getProfession() { return profession; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -51,6 +56,7 @@ public class UserAccount implements Parcelable {
         parcel.writeString(password);
         parcel.writeString(gmailId);
         parcel.writeString(phno);
+        parcel.writeString(profession.name());
     }
 
     public static final Parcelable.Creator<UserAccount> CREATOR = new Parcelable.Creator<UserAccount>() {
