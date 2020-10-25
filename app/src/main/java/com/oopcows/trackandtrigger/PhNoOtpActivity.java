@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PhNoOtpActivity extends AppCompatActivity {
 
+    private static final int TIME=60, OTP_LENGTH=6;
+    private static final String COUNTRY_CODE="+91";
     String verificationCodeBySystem;
     private FirebaseAuth firebaseAuth;
     private UserAccount userAccount;
@@ -45,14 +47,14 @@ public class PhNoOtpActivity extends AppCompatActivity {
             if(binding.phnoField.getText().toString().isEmpty() || binding.phnoField.getText().toString().length()!=10){
                 binding.phnoField.setError("Enter valid phone number");
             } else {
-                sendVerificationCodeToUser("+91"+binding.phnoField.getText().toString());
+                sendVerificationCodeToUser(COUNTRY_CODE+binding.phnoField.getText().toString());
             }
         });
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String code = binding.otpField.getText().toString();
-                if(code.isEmpty() || code.length()<6){
+                if(code.isEmpty() || code.length()<OTP_LENGTH){
                     binding.otpField.setError("Wrong OTP");
                     binding.otpField.requestFocus();
                     return;
@@ -65,7 +67,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
     private void sendVerificationCodeToUser(String phNo) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phNo,
-                60,
+                TIME,
                 TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
                 mCallBacks
