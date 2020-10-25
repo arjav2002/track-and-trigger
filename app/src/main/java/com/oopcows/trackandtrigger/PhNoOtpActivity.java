@@ -57,9 +57,10 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 if(code.isEmpty() || code.length()<OTP_LENGTH){
                     binding.otpField.setError("Wrong OTP");
                     binding.otpField.requestFocus();
-                    return;
                 }
-                verifyCode(code);
+                else {
+                    verifyCode(code);
+                }
             }
         });
     }
