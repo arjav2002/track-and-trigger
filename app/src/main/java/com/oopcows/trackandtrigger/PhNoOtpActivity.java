@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 public class PhNoOtpActivity extends AppCompatActivity {
 
-    private static final int TIME=60, OTP_LENGTH=6;
+    private static final int TIME_TAKEN_TO_RESEND_OTP=60, OTP_LENGTH=6;
     private static final String COUNTRY_CODE="+91";
-    String verificationCodeBySystem;
+    private String verificationCodeBySystem;
     private FirebaseAuth firebaseAuth;
     private UserAccount userAccount;
     private ActivityPhNoOtpBinding binding;
@@ -67,7 +67,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
     private void sendVerificationCodeToUser(String phNo) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phNo,
-                TIME,
+                TIME_TAKEN_TO_RESEND_OTP,
                 TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
                 mCallBacks
