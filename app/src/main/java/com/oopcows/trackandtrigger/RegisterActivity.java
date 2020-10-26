@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
-                goToActivity(new UserAccount(username, password, "", "", null), EmailOtpActivity.class);
+                goToActivity(new UserAccount(username, password, "", "", null), PhNoOtpActivity.class);
             }
         };
     }
