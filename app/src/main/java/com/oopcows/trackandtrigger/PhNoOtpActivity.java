@@ -18,6 +18,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.oopcows.trackandtrigger.databinding.ActivityPhNoOtpBinding;
 import com.oopcows.trackandtrigger.helpers.CowConstants;
+import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,6 @@ public class PhNoOtpActivity extends AppCompatActivity {
         binding = ActivityPhNoOtpBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
 
         userAccount = getIntent().getExtras().getParcelable("com.oopcows.trackandtrigger.helpers.UserAccount");
         binding.getOtpButton.setOnClickListener( (v) -> {
@@ -108,7 +108,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         System.out.println("Success");
-                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), "", String.valueOf(binding.phnoField.getText()), null);
+                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
                         Intent dashboardActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
                         dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                         startActivity(dashboardActivity);
