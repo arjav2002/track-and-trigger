@@ -107,7 +107,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         System.out.println("Success");
-                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
+                        userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
                         Intent dashboardActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
                         dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                         startActivity(dashboardActivity);
