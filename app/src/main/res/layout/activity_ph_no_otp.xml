@@ -74,10 +74,10 @@
                 android:text="@string/get_otp_label" />
 
             <Button
-                android:id="@+id/regAndLoginButton"
+                android:id="@+id/nextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/reg_and_login_label" />
+                android:text="@string/next_label" />
         </LinearLayout>
 
     </LinearLayout>

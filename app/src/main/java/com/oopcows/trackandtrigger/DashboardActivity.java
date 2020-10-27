@@ -19,7 +19,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
-        // @subs make UI to select Profession from a drop down (if profession is null)
+        // @subs make UI to select Profession from a drop down (if profession is nullProfession)
         // check Profession enum
     }
 }

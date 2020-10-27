@@ -48,7 +48,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 sendVerificationCodeToUser(COUNTRY_CODE+binding.phnoField.getText().toString());
             }
         });
-        binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
+        binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String code = binding.otpField.getText().toString();
