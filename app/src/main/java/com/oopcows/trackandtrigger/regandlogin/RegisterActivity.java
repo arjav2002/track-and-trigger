@@ -1,5 +1,5 @@
 
-package com.oopcows.trackandtrigger;
+package com.oopcows.trackandtrigger.regandlogin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
+import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
-import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
