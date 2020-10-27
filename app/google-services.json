@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:227954837766:android:ec8975f880f0d700717687",
+        "mobilesdk_app_id": "1:227954837766:android:2042fcd1740d559e717687",
         "android_client_info": {
           "package_name": "com.oopcows.trackandtrigger"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "227954837766-7on2cq5hv96ifceih1h6s9u8sqsc62cm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.oopcows.trackandtrigger",
-            "certificate_hash": "15a309cfd0dfea1e81bd055b209e1e87185c77c4"
-          }
-        },
         {
           "client_id": "227954837766-dboo7c6po3fga5f9ijqbrq2hnrkbb859.apps.googleusercontent.com",
           "client_type": 1,
@@ -44,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "227954837766-am6pndq5j06btiqmihhsiq6spo1l5bv7.apps.googleusercontent.com",
+              "client_id": "227954837766-b7ulmd8lmh6cptcoe9lo5e64r94vetgh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
