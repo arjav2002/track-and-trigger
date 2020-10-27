@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityOtpBinding;
+import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -28,7 +29,7 @@ public class EmailOtpActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        userAccount = getIntent().getExtras().getParcelable("com.oopcows.trackandtrigger.helpers.UserAccount");
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         binding.getOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,7 +42,7 @@ public class EmailOtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(otp != null && otp.length() == binding.otpField.getText().length() && otp.contains(binding.otpField.getText())) {
-                    userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), Profession.nullProfession);
+                    userAccount = new UserAccount(userAccount.getUsername(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), Profession.nullProfession);
                     Intent phnoActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     phnoActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(phnoActivity);

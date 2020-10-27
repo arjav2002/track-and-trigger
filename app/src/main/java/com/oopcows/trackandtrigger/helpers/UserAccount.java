@@ -6,14 +6,12 @@ import android.os.Parcelable;
 public class UserAccount implements Parcelable {
 
     private String username;
-    private String password;
     private String gmailId;
     private String phno;
     private Profession profession;
 
-    public UserAccount(String username, String password, String gmailId, String phno, Profession profession) {
+    public UserAccount(String username, String gmailId, String phno, Profession profession) {
         this.username = username;
-        this.password = password;
         this.gmailId = gmailId;
         this.phno = phno;
         this.profession = profession;
@@ -21,7 +19,6 @@ public class UserAccount implements Parcelable {
 
     public UserAccount(Parcel in) {
         username = in.readString();
-        password = in.readString();
         gmailId = in.readString();
         phno = in.readString();
         profession = Profession.valueOf(in.readString());
@@ -29,10 +26,6 @@ public class UserAccount implements Parcelable {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getGmailId() {
@@ -53,7 +46,6 @@ public class UserAccount implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(username);
-        parcel.writeString(password);
         parcel.writeString(gmailId);
         parcel.writeString(phno);
         parcel.writeString(profession.name());
