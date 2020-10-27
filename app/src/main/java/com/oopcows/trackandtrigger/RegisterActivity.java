@@ -16,7 +16,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.CowConstants;
-import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
@@ -80,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
-                goToActivity(new UserAccount(username, password, "", "", Profession.nullProfession), PhNoOtpActivity.class);
+                goToActivity(new UserAccount(username, password, "", "", null), PhNoOtpActivity.class);
             }
         };
     }
