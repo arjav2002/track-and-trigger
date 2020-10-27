@@ -36,7 +36,7 @@ public class EmailOtpActivity extends AppCompatActivity {
                 otp = "101"; // initialise it
             }
         });
-        binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
+        binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(otp != null && otp.length() == binding.otpField.getText().length() && otp.contains(binding.otpField.getText())) {
