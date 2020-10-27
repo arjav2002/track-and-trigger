@@ -27,8 +27,8 @@ public interface UserDao {
     void insertUser(UserAccount uc);
 
     @Update
-    void updatePerson(UserAccount uc);
+    void updateUser(UserAccount uc);
 
     @Delete
-    void deletePerson(UserAccount uc);
+    void deleteUser(UserAccount uc);
 }
