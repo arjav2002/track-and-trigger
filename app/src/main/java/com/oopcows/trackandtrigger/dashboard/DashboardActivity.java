@@ -1,9 +1,10 @@
-package com.oopcows.trackandtrigger;
+package com.oopcows.trackandtrigger.dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;

@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.oopcows.trackandtrigger.regandlogin.RegisterActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
