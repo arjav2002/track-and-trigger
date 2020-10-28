@@ -56,7 +56,11 @@ public class PhNoOtpActivity extends AppCompatActivity {
                     binding.otpField.requestFocus();
                 }
                 else {
-                    verifyCode(code);
+                    userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
+                    Intent dashboardActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
+                    dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                    startActivity(dashboardActivity);
+                    //verifyCode(code);
                 }
             }
         });

@@ -46,6 +46,7 @@ public class EmailOtpActivity extends AppCompatActivity {
                     Intent phnoActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     phnoActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(phnoActivity);
+                    finish();
                 }
                 else {
                     System.out.println("wrong otp supplied");
