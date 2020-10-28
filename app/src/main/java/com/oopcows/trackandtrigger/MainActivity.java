@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.oopcows.trackandtrigger.regandlogin.RegisterActivity;
+import com.oopcows.trackandtrigger.regandlogin.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
+        Intent registerIntent = new Intent(getBaseContext(), LoginActivity.class);
         this.startActivity(registerIntent);
         finish();
     }
