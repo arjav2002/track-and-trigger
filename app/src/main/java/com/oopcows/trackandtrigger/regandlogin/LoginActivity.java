@@ -16,21 +16,21 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.R;
-import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
+import com.oopcows.trackandtrigger.databinding.ActivityLoginBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
 
-public class RegisterActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private ActivityRegisterBinding binding;
+    private ActivityLoginBinding binding;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 

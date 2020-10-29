@@ -12,7 +12,7 @@
         <activity android:name=".regandlogin.PhNoOtpActivity"></activity>
         <activity android:name=".regandlogin.EmailOtpActivity" />
         <activity android:name=".dashboard.DashboardActivity" />
-        <activity android:name=".regandlogin.RegisterActivity">
+        <activity android:name=".regandlogin.LoginActivity">
             <intent-filter>
                 <action android:name=".RegisterActivity" />
 
