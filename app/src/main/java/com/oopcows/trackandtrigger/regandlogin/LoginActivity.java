@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // do firebase/server bullshit and fill up userAccount @vraj/@arjav
+                // do firebase/server bullshit and fill up userAccount @vraj
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 UserAccount userAccount = null; // fill this with that

@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackAndTrigger">
-        <activity android:name=".regandlogin.PhNoOtpActivity"></activity>
-        <activity android:name=".regandlogin.EmailOtpActivity" />
+        <activity android:name=".regandlogin.RegisterActivity"></activity>
+        <activity android:name=".regandlogin.PhNoOtpActivity" />
+        <activity android:name=".regandlogin.EmailVerifyActivitiy" />
         <activity android:name=".dashboard.DashboardActivity" />
         <activity android:name=".regandlogin.LoginActivity">
             <intent-filter>
