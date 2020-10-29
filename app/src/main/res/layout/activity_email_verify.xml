@@ -1,62 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- @subs make this seski-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".regandlogin.EmailVerifyActivitiy"
-    android:gravity="center">
+    android:gravity="center"
+    tools:context=".regandlogin.EmailVerifyActivitiy">
 
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/gmailIdLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="@string/gmail_label"
+        app:layout_constraintBaseline_toBaselineOf="@+id/gmailIdField"
+        app:layout_constraintEnd_toStartOf="@+id/gmailIdField"
+        app:layout_constraintHorizontal_bias="0.829"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+    <EditText
+        android:id="@+id/gmailIdField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:autofillHints=""
+        android:hint="@string/gmail_id_hint"
+        android:inputType="textEmailAddress"
+        android:maxEms="10"
+        android:minEms="10"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:id="@+id/gmailIdLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gmail_label"
-                />
+    <Button
+        android:id="@+id/getOtpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="100dp"
+        android:text="@string/get_verification_link_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/gmailIdField"
+        app:layout_constraintTop_toBottomOf="@+id/gmailIdField"
+        app:layout_constraintVertical_bias="0.0" />
 
-            <EditText
-                android:id="@+id/gmailIdField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/gmail_id_hint"
-                android:maxEms="10"
-                android:minEms="10" />
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="59dp"
+        android:text="@string/next_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gmailIdField" />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/getOtpButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/get_verification_link_label" />
-
-            <Button
-                android:id="@+id/nextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/next_label" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
