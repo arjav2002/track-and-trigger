@@ -35,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(inputsAreValid()) {
                     userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
+                    uploadAccountToFirebase(userAccount);
                     Intent dashboardActivitiy = new Intent(getBaseContext(), DashboardActivity.class);
                     dashboardActivitiy.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(dashboardActivitiy);
@@ -50,7 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
                String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
     }
 
-    private void uploadAccountToFirebase() {
+    // @vraj fill this up
+    private void uploadAccountToFirebase(UserAccount userAccount) {
 
     }
 }
