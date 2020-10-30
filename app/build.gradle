@@ -36,6 +36,9 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
     def arch_version = "2.1.0"
