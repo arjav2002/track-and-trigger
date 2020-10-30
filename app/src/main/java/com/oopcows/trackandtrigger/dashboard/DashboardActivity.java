@@ -2,6 +2,8 @@ package com.oopcows.trackandtrigger.dashboard;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
@@ -21,10 +23,11 @@ import java.util.List;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements ChooseProfessionFragment.ChooseProfession {
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
+    private ChooseProfessionFragment chooseProfessionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +36,40 @@ public class DashboardActivity extends AppCompatActivity {
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
-        // @subs make UI to select Profession from a drop down (if profession is nullProfession)
-        // check Profession enum
-
-        dh = new DatabaseHelper(getApplicationContext());
         try {
+            dh = new DatabaseHelper(getApplicationContext());
             dh.start();
         } catch (DatabaseHelper.DisposedHelperStartedException e) {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if(userAccount.getProfession() == Profession.nullProfession) {
+            displayDialogue();
+        }
+    }
+
+    private void displayDialogue() {
+        FragmentManager fm = getSupportFragmentManager();
+        chooseProfessionFragment = ChooseProfessionFragment.newInstance();
+        chooseProfessionFragment.show(fm, null);
+    }
+
+    @Override
+    public void setChosenProfession(Profession profession) {
+        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
+        updateDatabase();
+    }
+
+    private void updateDatabase() {
+        try {
+            dh.updateUser(userAccount);
+        } catch (DatabaseHelper.HelperNotRunningException e) {
+            e.printStackTrace();
+        }
     }
 }

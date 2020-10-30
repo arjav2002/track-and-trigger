@@ -35,8 +35,8 @@ public class EmailVerifyActivitiy extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(emailHasBeenVerified()) {
-                    userAccount = new UserAccount(userAccount.getUsername(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), Profession.nullProfession);
-                    Intent registerActivity = new Intent(getBaseContext(), RegisterActivity.class);
+                    userAccount = new UserAccount(userAccount.getUsername(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), userAccount.getProfession());
+                    Intent registerActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     registerActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(registerActivity);
                     finish();

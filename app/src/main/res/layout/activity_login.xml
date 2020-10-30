@@ -15,29 +15,16 @@
 
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/registerOrSignInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register_label"
-            app:layout_constraintEnd_toStartOf="@+id/signInButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
-
-
-        <Button
-            android:id="@+id/signInButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/signin_label"
+            android:text="@string/register_or_sign_in_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/registerButton"
-            app:layout_constraintTop_toBottomOf="@+id/passwordField">
-
-        </Button>
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpField" />
 
         <EditText
-            android:id="@+id/usernameField"
+            android:id="@+id/phnoField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autofillHints="username"
@@ -46,12 +33,12 @@
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/usernameLabel"
+            app:layout_constraintBaseline_toBaselineOf="@+id/phnoLabel"
             app:layout_constraintEnd_toEndOf="parent" />
 
 
         <EditText
-            android:id="@+id/passwordField"
+            android:id="@+id/otpField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="132dp"
@@ -66,22 +53,22 @@
 
 
         <TextView
-            android:id="@+id/passwordLabel"
+            android:id="@+id/otpLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="1dp"
             android:text="@string/password_label"
-            app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
-            app:layout_constraintEnd_toStartOf="@+id/usernameField" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/otpField"
+            app:layout_constraintEnd_toStartOf= "@+id/phnoField" />
 
         <TextView
-            android:id="@+id/usernameLabel"
+            android:id="@+id/phnoLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="11dp"
             android:text="@string/username_label"
-            app:layout_constraintBottom_toTopOf="@+id/passwordField"
-            app:layout_constraintEnd_toStartOf="@+id/usernameField" />
+            app:layout_constraintBottom_toTopOf="@+id/otpField"
+            app:layout_constraintEnd_toStartOf="@+id/phnoField" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/g_sign_in_button"

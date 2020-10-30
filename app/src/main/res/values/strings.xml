@@ -19,5 +19,8 @@
     <string name="phno_hint">Phone Number here</string>
     <string name="otp_hint">OTP here</string>
     <string name="get_verification_link_label">Get Verification Link</string>
+    <string name="choose_profession_label">Choose Profession</string>
+    <string name="confirm_profession_button">OK</string>
+    <string name="register_or_sign_in_label">Register / Sign In</string>
 
 </resources>

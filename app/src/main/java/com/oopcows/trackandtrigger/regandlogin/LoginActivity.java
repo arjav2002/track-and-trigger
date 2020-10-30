@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.signInButton.setOnClickListener(signInListener());
-        binding.registerButton.setOnClickListener(registerButtonListener());
+        binding.registerOrSignInButton.setOnClickListener(registerOrSignInButtonListener());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -74,27 +73,21 @@ public class LoginActivity extends AppCompatActivity {
         processGoogleAccount(account, R.string.g_signin_suggestion);
     }
 
-    private View.OnClickListener registerButtonListener() {
+    private View.OnClickListener registerOrSignInButtonListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = String.valueOf(binding.usernameField.getText());
-                String password = String.valueOf(binding.passwordField.getText());
+                String phNo = String.valueOf(binding.phnoField.getText());
+                String otp = String.valueOf(binding.otpField.getText());
                 // validate inputs
-                goToActivity(new UserAccount(username, "", "", Profession.nullProfession), PhNoOtpActivity.class);
-            }
-        };
-    }
-
-    private View.OnClickListener signInListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // do firebase/server bullshit and fill up userAccount @vraj
-                String username = String.valueOf(binding.usernameField.getText());
-                String password = String.valueOf(binding.passwordField.getText());
-                UserAccount userAccount = null; // fill this with that
-                goToActivity(userAccount, DashboardActivity.class);
+                boolean accountExists = false;
+                UserAccount uc = null; // if account exists then get it
+                if(accountExists) {
+                    goToActivity(new UserAccount("", "", phNo, Profession.nullProfession), EmailVerifyActivitiy.class);
+                }
+                else {
+                    goToActivity(uc, DashboardActivity.class);
+                }
             }
         };
     }
@@ -114,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             goToActivity(userAccount, DashboardActivity.class);
         }
         else {
-            binding.errorLabel.setText(errorMsg);
+            goToActivity(new UserAccount("", account.getEmail(), "", Profession.nullProfession), PhNoOtpActivity.class);
         }
     }
 }
