@@ -39,7 +39,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        userAccount = getIntent().getExtras().getParcelable("com.oopcows.trackandtrigger.helpers.UserAccount");
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         binding.getOtpButton.setOnClickListener( (v) -> {
             if(binding.phnoField.getText().toString().isEmpty() || binding.phnoField.getText().toString().length()!=10){
                 binding.phnoField.setError("Enter valid phone number");
@@ -108,9 +108,10 @@ public class PhNoOtpActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         System.out.println("Success");
                         userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
-                        Intent dashboardActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
-                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                        startActivity(dashboardActivity);
+                        Intent emailVerifyActivity = new Intent(getBaseContext(), EmailVerifyActivitiy.class);
+                        emailVerifyActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                        startActivity(emailVerifyActivity);
+                        finish();
                     } else {
                         Toast.makeText(PhNoOtpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

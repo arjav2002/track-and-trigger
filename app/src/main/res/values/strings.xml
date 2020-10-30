@@ -12,10 +12,12 @@
     <string name="reg_and_login_label">Register and Login</string>
     <string name="g_signin_suggestion">Use Google Sign-in to login to your registered account</string>
     <string name="g_siginin_fail">Google Sign-in failed</string>
-    <string name="username_hint">Username here</string>
-    <string name="password_hint">Password here</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
     <string name="gmail_id_hint">Gmail ID here</string>
     <string name="phno_hint">Phone Number here</string>
     <string name="otp_hint">OTP here</string>
+    <string name="get_verification_link_label">Get Verification Link</string>
 
 </resources>

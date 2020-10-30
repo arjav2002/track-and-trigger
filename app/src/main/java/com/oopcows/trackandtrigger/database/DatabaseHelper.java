@@ -29,13 +29,13 @@ public class DatabaseHelper implements Runnable {
     private final UserDao userDao;
     private volatile Object result;
 
-    public class DisposedHelperStartedException extends Exception {
+    public static class DisposedHelperStartedException extends Exception {
         private DisposedHelperStartedException(String s) {
             super(s);
         }
     }
 
-    public class HelperNotRunningException extends Exception {
+    public static class HelperNotRunningException extends Exception {
         private HelperNotRunningException(String s) {
             super(s);
         }
