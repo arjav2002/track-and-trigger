@@ -1,32 +1,29 @@
 package com.oopcows.trackandtrigger.dashboard;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oopcows.trackandtrigger.R;
-import com.oopcows.trackandtrigger.databinding.ActivityEmailVerifyBinding;
-import com.oopcows.trackandtrigger.databinding.ChooseProfessionFragmentBinding;
+import com.oopcows.trackandtrigger.databinding.PersonalDetailsFragmentBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 
-public class ChooseProfessionFragment extends DialogFragment {
+import java.util.Objects;
 
-    private ChooseProfessionViewModel mViewModel;
-    private ChooseProfessionFragmentBinding binding;
+public class PersonalDetailsFragment extends DialogFragment {
 
-    public interface ChooseProfession {
-        void setChosenProfession(Profession profession);
+    private PersonalDetailsViewModel mViewModel;
+    private PersonalDetailsFragmentBinding binding;
+
+    public interface PersonalDetailsFillable {
+        void fillDetails(String username, Profession profession);
     }
 
     @Override
@@ -34,15 +31,15 @@ public class ChooseProfessionFragment extends DialogFragment {
         super.onStart();
     }
 
-    public static ChooseProfessionFragment newInstance() {
-        return new ChooseProfessionFragment();
+    public static PersonalDetailsFragment newInstance() {
+        return new PersonalDetailsFragment();
     }
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = ChooseProfessionFragmentBinding.inflate(inflater);
+        binding = PersonalDetailsFragmentBinding.inflate(inflater);
         View view = binding.getRoot();
         return view;
     }
@@ -50,11 +47,11 @@ public class ChooseProfessionFragment extends DialogFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ChooseProfessionViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(PersonalDetailsViewModel.class);
 
         binding.chooseProfessionSpinner.setAdapter(mViewModel.getSpinnerAdapter(this));
         binding.confirmProfessionButton.setOnClickListener((v)-> {
-            ((ChooseProfession)getActivity()).setChosenProfession(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
+            ((PersonalDetailsFillable) Objects.requireNonNull(getActivity())).fillDetails(String.valueOf(binding.usernameField.getText()), Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
             dismiss();
         });
         setCancelable(false);

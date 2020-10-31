@@ -27,9 +27,9 @@
             android:id="@+id/phnoField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autofillHints="username"
-            android:hint="@string/username_hint"
-            android:inputType="textPersonName"
+            android:autofillHints="Ph. no."
+            android:hint="@string/phno_hint"
+            android:inputType="number"
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
@@ -42,9 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="132dp"
-            android:autofillHints="password"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
+            android:autofillHints="otp"
+            android:hint="@string/otp_hint"
+            android:inputType="number"
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="1dp"
-            android:text="@string/password_label"
+            android:text="@string/otp_label"
             app:layout_constraintBaseline_toBaselineOf="@+id/otpField"
             app:layout_constraintEnd_toStartOf= "@+id/phnoField" />
 
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="11dp"
-            android:text="@string/username_label"
+            android:text="@string/phno_label"
             app:layout_constraintBottom_toTopOf="@+id/otpField"
             app:layout_constraintEnd_toStartOf="@+id/phnoField" />
 

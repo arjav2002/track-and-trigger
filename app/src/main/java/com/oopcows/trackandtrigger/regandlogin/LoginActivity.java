@@ -70,7 +70,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        processGoogleAccount(account, R.string.g_signin_suggestion);
+        if(account != null) {
+            processGoogleAccount(account, R.string.g_signin_suggestion);
+        }
     }
 
     private View.OnClickListener registerOrSignInButtonListener() {

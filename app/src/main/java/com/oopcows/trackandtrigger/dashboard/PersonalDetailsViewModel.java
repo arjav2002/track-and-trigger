@@ -6,14 +6,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.oopcows.trackandtrigger.helpers.Profession;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ChooseProfessionViewModel extends ViewModel {
+public class PersonalDetailsViewModel extends ViewModel {
 
-    public ArrayAdapter<String> getSpinnerAdapter(ChooseProfessionFragment fragment) {
+    public ArrayAdapter<String> getSpinnerAdapter(PersonalDetailsFragment fragment) {
         List<String> professions = new ArrayList<String>();
         for(Profession p : Profession.values()) {
             if(p == Profession.nullProfession) continue;
