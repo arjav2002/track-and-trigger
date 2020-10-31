@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void processGoogleAccount(GoogleSignInAccount account, int errorMsg) {
         // @vraj check if account with this gmail account exists
+        //nearly done
         boolean accountExists = false;
         UserAccount userAccount = null; // fill it up from firebase @vraj
         if(accountExists) {
