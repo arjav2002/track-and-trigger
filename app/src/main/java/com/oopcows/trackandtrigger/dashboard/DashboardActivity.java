@@ -16,7 +16,7 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
-    private PersonalDetailsFragment chooseProfessionFragment;
+    private PersonalDetailsFragment personalDetailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
 
     private void displayDialogue() {
         FragmentManager fm = getSupportFragmentManager();
-        chooseProfessionFragment = PersonalDetailsFragment.newInstance();
-        chooseProfessionFragment.show(fm, null);
+        personalDetailsFragment = PersonalDetailsFragment.newInstance();
+        personalDetailsFragment.show(fm, null);
     }
 
     @Override
