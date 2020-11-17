@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            processGoogleAccount(account, R.string.g_siginin_fail);
+            processGoogleAccount(account);
         } catch (ApiException e) {
             Log.w("GoogleSignIn", "signInResult:failed code=" + e.getStatusCode());
             binding.errorLabel.setText(R.string.g_siginin_fail);
@@ -71,25 +71,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
-            processGoogleAccount(account, R.string.g_signin_suggestion);
+            processGoogleAccount(account);
         }
+        binding.errorLabel.setText(R.string.g_signin_suggestion);
     }
 
     private View.OnClickListener registerOrSignInButtonListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phNo = String.valueOf(binding.phnoField.getText());
-                String otp = String.valueOf(binding.otpField.getText());
+                String username = String.valueOf(binding.usernameField.getText());
+                String password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
                 boolean accountExists = false;
-                UserAccount uc = null; // if account exists then get it
-                if(accountExists) {
-                    goToActivity(new UserAccount("", "", phNo, Profession.nullProfession), EmailVerifyActivitiy.class);
-                }
-                else {
-                    goToActivity(uc, DashboardActivity.class);
-                }
+                UserAccount uc = new UserAccount(username, "", "", Profession.nullProfession); // if account exists then get it @vraj
+                processAccount(uc, accountExists);
             }
         };
     }
@@ -101,15 +97,19 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void processGoogleAccount(GoogleSignInAccount account, int errorMsg) {
+    private void processGoogleAccount(GoogleSignInAccount account) {
         // @vraj check if account with this gmail account exists
         boolean accountExists = false;
-        UserAccount userAccount = null; // fill it up from firebase @vraj
-        if(accountExists) {
+        UserAccount userAccount = new UserAccount("", account.getEmail(), "", Profession.nullProfession); // fill it up from firebase @vraj
+        processAccount(userAccount, accountExists);
+    }
+
+    private void processAccount(UserAccount userAccount, boolean exists) {
+        if(exists) {
             goToActivity(userAccount, DashboardActivity.class);
         }
         else {
-            goToActivity(new UserAccount("", account.getEmail(), "", Profession.nullProfession), PhNoOtpActivity.class);
+            goToActivity(userAccount, PhNoOtpActivity.class);
         }
     }
 }
