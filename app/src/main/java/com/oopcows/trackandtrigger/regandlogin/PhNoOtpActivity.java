@@ -1,4 +1,4 @@
-package com.oopcows.trackandtrigger;
+package com.oopcows.trackandtrigger.regandlogin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.oopcows.trackandtrigger.databinding.ActivityPhNoOtpBinding;
-import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -40,7 +39,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        userAccount = getIntent().getExtras().getParcelable("com.oopcows.trackandtrigger.helpers.UserAccount");
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         binding.getOtpButton.setOnClickListener( (v) -> {
             if(binding.phnoField.getText().toString().isEmpty() || binding.phnoField.getText().toString().length()!=10){
                 binding.phnoField.setError("Enter valid phone number");
@@ -108,10 +107,11 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         System.out.println("Success");
-                        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getPassword(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
-                        Intent dashboardActivity = new Intent(getBaseContext(), EmailOtpActivity.class);
-                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                        startActivity(dashboardActivity);
+                        userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
+                        Intent emailVerifyActivity = new Intent(getBaseContext(), EmailVerifyActivitiy.class);
+                        emailVerifyActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                        startActivity(emailVerifyActivity);
+                        finish();
                     } else {
                         Toast.makeText(PhNoOtpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

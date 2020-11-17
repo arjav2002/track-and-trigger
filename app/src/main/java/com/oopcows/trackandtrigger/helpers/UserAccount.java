@@ -3,25 +3,49 @@ package com.oopcows.trackandtrigger.helpers;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+
+import static com.oopcows.trackandtrigger.helpers.CowConstants.GMAILID_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PHNO_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USERNAME_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USERS_TABLE_NAME;
+
+@Entity(tableName = USERS_TABLE_NAME)
 public class UserAccount implements Parcelable {
 
+    @ColumnInfo(name = USERNAME_COLUMN_NAME)
+    @PrimaryKey
+    @NonNull
     private String username;
-    private String password;
+
+    @ColumnInfo(name = GMAILID_COLUMN_NAME)
+    @NonNull
     private String gmailId;
+
+    @ColumnInfo(name = PHNO_COLUMN_NAME)
+    @NonNull
     private String phno;
+
+    @ColumnInfo(name = PROF_COLUMN_NAME)
+    @NonNull
     private Profession profession;
 
-    public UserAccount(String username, String password, String gmailId, String phno, Profession profession) {
+    public UserAccount(String username, String gmailId, String phno, Profession profession) {
         this.username = username;
-        this.password = password;
         this.gmailId = gmailId;
         this.phno = phno;
         this.profession = profession;
     }
 
+    @Ignore
     public UserAccount(Parcel in) {
         username = in.readString();
-        password = in.readString();
         gmailId = in.readString();
         phno = in.readString();
         profession = Profession.valueOf(in.readString());
@@ -30,19 +54,12 @@ public class UserAccount implements Parcelable {
     public String getUsername() {
         return username;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
     public String getGmailId() {
         return gmailId;
     }
-
     public String getPhno() {
         return phno;
     }
-
     public Profession getProfession() { return profession; }
 
     @Override
@@ -53,7 +70,6 @@ public class UserAccount implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(username);
-        parcel.writeString(password);
         parcel.writeString(gmailId);
         parcel.writeString(phno);
         parcel.writeString(profession.name());

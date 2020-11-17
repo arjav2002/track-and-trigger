@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".EmailOtpActivity"
+    tools:context=".regandlogin.EmailVerifyActivitiy"
     android:gravity="center">
 
 
@@ -18,13 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/gmailIdLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gmail_label" />
+                android:text="@string/gmail_label"
+                />
 
             <EditText
                 android:id="@+id/gmailIdField"
@@ -39,24 +40,23 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/otpLabel"
+                android:id="@+id/gmailOtpLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/otp_label" />
 
             <EditText
-                android:id="@+id/otpField"
-                android:layout_width="wrap_content"
+                android:id="@+id/gmailOtpField"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="numberPassword"
                 android:hint="@string/otp_hint"
-                android:inputType="number"
                 android:maxEms="10"
                 android:minEms="10" />
+
 
         </LinearLayout>
 
@@ -69,15 +69,14 @@
             <Button
                 android:id="@+id/getOtpButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/get_otp_label" />
+                android:layout_height="match_parent"
+                android:text="@string/get_verification_link_label" />
 
             <Button
-                android:id="@+id/regAndLoginButton"
+                android:id="@+id/nextButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reg_and_login_label" />
+                android:layout_height="match_parent"
+                android:text="@string/next_label" />
         </LinearLayout>
 
     </LinearLayout>
