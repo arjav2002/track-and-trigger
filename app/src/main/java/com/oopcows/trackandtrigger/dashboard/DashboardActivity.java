@@ -27,7 +27,7 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
         View view = binding.getRoot();
         setContentView(view);
 
-        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        //userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
         try {
             dh = new DatabaseHelper(getApplicationContext());

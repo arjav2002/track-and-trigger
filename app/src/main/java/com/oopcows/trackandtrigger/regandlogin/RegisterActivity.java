@@ -35,16 +35,16 @@ public class RegisterActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
-        username = userAccount.getUsername();
+        //userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        //username = userAccount.getUsername();
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inputsAreValid()) {
+                if (inputsAreValid()) {
                     userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
                     uploadAccountToFirebase(userAccount);
                     Intent dashboardActivitiy = new Intent(getBaseContext(), DashboardActivity.class);
-                    dashboardActivitiy.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                    //dashboardActivitiy.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
                     startActivity(dashboardActivitiy);
                     finish();
                 }
@@ -77,5 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener((e) -> {
                     System.out.println("Fail");
                 });
+        Map<String, String> t = new HashMap<>();
+        t.put(userAccount.getPhno(), "true");
+        db.collection("PastUsers")
+                .document("PhoneNumbers")
+                .set(t);
     }
 }

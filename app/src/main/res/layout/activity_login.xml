@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@string/register_or_sign_in_label"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.861"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/otpField" />
 
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:autofillHints="Ph. no."
             android:hint="@string/phno_hint"
-            android:inputType="number"
+            android:inputType="phone"
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
@@ -88,6 +89,14 @@
             app:layout_constraintBottom_toTopOf="@+id/g_sign_in_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/getOtp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/get_otp_label"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="83dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

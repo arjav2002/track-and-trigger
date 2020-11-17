@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityEmailVerifyBinding;
 import com.oopcows.trackandtrigger.helpers.CowConstants;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
 
@@ -31,10 +36,33 @@ public class EmailVerifyActivitiy extends AppCompatActivity {
         setContentView(view);
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
-        binding.nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(emailHasBeenVerified()) {
+        binding.getOtpButton.setOnClickListener((v) -> {
+            if (!binding.gmailIdField.getText().toString().isEmpty()) {
+                Map<String, String> otpField = new HashMap<>();
+                Random rnd = new Random();
+                int number = rnd.nextInt(999999);
+                this.otp = Integer.toString(number);
+                System.out.println(this.otp);
+                otpField.put(binding.gmailIdField.getText().toString(), otp);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection(OTP)
+                        .document(MAIL)
+                        .set(otpField);
+            }
+        });
+
+        binding.nextButton.setOnClickListener((v) -> {
+            String userOtp = binding.gmailOtpField.getText().toString();
+            if (userOtp.equals(this.otp)) {
+                //userAccount = new UserAccount(userAccount.getUsername(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), userAccount.getProfession());
+                Intent registerActivity = new Intent(getBaseContext(), RegisterActivity.class);
+                //registerActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                startActivity(registerActivity);
+                finish();
+            } else {
+                Toast.makeText(EmailVerifyActivitiy.this, "Wrong OTP entered", Toast.LENGTH_SHORT).show();
+            }
+                /*if(emailHasBeenVerified()) {
                     userAccount = new UserAccount(userAccount.getUsername(), String.valueOf(binding.gmailIdField.getText()), userAccount.getPhno(), userAccount.getProfession());
                     Intent registerActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     registerActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
@@ -43,12 +71,13 @@ public class EmailVerifyActivitiy extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(EmailVerifyActivitiy.this, "Email not verified yet", Toast.LENGTH_SHORT).show();
-                }
-            }
+                }*/
+
         });
     }
 
     // @vraj fill this pls
+    //@arjav this is not needed anymore
     private boolean emailHasBeenVerified() {
         return true;
     }
