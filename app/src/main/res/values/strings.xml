@@ -22,5 +22,8 @@
     <string name="choose_profession_label">Choose Profession</string>
     <string name="confirm_profession_button">OK</string>
     <string name="register_or_sign_in_label">Register / Sign In</string>
+    <string name="groceries">Groceries</string>
+    <string name="kitchen_appliances">Kitchen Appliances</string>
+    <string name="home_maintenance">Home Maintenance</string>
 
 </resources>

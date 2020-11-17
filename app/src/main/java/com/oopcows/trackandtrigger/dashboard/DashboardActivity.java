@@ -4,9 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.view.View;
 
-import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
+import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -16,12 +17,15 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
-    private PersonalDetailsFragment chooseProfessionFragment;
+    private PersonalDetailsFragment personalDetailsFragment;
+    private ActivityDashboardBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
@@ -31,6 +35,7 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
         } catch (DatabaseHelper.DisposedHelperStartedException e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -44,8 +49,8 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
 
     private void displayDialogue() {
         FragmentManager fm = getSupportFragmentManager();
-        chooseProfessionFragment = PersonalDetailsFragment.newInstance();
-        chooseProfessionFragment.show(fm, null);
+        personalDetailsFragment = PersonalDetailsFragment.newInstance();
+        personalDetailsFragment.show(fm, null);
     }
 
     @Override
