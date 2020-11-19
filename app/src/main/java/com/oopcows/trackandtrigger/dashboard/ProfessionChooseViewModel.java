@@ -9,9 +9,9 @@ import com.oopcows.trackandtrigger.helpers.Profession;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalDetailsViewModel extends ViewModel {
+public class ProfessionChooseViewModel extends ViewModel {
 
-    public ArrayAdapter<String> getSpinnerAdapter(PersonalDetailsFragment fragment) {
+    public ArrayAdapter<String> getSpinnerAdapter(ProfessionChooseFragment fragment) {
         List<String> professions = new ArrayList<String>();
         for(Profession p : Profession.values()) {
             if(p == Profession.nullProfession) continue;
