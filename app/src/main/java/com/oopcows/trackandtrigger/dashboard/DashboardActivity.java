@@ -29,14 +29,7 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
 
-        try {
-            dh = new DatabaseHelper(getApplicationContext());
-            dh.start();
-        } catch (DatabaseHelper.DisposedHelperStartedException e) {
-            e.printStackTrace();
-        }
-
-
+        dh = DatabaseHelper.getInstance(this);
     }
 
     @Override
@@ -56,14 +49,6 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
     @Override
     public void fillDetails(String username, Profession profession) {
         userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), profession);
-        updateDatabase();
-    }
-
-    private void updateDatabase() {
-        try {
-            dh.updateUser(userAccount);
-        } catch (DatabaseHelper.HelperNotRunningException e) {
-            e.printStackTrace();
-        }
+        dh.updateUser(userAccount);
     }
 }
