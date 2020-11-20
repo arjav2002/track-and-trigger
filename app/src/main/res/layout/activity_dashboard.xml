@@ -4,16 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.TrackAndTriggerDark"
     tools:context=".dashboard.DashboardActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DashboardActivity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        android:id="@+id/special_buttons"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/grocery_list_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:contentDescription="@string/groceries"
+            android:elevation="5dp"
+            app:icon="@drawable/ic_launcher_foreground" />
+
+        <Button
+            android:id="@+id/mainatenance_list_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:contentDescription="@string/home_maintenance"
+            android:elevation="5dp"
+            app:icon="@drawable/ic_launcher_foreground" />
+
+        <Button
+            android:id="@+id/kitchen_appliances_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:contentDescription="@string/kitchen_appliances"
+            android:elevation="5dp"
+            app:icon="@drawable/ic_launcher_foreground" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

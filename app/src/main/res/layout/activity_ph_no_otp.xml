@@ -1,92 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- @subs make this seski-->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
-    android:theme="@style/Theme.TrackAndTriggerDark"
-    tools:context=".regandlogin.EmailVerifyActivitiy">
+    tools:context=".regandlogin.EmailVerifyActivitiy"
+    android:gravity="center">
 
 
-    <TextView
-        android:id="@+id/phnoLabel"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/phno_label"
-        app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
-        app:layout_constraintEnd_toStartOf="@+id/phnoField"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/phnoField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="13dp"
-        android:hint="@string/phno_hint"
-        android:inputType="phone"
-        android:maxEms="10"
-        android:minEms="10"
-        app:layout_constraintBottom_toTopOf="@+id/otpLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/phnoLabel"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
 
+            <TextView
+                android:id="@+id/phnoLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phno_label" />
 
-    <TextView
-        android:id="@+id/otpLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="121dp"
-        android:layout_marginLeft="121dp"
-        android:layout_marginEnd="121dp"
-        android:layout_marginRight="121dp"
-        android:layout_marginBottom="13dp"
-        android:text="@string/otp_label"
-        app:layout_constraintBottom_toTopOf="@+id/nextButton"
-        app:layout_constraintEnd_toEndOf="@+id/getOtpButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phnoField" />
+            <EditText
+                android:id="@+id/phnoField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/phno_hint"
+                android:inputType="phone"
+                android:maxEms="10"
+                android:minEms="10" />
 
-    <EditText
-        android:id="@+id/otpField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/otp_hint"
-        android:inputType="number"
-        android:maxEms="10"
-        android:minEms="10"
-        app:layout_constraintStart_toStartOf="@+id/phnoField"
-        app:layout_constraintTop_toBottomOf="@+id/phnoField" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
 
-    <Button
-        android:id="@+id/getOtpButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="54dp"
-        android:layout_marginLeft="54dp"
-        android:text="@string/get_otp_label"
-        app:layout_constraintBaseline_toBaselineOf="@+id/nextButton"
-        app:layout_constraintEnd_toStartOf="@+id/nextButton"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/otpLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/otp_label" />
 
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="54dp"
-        android:layout_marginRight="54dp"
-        android:text="@string/next_label"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/getOtpButton"
-        app:layout_constraintTop_toBottomOf="@+id/otpLabel" />
+            <EditText
+                android:id="@+id/otpField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/otp_hint"
+                android:maxEms="10"
+                android:minEms="10" />
 
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/getOtpButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/get_otp_label" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/next_label" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

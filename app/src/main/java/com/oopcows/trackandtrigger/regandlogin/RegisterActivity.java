@@ -17,9 +17,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
     private UserAccount userAccount;
-    private String username;
-    private String password;
-    private String confirmedPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +26,20 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(view);
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
-        username = userAccount.getUsername();
+        binding.usernameField.setText(userAccount.getUsername());
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(inputsAreValid()) {
-                    userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
-                    uploadAccountToFirebase(userAccount);
-                    Intent dashboardActivitiy = new Intent(getBaseContext(), DashboardActivity.class);
-                    dashboardActivitiy.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                    startActivity(dashboardActivitiy);
+                    userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
+                    uploadAccountToFirebase();
+                    Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
+                    dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                    startActivity(dashboardActivity);
                     finish();
+                }
+                else {
+                    // inputs are invalid, tell the user in a seski way @subs
                 }
             }
         });
@@ -51,8 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
                String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
     }
 
-    // @vraj fill this up
-    private void uploadAccountToFirebase(UserAccount userAccount) {
+    // @vraj fill this up, procure password from the passwordField
+    // userAccount is an instance variable anyway
+    private void uploadAccountToFirebase() {
 
     }
 }

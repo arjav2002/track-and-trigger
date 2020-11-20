@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.signInButton.setOnClickListener(signInListener());
-        binding.registerButton.setOnClickListener(registerButtonListener());
+        binding.registerOrSignInButton.setOnClickListener(registerOrSignInButtonListener());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            processGoogleAccount(account, R.string.g_siginin_fail);
+            processGoogleAccount(account);
         } catch (ApiException e) {
             Log.w("GoogleSignIn", "signInResult:failed code=" + e.getStatusCode());
             binding.errorLabel.setText(R.string.g_siginin_fail);
@@ -71,30 +70,22 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        processGoogleAccount(account, R.string.g_signin_suggestion);
+        if(account != null) {
+            processGoogleAccount(account);
+        }
+        binding.errorLabel.setText(R.string.g_signin_suggestion);
     }
 
-    private View.OnClickListener registerButtonListener() {
+    private View.OnClickListener registerOrSignInButtonListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = String.valueOf(binding.usernameField.getText());
                 String password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
-                goToActivity(new UserAccount(username, "", "", Profession.nullProfession), PhNoOtpActivity.class);
-            }
-        };
-    }
-
-    private View.OnClickListener signInListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // do firebase/server bullshit and fill up userAccount @vraj
-                String username = String.valueOf(binding.usernameField.getText());
-                String password = String.valueOf(binding.passwordField.getText());
-                UserAccount userAccount = null; // fill this with that
-                goToActivity(userAccount, DashboardActivity.class);
+                boolean accountExists = false;
+                UserAccount uc = new UserAccount(username, "", "", Profession.nullProfession); // if account exists then get it @vraj
+                processAccount(uc, accountExists);
             }
         };
     }
@@ -106,15 +97,19 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void processGoogleAccount(GoogleSignInAccount account, int errorMsg) {
+    private void processGoogleAccount(GoogleSignInAccount account) {
         // @vraj check if account with this gmail account exists
         boolean accountExists = false;
-        UserAccount userAccount = null; // fill it up from firebase @vraj
-        if(accountExists) {
+        UserAccount userAccount = new UserAccount("", account.getEmail(), "", Profession.nullProfession); // fill it up from firebase @vraj
+        processAccount(userAccount, accountExists);
+    }
+
+    private void processAccount(UserAccount userAccount, boolean exists) {
+        if(exists) {
             goToActivity(userAccount, DashboardActivity.class);
         }
         else {
-            binding.errorLabel.setText(errorMsg);
+            goToActivity(userAccount, PhNoOtpActivity.class);
         }
     }
 }
