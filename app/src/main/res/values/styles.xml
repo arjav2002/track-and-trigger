@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextViews" parent="android:Widget.Material.TextView">
+        <item name="android:textColor">@color/Mountbatten_pink</item>
+    </style>
+
+    <style name="EditTexts" parent="android:Widget.Material.EditText">
+        <item name="background">@color/Gunmetal</item>
+        <item name="android:textColor">@color/Bittersweet</item>
+        <item name="android:textColorHint">@color/Mountbatten_pink</item>
+    </style>
+
+    <style name="Buttons" parent="android:Widget.Material.Button">
+        <item name="android:textColor">@color/Gunmetal</item>
+        <item name="backgroundTint">@color/Bittersweet</item>
+    </style>
+
+    <style name="TextViewsDark" parent="android:Widget.Material.TextView">
+        <item name="android:textColor">@color/Light_grey</item>
+    </style>
+
+    <style name="EditTextsDark" parent="android:Widget.Material.EditText">
+        <item name="background">@color/Bittersweet</item>
+        <item name="android:textColor">@color/Dark_bittersweet</item>
+        <item name="android:textColorHint">@color/Light_grey</item>
+    </style>
+
+    <style name="ButtonsDark" parent="android:Widget.Material.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/Dark_blue</item>
+    </style>
+
+</resources>
