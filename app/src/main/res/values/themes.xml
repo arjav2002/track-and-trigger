@@ -11,23 +11,8 @@
         <item name="android:colorBackground">@color/white</item>
         <item name="android:panelBackground">@color/Medium_turquoise</item>
         <item name="android:buttonStyle">@style/Buttons</item>
-        <item name="editTextStyle">@style/EditTexts</item>
+        <item name="android:editTextStyle">@style/EditTexts</item>
         <item name="android:textViewStyle">@style/TextViews</item>
-    </style>
-
-    <style name="TextViews" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/Mountbatten_pink</item>
-    </style>
-
-    <style name="EditTexts" parent="Widget.AppCompat.EditText">
-        <item name="background">@color/white</item>
-        <item name="android:textColor">@color/Bittersweet</item>
-        <item name="android:textColorHint">@color/Mountbatten_pink</item>
-    </style>
-
-    <style name="Buttons" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/Gunmetal</item>
     </style>
 
     <style name="Theme.TrackAndTriggerDark" parent="Theme.AppCompat.NoActionBar">
@@ -45,18 +30,4 @@
         <item name="android:textViewStyle">@style/TextViewsDark</item>
     </style>
 
-    <style name="TextViewsDark" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/Light_grey</item>
-    </style>
-
-    <style name="EditTextsDark" parent="Widget.AppCompat.EditText">
-        <item name="background">@color/Bittersweet</item>
-        <item name="android:textColor">@color/Dark_bittersweet</item>
-        <item name="android:textColorHint">@color/Light_grey</item>
-    </style>
-
-    <style name="ButtonsDark" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/Dark_grey</item>
-    </style>
 </resources>

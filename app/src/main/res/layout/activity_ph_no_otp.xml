@@ -5,8 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+<<<<<<< Updated upstream
     tools:context=".regandlogin.EmailVerifyActivitiy"
     android:gravity="center">
+=======
+    android:gravity="center"
+    tools:context=".regandlogin.EmailVerifyActivitiy">
+>>>>>>> Stashed changes
 
 
     <LinearLayout
@@ -14,11 +19,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+<<<<<<< Updated upstream
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="end">
+=======
+    <EditText
+        android:id="@+id/phnoField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="13dp"
+        android:hint="@string/phno_hint"
+        android:inputType="phone"
+        android:maxEms="10"
+        android:minEms="10"
+        app:layout_constraintBottom_toTopOf="@+id/otpLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/phnoLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:autofillHints="" />
+>>>>>>> Stashed changes
 
             <TextView
                 android:id="@+id/phnoLabel"
@@ -35,7 +59,21 @@
                 android:maxEms="10"
                 android:minEms="10" />
 
+<<<<<<< Updated upstream
         </LinearLayout>
+=======
+    <EditText
+        android:id="@+id/otpField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/otp_hint"
+        android:inputType="number"
+        android:maxEms="10"
+        android:minEms="10"
+        app:layout_constraintStart_toStartOf="@+id/phnoField"
+        app:layout_constraintTop_toBottomOf="@+id/phnoField"
+        android:autofillHints="" />
+>>>>>>> Stashed changes
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,6 +81,7 @@
             android:orientation="horizontal"
             android:gravity="end">
 
+<<<<<<< Updated upstream
             <TextView
                 android:id="@+id/otpLabel"
                 android:layout_width="wrap_content"
@@ -80,6 +119,28 @@
                 android:layout_weight="0.5"
                 android:text="@string/next_label" />
         </LinearLayout>
+=======
+    <Button
+        android:id="@+id/getOtpButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
+        android:text="@string/get_otp_label"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nextButton"
+        app:layout_constraintEnd_toStartOf="@+id/nextButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="54dp"
+        android:text="@string/next_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/getOtpButton"
+        app:layout_constraintTop_toBottomOf="@+id/otpLabel" />
+>>>>>>> Stashed changes
 
     </LinearLayout>
 
