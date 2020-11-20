@@ -1,10 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TrackAndTrigger" parent="Theme.MaterialComponents">
+
+    <style name="Theme.TrackAndTrigger" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
-        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/Light_grey</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/Dark_blue</item>
+        <item name="android:windowBackground">@color/Dark_grey</item>
+        <item name="android:textColorPrimary">@color/Dark_bittersweet</item>
+        <item name="android:textColorSecondary">@color/Mountbatten_pink</item>
+        <item name="android:colorBackground">@color/Dark_grey</item>
+        <item name="android:panelBackground">@color/Dark_bittersweet</item>
+        <item name="android:buttonStyle">@style/ButtonsDark</item>
+        <item name="editTextStyle">@style/EditTextsDark</item>
+        <item name="android:textViewStyle">@style/TextViewsDark</item>
     </style>
+
 </resources>
