@@ -15,42 +15,15 @@
 
 
         <Button
-            android:id="@+id/registerOrSignInButton"
+            android:id="@+id/registerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< Updated upstream
-            android:text="@string/register_or_sign_in_label"
             app:layout_constraintEnd_toEndOf="parent"
-=======
             android:layout_marginTop="8dp"
             android:text="@string/register_label"
             app:layout_constraintEnd_toStartOf="@+id/signInButton"
->>>>>>> Stashed changes
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordContainer" />
-
-<<<<<<< Updated upstream
-        <EditText
-            android:id="@+id/usernameField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="@string/auto_username_hint"
-            android:hint="@string/username_hint"
-            android:inputType="text"
-            android:maxEms="10"
-            android:minEms="10"
-            android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/usernameLabel"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-
-        <EditText
-            android:id="@+id/passwordField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="132dp"
-            android:autofillHints="otp"
-=======
 
         <Button
             android:id="@+id/signInButton"
@@ -69,7 +42,6 @@
             android:layout_height="58dp"
             android:layout_marginBottom="188dp"
             android:autofillHints="password"
->>>>>>> Stashed changes
             android:hint="@string/password_hint"
             android:inputType="textPassword"
             android:maxEms="10"
@@ -84,7 +56,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-<<<<<<< Updated upstream
         <TextView
             android:id="@+id/passwordLabel"
             android:layout_width="wrap_content"
@@ -102,9 +73,8 @@
             android:text="@string/username_label"
             app:layout_constraintBottom_toTopOf="@+id/passwordField"
             app:layout_constraintEnd_toStartOf="@+id/usernameField" />
-=======
         </com.google.android.material.textfield.TextInputLayout>
->>>>>>> Stashed changes
+
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/g_sign_in_button"
@@ -119,7 +89,7 @@
         <TextView
             android:id="@+id/errorLabel"
             android:layout_width="185dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:scrollHorizontally="false"

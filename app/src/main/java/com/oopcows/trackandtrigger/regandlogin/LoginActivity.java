@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.registerOrSignInButton.setOnClickListener(registerOrSignInButtonListener());
+        binding.registerButton.setOnClickListener(registerOrSignInButtonListener());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
