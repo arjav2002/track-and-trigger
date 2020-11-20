@@ -12,18 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oopcows.trackandtrigger.databinding.ProfessionChooseFragmentBinding;
+import com.oopcows.trackandtrigger.databinding.PersonalDetailsFragmentBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 
 import java.util.Objects;
 
-public class ProfessionChooseFragment extends DialogFragment {
+public class PersonalDetailsFragment extends DialogFragment {
 
-    private ProfessionChooseViewModel mViewModel;
-    private ProfessionChooseFragmentBinding binding;
+    private PersonalDetailsViewModel mViewModel;
+    private PersonalDetailsFragmentBinding binding;
 
     public interface PersonalDetailsFillable {
-        void fillDetails(Profession profession);
+        void fillDetails(String username, Profession profession);
     }
 
     @Override
@@ -31,15 +31,15 @@ public class ProfessionChooseFragment extends DialogFragment {
         super.onStart();
     }
 
-    public static ProfessionChooseFragment newInstance() {
-        return new ProfessionChooseFragment();
+    public static PersonalDetailsFragment newInstance() {
+        return new PersonalDetailsFragment();
     }
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = ProfessionChooseFragmentBinding.inflate(inflater);
+        binding = PersonalDetailsFragmentBinding.inflate(inflater);
         View view = binding.getRoot();
         return view;
     }
@@ -47,11 +47,11 @@ public class ProfessionChooseFragment extends DialogFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ProfessionChooseViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(PersonalDetailsViewModel.class);
 
         binding.chooseProfessionSpinner.setAdapter(mViewModel.getSpinnerAdapter(this));
         binding.confirmProfessionButton.setOnClickListener((v)-> {
-            ((PersonalDetailsFillable) Objects.requireNonNull(getActivity())).fillDetails(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
+            ((PersonalDetailsFillable) Objects.requireNonNull(getActivity())).fillDetails(String.valueOf(binding.usernameField.getText()), Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
             dismiss();
         });
         setCancelable(false);
