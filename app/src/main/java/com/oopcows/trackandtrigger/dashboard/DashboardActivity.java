@@ -13,12 +13,14 @@ import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
-public class DashboardActivity extends AppCompatActivity implements PersonalDetailsFragment.PersonalDetailsFillable {
+public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.PersonalDetailsFillable {
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
-    private PersonalDetailsFragment personalDetailsFragment;
     private ActivityDashboardBinding binding;
+    private View homeMaintenanceButton, kitchenApplianceButton;
+    // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
+    // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +29,14 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
         View view = binding.getRoot();
         setContentView(view);
 
-        //userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        dh = DatabaseHelper.getInstance(this);
 
-        try {
-            dh = new DatabaseHelper(getApplicationContext());
-            dh.start();
-        } catch (DatabaseHelper.DisposedHelperStartedException e) {
-            e.printStackTrace();
-        }
-
-
+        View groceryButton = binding.groceryListButton;
+        homeMaintenanceButton = binding.mainatenanceListButton;
+        kitchenApplianceButton = binding.kitchenAppliancesButton;
+        binding.specialButtons.removeAllViews();
+        binding.specialButtons.addView(groceryButton);
     }
 
     @Override
@@ -45,25 +45,27 @@ public class DashboardActivity extends AppCompatActivity implements PersonalDeta
         if(userAccount.getProfession() == Profession.nullProfession) {
             displayDialogue();
         }
+        else addAppropriateButtons();
     }
 
     private void displayDialogue() {
         FragmentManager fm = getSupportFragmentManager();
-        personalDetailsFragment = PersonalDetailsFragment.newInstance();
-        personalDetailsFragment.show(fm, null);
+        ProfessionChooseFragment.newInstance().show(fm, null);
     }
 
     @Override
-    public void fillDetails(String username, Profession profession) {
-        userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), profession);
-        updateDatabase();
+    public void fillDetails(Profession profession) {
+        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
+        dh.updateUser(userAccount);
+        addAppropriateButtons();
     }
 
-    private void updateDatabase() {
-        try {
-            dh.updateUser(userAccount);
-        } catch (DatabaseHelper.HelperNotRunningException e) {
-            e.printStackTrace();
+    private void addAppropriateButtons() {
+        if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
+            binding.specialButtons.addView(homeMaintenanceButton);
+        }
+        if(userAccount.getProfession().equals(Profession.homeMaker)) {
+            binding.specialButtons.addView(kitchenApplianceButton);
         }
     }
 }

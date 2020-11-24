@@ -7,56 +7,45 @@
     tools:context=".dashboard.DashboardActivity">
 
     <LinearLayout
+        android:id="@+id/special_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/grocery_list_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:drawableLeft="@drawable/ic_grocery"
+            android:text="@string/groceries" />
 
         <Button
             android:id="@+id/mainatenance_list_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:drawableLeft="@drawable/ic_maintenance"
+            android:text="@string/home_maintenance" />
 
         <Button
             android:id="@+id/kitchen_appliances_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:drawableLeft="@drawable/ic_kitchen"
+            android:text="@string/kitchen_appliances" />
 
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
