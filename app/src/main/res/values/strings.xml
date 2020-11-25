@@ -28,5 +28,6 @@
     <string name="groceries">Groceries</string>
     <string name="kitchen_appliances">Kitchen</string>
     <string name="home_maintenance">House</string>
+    <string name="new_todo_list">New Todo List</string>
 
 </resources>
