@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:context=".dashboard.DashboardActivity">
 
     <LinearLayout
@@ -13,8 +15,7 @@
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/grocery_list_button"
@@ -22,8 +23,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawableStart="@drawable/ic_grocery"
             android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_grocery"
             android:text="@string/groceries" />
 
         <Button
@@ -32,8 +33,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawableStart="@drawable/ic_maintenance"
             android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_maintenance"
             android:text="@string/home_maintenance" />
 
         <Button
@@ -42,10 +43,42 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawableStart="@drawable/ic_kitchen"
             android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_kitchen"
             android:text="@string/kitchen_appliances" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/special_buttons">
+
+        <Button
+            android:id="@+id/add_todo_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@android:drawable/ic_input_add"
+            android:text="@string/new_todo_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

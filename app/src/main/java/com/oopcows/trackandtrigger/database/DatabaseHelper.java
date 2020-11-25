@@ -5,8 +5,11 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.room.Room;
 
+import com.oopcows.trackandtrigger.helpers.Todo;
+import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.Collection;
@@ -26,6 +29,7 @@ public class DatabaseHelper implements Runnable {
     private volatile boolean running;
     private final Thread thread;
     private final UserDao userDao;
+    private final TodoListDao todoListDao;
     private volatile Object result;
     private static DatabaseHelper instance;
 
@@ -40,6 +44,7 @@ public class DatabaseHelper implements Runnable {
         running = false;
         thread = new Thread(this);
         userDao = AppDatabase.getInstance(context).getUserDao();
+        todoListDao = AppDatabase.getInstance(context).getTodoListDao();
     }
 
     private void start() {
@@ -60,16 +65,65 @@ public class DatabaseHelper implements Runnable {
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    public synchronized List<UserAccount> getUserList()  {
+    public synchronized TodoList getTodoList(final String heading) {
         if(!running) start();
         task = new Runnable() {
             @Override
             public void run() {
-                result = userDao.getUserList();
+                result = todoListDao.getTodoList(heading);
             }
         };
         while(task != null);
-        return (List<UserAccount>) result;
+        return (TodoList) result;
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void insertTodoList(TodoList todoList) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                todoListDao.insertTodoList(todoList);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void updateTodoList(TodoList todoList) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                todoListDao.updateTodoList(todoList);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void deleteUser(TodoList todoList) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                todoListDao.deleteTodoList(todoList);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized List<TodoList> getTodoLists()  {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                result = todoListDao.getTodoLists();
+            }
+        };
+        while(task != null);
+        return (List<TodoList>) result;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -119,6 +173,19 @@ public class DatabaseHelper implements Runnable {
             }
         };
         while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized List<UserAccount> getUserList()  {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                result = userDao.getUserList();
+            }
+        };
+        while(task != null);
+        return (List<UserAccount>) result;
     }
 
 }
