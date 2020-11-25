@@ -21,7 +21,7 @@ public class ProfessionChooseFragment extends DialogFragment {
 
     private ProfessionChooseFragmentBinding binding;
 
-    public interface PersonalDetailsFillable {
+    public interface ProfessionFillable {
         void fillDetails(Profession profession);
     }
 
@@ -49,7 +49,7 @@ public class ProfessionChooseFragment extends DialogFragment {
 
         binding.chooseProfessionSpinner.setAdapter(mViewModel.getSpinnerAdapter(this));
         binding.confirmProfessionButton.setOnClickListener((v)-> {
-            ((PersonalDetailsFillable) Objects.requireNonNull(getActivity())).fillDetails(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
+            ((ProfessionFillable) Objects.requireNonNull(getActivity())).fillDetails(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
             dismiss();
         });
         setCancelable(false);

@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
-public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.PersonalDetailsFillable {
+public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.ProfessionFillable {
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
