@@ -37,11 +37,6 @@ public class TodoListActivity extends AppCompatActivity {
         todoAdapter = new TodoAdapter(binding.todosLayout, todoList.getTodos());
         binding.todosLayout.setLayoutManager(new LinearLayoutManager(this));
         binding.todosLayout.setAdapter(todoAdapter);
-        binding.addTodo.setOnClickListener((v) -> {
-            todoAdapter.updateTodos();
-            todoList.addTodo(new Todo("", false));
-            todoAdapter.notifyDataSetChanged();
-        });
     }
 
     @Override
