@@ -50,6 +50,13 @@ public class PhNoOtpActivity extends AppCompatActivity {
         binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("Success");
+                userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
+                Intent emailVerifyActivity = new Intent(getBaseContext(), EmailVerifyActivitiy.class);
+                emailVerifyActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                startActivity(emailVerifyActivity);
+                finish();
+                /*
                 String code = binding.otpField.getText().toString();
                 if(code.isEmpty() || code.length()<OTP_LENGTH){
                     binding.otpField.setError("Wrong OTP");
@@ -57,7 +64,7 @@ public class PhNoOtpActivity extends AppCompatActivity {
                 }
                 else {
                     verifyCode(code);
-                }
+                }*/
             }
         });
     }

@@ -1,62 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:context=".dashboard.DashboardActivity">
 
     <LinearLayout
+        android:id="@+id/special_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
         android:padding="10dp"
-        android:orientation="horizontal">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/grocery_list_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_grocery"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:text="@string/groceries" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/mainatenance_list_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_maintenance"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:text="@string/home_maintenance" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/kitchen_appliances_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/groceries"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_kitchen"
             android:elevation="5dp"
-            android:layout_weight="0.33"
-            app:icon="@drawable/ic_launcher_foreground" />
+            android:text="@string/kitchen_appliances" />
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/special_buttons">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/add_todo_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@android:drawable/ic_input_add"
+            android:text="@string/new_todo_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

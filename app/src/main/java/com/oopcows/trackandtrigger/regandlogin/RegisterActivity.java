@@ -1,13 +1,12 @@
 package com.oopcows.trackandtrigger.regandlogin;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
@@ -17,16 +16,18 @@ import com.oopcows.trackandtrigger.helpers.UserAccount;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.GMAILID_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PAST_USERS;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PHNO_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USERS_TABLE_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_NAMES;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
     private UserAccount userAccount;
-    private String username;
-    private String password;
-    private String confirmedPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,52 +36,88 @@ public class RegisterActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
-        //username = userAccount.getUsername();
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        binding.usernameField.setText(userAccount.getUsername());
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputsAreValid()) {
-                    userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
-                    uploadAccountToFirebase(userAccount);
-                    Intent dashboardActivitiy = new Intent(getBaseContext(), DashboardActivity.class);
-                    //dashboardActivitiy.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                    startActivity(dashboardActivitiy);
-                    finish();
+                if(inputsAreValid()) {
+                    boolean check = checkIfUserAlreadyExists();
+                    if (!check) {
+                        userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
+                        uploadAccountToFirebase();
+                        Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
+                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                        startActivity(dashboardActivity);
+                        finish();
+                    } else {
+                        //@subs please tell user username already exists and to try another username
+                    }
+                } else {
+                    // inputs are invalid, tell the user in a seski way @subs
                 }
             }
         });
     }
 
-    private boolean inputsAreValid() {
-        return String.valueOf(binding.usernameField.getText()).length() > 0 &&
-               String.valueOf(binding.passwordField.getText()).length() > 0 &&
-               String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
+    private boolean checkIfUserAlreadyExists() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> query = db.collection(PAST_USERS)
+                .document(USER_NAMES)
+                .get()
+                .getResult()
+                .getData();
+        return (query.containsKey(binding.usernameField.getText().toString()));
+
     }
 
-    // @vraj fill this up
-    private void uploadAccountToFirebase(UserAccount userAccount) {
-        Map<String, Object> v = new HashMap<>();
-        v.put("name", userAccount.getUsername());
-        v.put("gmailId", userAccount.getGmailId());
-        v.put("phoneNumber", userAccount.getPhno());
-        v.put("profession", userAccount.getProfession());
-        v.put("password", password);
+    private boolean inputsAreValid() {
+        return String.valueOf(binding.usernameField.getText()).length() > 0 &&
+                String.valueOf(binding.passwordField.getText()).length() > 0 &&
+                String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
+    }
+
+    // @vraj fill this up, procure password from the passwordField
+    // userAccount is an instance variable anyway
+    private void uploadAccountToFirebase() {
+        Map<String, Object> uploader = new HashMap<>();
+        uploader.put(binding.usernameField.getText().toString(), binding.passwordField.getText().toString());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        db.collection(USERS_TABLE_NAME)
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .set(v)
+        //saving username and password on database for reference when logging in
+        db.collection(PAST_USERS)
+                .document(USER_NAMES)
+                .set(uploader)
                 .addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     System.out.println("Success");
                 })
                 .addOnFailureListener((e) -> {
                     System.out.println("Fail");
                 });
-        Map<String, String> t = new HashMap<>();
-        t.put(userAccount.getPhno(), "true");
-        db.collection("PastUsers")
-                .document("PhoneNumbers")
-                .set(t);
+        //saving all new user data on database
+        uploader.put(GMAILID_COLUMN_NAME, userAccount.getGmailId());
+        uploader.put(PHNO_COLUMN_NAME, userAccount.getPhno());
+        Profession p = userAccount.getProfession();
+        String s = null;
+        if (p == Profession.workingProfessional) s = "workingProfessional";
+        else if (p == Profession.jobSeeker) s = "jobSeeker";
+        else if (p == Profession.bachelor) s = "bachelor";
+        else if (p == Profession.homeMaker) s = "homeMaker";
+        else if (p == Profession.others) s = "others";
+        uploader.put(PROF_COLUMN_NAME, s);
+        db.collection(USERS_TABLE_NAME)
+                .document(userAccount.getUsername())
+                .set(uploader)
+                .addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+                    System.out.println("Success");
+                })
+                .addOnFailureListener((e) -> {
+                    System.out.println("Fail");
+                });
+        //saving gmail id for reference when logging in
+        Map<String, String> u = new HashMap<>();
+        u.put(userAccount.getGmailId(), "true");
+        db.collection(PAST_USERS)
+                .document(GMAILID_COLUMN_NAME)
+                .set(u);
     }
 }

@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lin_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="320dp"
         android:layout_centerInParent="true">
 
 
@@ -18,85 +18,97 @@
             android:id="@+id/registerOrSignInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register_or_sign_in_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.861"
+            android:layout_marginTop="8dp"
+            android:text="@string/register_or_sign_in_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/otpField" />
-
-        <EditText
-            android:id="@+id/phnoField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="Ph. no."
-            android:hint="@string/phno_hint"
-            android:inputType="phone"
-            android:maxEms="10"
-            android:minEms="10"
-            android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/phnoLabel"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/passwordContainer" />
 
 
-        <EditText
-            android:id="@+id/otpField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="132dp"
-            android:autofillHints="otp"
-            android:hint="@string/otp_hint"
-            android:inputType="number"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordContainer"
+            android:layout_width="186dp"
+            android:layout_height="58dp"
+            android:layout_marginBottom="188dp"
+            android:autofillHints="password"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/otpLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:text="@string/otp_label"
-            app:layout_constraintBaseline_toBaselineOf="@+id/otpField"
-            app:layout_constraintEnd_toStartOf= "@+id/phnoField" />
+            <TextView
+                android:id="@+id/passwordLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
+                app:layout_constraintEnd_toStartOf= "@+id/usernameField" />
 
-        <TextView
-            android:id="@+id/phnoLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
-            android:text="@string/phno_label"
-            app:layout_constraintBottom_toTopOf="@+id/otpField"
-            app:layout_constraintEnd_toStartOf="@+id/phnoField" />
+            <TextView
+                android:id="@+id/usernameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="11dp"
+                android:text="@string/username_label"
+                app:layout_constraintBottom_toTopOf="@+id/passwordField"
+                app:layout_constraintEnd_toStartOf="@+id/usernameField" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/g_sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/errorLabel"
-            android:layout_width="0dp"
+            android:layout_width="185dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:scrollHorizontally="false"
             android:textAlignment="center"
             android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintBottom_toTopOf="@+id/g_sign_in_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/g_sign_in_button" />
 
-        <Button
-            android:id="@+id/getOtp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/get_otp_label"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="83dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameContainer"
+            android:layout_width="186dp"
+            android:layout_height="58dp"
+            android:autofillHints="username"
+            android:hint="@string/username_hint"
+            android:inputType="textPersonName"
+            android:maxEms="10"
+            android:minEms="10"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

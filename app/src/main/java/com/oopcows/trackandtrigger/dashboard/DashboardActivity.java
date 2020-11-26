@@ -2,68 +2,116 @@ package com.oopcows.trackandtrigger.dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
-import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
+import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+import com.oopcows.trackandtrigger.helpers.Todo;
+import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
-public class DashboardActivity extends AppCompatActivity implements PersonalDetailsFragment.PersonalDetailsFillable {
+public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.PersonalDetailsFillable {
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
-    private PersonalDetailsFragment personalDetailsFragment;
     private ActivityDashboardBinding binding;
+    private View homeMaintenanceButton, kitchenApplianceButton;
+    private ArrayList<TodoList> todoLists;
+    private int todoListClicked;
+    private TodoListAdapter todoListAdapter;
+    // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
+    // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        dh = DatabaseHelper.getInstance(this);
 
-        //userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        todoListClicked = -1;
 
-        try {
-            dh = new DatabaseHelper(getApplicationContext());
-            dh.start();
-        } catch (DatabaseHelper.DisposedHelperStartedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-        if(userAccount.getProfession() == Profession.nullProfession) {
-            displayDialogue();
-        }
+        createUI();
     }
 
     private void displayDialogue() {
         FragmentManager fm = getSupportFragmentManager();
-        personalDetailsFragment = PersonalDetailsFragment.newInstance();
-        personalDetailsFragment.show(fm, null);
+        ProfessionChooseFragment.newInstance().show(fm, null);
     }
 
     @Override
-    public void fillDetails(String username, Profession profession) {
-        userAccount = new UserAccount(username, userAccount.getGmailId(), userAccount.getPhno(), profession);
-        updateDatabase();
+    public void fillDetails(Profession profession) {
+        userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
+        dh.updateUser(userAccount);
+        addAppropriateButtons();
     }
 
-    private void updateDatabase() {
-        try {
-            dh.updateUser(userAccount);
-        } catch (DatabaseHelper.HelperNotRunningException e) {
-            e.printStackTrace();
+    private void addAppropriateButtons() {
+        if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
+            binding.specialButtons.addView(homeMaintenanceButton);
+        }
+        if(userAccount.getProfession().equals(Profession.homeMaker)) {
+            binding.specialButtons.addView(kitchenApplianceButton);
         }
     }
+
+    private void createUI() {
+        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        View groceryButton = binding.groceryListButton;
+        homeMaintenanceButton = binding.mainatenanceListButton;
+        kitchenApplianceButton = binding.kitchenAppliancesButton;
+        binding.specialButtons.removeAllViews();
+        binding.specialButtons.addView(groceryButton);
+
+        todoListAdapter = new TodoListAdapter(this, todoLists);
+        binding.myRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        binding.myRecyclerView.setAdapter(todoListAdapter);
+
+        binding.addTodoList.setOnClickListener((v) -> {
+            TodoList todoList = new TodoList();
+            todoLists.add(todoList);
+            todoListAdapter.notifyDataSetChanged();
+            gotoTodoListActivity(todoList);
+        });
+
+        if(userAccount.getProfession() == Profession.nullProfession) {
+            displayDialogue();
+        }
+        else addAppropriateButtons();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                TodoList todoList = (TodoList) data.getExtras().get(TODO_LIST_INTENT_KEY);
+                todoLists.set(todoListClicked, todoList);
+                todoListAdapter.notifyItemChanged(todoListClicked);
+                todoListClicked = -1;
+                dh.insertTodoList(todoList);
+            }
+        }
+    }
+
+    public void gotoTodoListActivity(TodoList todoList) {
+        Intent intent = new Intent(this, TodoListActivity.class);
+        intent.putExtra(TODO_LIST_INTENT_KEY, todoList);
+        todoListClicked = todoLists.indexOf(todoList);
+        startActivityForResult(intent, 1);
+    }
+
 }
