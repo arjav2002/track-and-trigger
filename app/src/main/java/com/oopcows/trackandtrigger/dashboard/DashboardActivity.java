@@ -84,7 +84,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         binding.addTodoList.setOnClickListener((v) -> {
             TodoList todoList = new TodoList();
             todoLists.add(todoList);
-            todoListAdapter.notifyDataSetChanged();
             gotoTodoListActivity(todoList);
         });
 

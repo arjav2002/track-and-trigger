@@ -100,6 +100,11 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 int pos = holder.getAdapterPosition();
                 todos.get(pos).setDone(!todos.get(pos).isDone());
             });
+            todoHolder.removeButton.setOnClickListener((v) -> {
+                int pos = holder.getAdapterPosition();
+                todos.remove(todos.get(pos));
+                notifyItemRemoved(pos);
+            });
             todoHolder.checkbox.setChecked(todos.get(position).isDone());
             updateTodos();
         }
@@ -108,7 +113,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             addTodoHolder.addButton.setOnClickListener((v) -> {
                 updateTodos();
                 todos.add(new Todo("", false));
-                notifyDataSetChanged();
+                notifyItemChanged(holder.getAdapterPosition());
             });
         }
     }
@@ -122,12 +127,14 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final DragButton dragButton;
         private final CheckBox checkbox;
         private final EditText todo;
+        private final Button removeButton;
 
         public TodoHolder(@NonNull View itemView) {
             super(itemView);
             dragButton = itemView.findViewById(R.id.dragButton);
             checkbox = itemView.findViewById(R.id.checkbox);
             todo = itemView.findViewById(R.id.todo_field);
+            removeButton = itemView.findViewById(R.id.remove_todo);
         }
     }
 
