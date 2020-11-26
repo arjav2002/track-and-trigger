@@ -66,11 +66,8 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                     @Override
                     public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        todos.remove(viewHolder.getAdapterPosition());
-                        notifyItemRemoved(viewHolder.getAdapterPosition());
+                        deleteHolder(viewHolder);
                     }
-
-
                 });
         touchHelper.attachToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
@@ -94,6 +91,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(holder instanceof TodoHolder) {
             TodoHolder todoHolder = (TodoHolder) holder;
             todoHolder.todo.setText(todos.get(position).getTask());
+            todoHolder.checkbox.setChecked(todos.get(position).isDone());
             todoHolder.dragButton.setTouchHelper(touchHelper);
             todoHolder.dragButton.setViewHolder(todoHolder);
             todoHolder.checkbox.setOnClickListener((v) -> {
@@ -101,11 +99,8 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 todos.get(pos).setDone(!todos.get(pos).isDone());
             });
             todoHolder.removeButton.setOnClickListener((v) -> {
-                int pos = holder.getAdapterPosition();
-                todos.remove(todos.get(pos));
-                notifyItemRemoved(pos);
+                deleteHolder(holder);
             });
-            todoHolder.checkbox.setChecked(todos.get(position).isDone());
             updateTodos();
         }
         else {
@@ -155,6 +150,12 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             addButton = itemView.findViewById(R.id.add_todo);
         }
+    }
+
+    private void deleteHolder(RecyclerView.ViewHolder holder) {
+        int pos = holder.getAdapterPosition();
+        todos.remove(todos.get(pos));
+        notifyItemRemoved(pos);
     }
 
 }
