@@ -42,24 +42,39 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(inputsAreValid()) {
-                    userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
-                    uploadAccountToFirebase();
-                    Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
-                    dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                    startActivity(dashboardActivity);
-                    finish();
-                }
-                else {
+                    boolean check = checkIfUserAlreadyExists();
+                    if (!check) {
+                        userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
+                        uploadAccountToFirebase();
+                        Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
+                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                        startActivity(dashboardActivity);
+                        finish();
+                    } else {
+                        //@subs please tell user username already exists and to try another username
+                    }
+                } else {
                     // inputs are invalid, tell the user in a seski way @subs
                 }
             }
         });
     }
 
+    private boolean checkIfUserAlreadyExists() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> query = db.collection(PAST_USERS)
+                .document(USER_NAMES)
+                .get()
+                .getResult()
+                .getData();
+        return (query.containsKey(binding.usernameField.getText().toString()));
+
+    }
+
     private boolean inputsAreValid() {
         return String.valueOf(binding.usernameField.getText()).length() > 0 &&
-               String.valueOf(binding.passwordField.getText()).length() > 0 &&
-               String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
+                String.valueOf(binding.passwordField.getText()).length() > 0 &&
+                String.valueOf(binding.passwordField.getText()).equals(String.valueOf(binding.confirmPasswordField.getText()));
     }
 
     // @vraj fill this up, procure password from the passwordField
@@ -98,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener((e) -> {
                     System.out.println("Fail");
                 });
+        //saving gmail id for reference when logging in
         Map<String, String> u = new HashMap<>();
         u.put(userAccount.getGmailId(), "true");
         db.collection(PAST_USERS)

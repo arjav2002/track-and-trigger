@@ -141,15 +141,25 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    private boolean checkIfGmailAccountExists(String gmail) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> checker = db.collection(PAST_USERS)
+                .document(GMAILID_COLUMN_NAME)
+                .get()
+                .getResult()
+                .getData();
+        return checker.containsKey(gmail);
+    }
+
     private void processGoogleAccount(GoogleSignInAccount account) {
         // @vraj check if account with this gmail account exists
-        boolean accountExists = false;
+        boolean accountExists = checkIfGmailAccountExists(account.getEmail());
         UserAccount userAccount = new UserAccount("", account.getEmail(), "", Profession.nullProfession); // fill it up from firebase @vraj
         processAccount(userAccount, accountExists);
     }
 
     private void processAccount(UserAccount userAccount, boolean exists) {
-        if(exists) {
+        if (exists) {
             goToActivity(userAccount, DashboardActivity.class);
         }
         else {
