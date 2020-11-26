@@ -77,7 +77,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         binding.specialButtons.removeAllViews();
         binding.specialButtons.addView(groceryButton);
 
-        todoListAdapter = new TodoListAdapter(this, todoLists);
+        todoListAdapter = new TodoListAdapter(this, binding.myRecyclerView, todoLists);
         binding.myRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         binding.myRecyclerView.setAdapter(todoListAdapter);
 
