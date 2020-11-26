@@ -20,6 +20,7 @@ public class CowConstants {
     public static final String PROF_COLUMN_NAME = "profession";
     public static final String OTP = "OTP";
     public static final String MAIL = "Mail";
-
+    public static final String PAST_USERS = "PastUsers";
+    public static final String USER_NAMES = "UserNames";
 
 }

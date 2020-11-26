@@ -14,18 +14,30 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityLoginBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
-import static com.oopcows.trackandtrigger.helpers.CowConstants.*;
+import java.util.Map;
+
+import static com.oopcows.trackandtrigger.helpers.CowConstants.GMAILID_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.G_SIGN_IN;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PAST_USERS;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PHNO_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USERS_TABLE_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_NAMES;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private GoogleSignInClient mGoogleSignInClient;
+    private String username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +92,46 @@ public class LoginActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = String.valueOf(binding.usernameField.getText());
-                String password = String.valueOf(binding.passwordField.getText());
+                username = String.valueOf(binding.usernameField.getText());
+                password = String.valueOf(binding.passwordField.getText());
                 // validate inputs
-                boolean accountExists = false;
+                boolean accountExists = checkIfUserExists();
                 UserAccount uc = new UserAccount(username, "", "", Profession.nullProfession); // if account exists then get it @vraj
+                if (accountExists) {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    Task<DocumentSnapshot> task = db.collection(USERS_TABLE_NAME)
+                            .document(username)
+                            .get();
+                    Map<String, Object> stringObjectMap = task.getResult().getData();
+                    String prof = stringObjectMap.get(PROF_COLUMN_NAME).toString();
+                    Profession p = Profession.nullProfession;
+                    if (prof.equals("workingProfessional")) p = Profession.workingProfessional;
+                    if (prof.equals("jobSeeker")) p = Profession.jobSeeker;
+                    if (prof.equals("bachelor")) p = Profession.bachelor;
+                    if (prof.equals("homeMaker")) p = Profession.homeMaker;
+                    if (prof.equals("others")) p = Profession.others;
+                    uc = new UserAccount(username,
+                            stringObjectMap.get(GMAILID_COLUMN_NAME).toString(),
+                            stringObjectMap.get(PHNO_COLUMN_NAME).toString(),
+                            p);
+                }
                 processAccount(uc, accountExists);
             }
         };
+    }
+
+    private boolean checkIfUserExists() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task<DocumentSnapshot> task = db.collection(PAST_USERS)
+                .document(USER_NAMES)
+                .get();
+        Map<String, Object> snapshot = task.getResult().getData();
+        for (Map.Entry<String, Object> entry : snapshot.entrySet()) {
+            if (entry.getKey().equals(username) && entry.getValue().equals(password))
+                return true;
+        }
+        return false;
+
     }
 
     private void goToActivity(UserAccount userAccount, Class activity) {

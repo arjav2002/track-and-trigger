@@ -1,17 +1,28 @@
 package com.oopcows.trackandtrigger.regandlogin;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.oopcows.trackandtrigger.helpers.CowConstants.GMAILID_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PAST_USERS;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PHNO_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USERS_TABLE_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_NAMES;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -54,6 +65,43 @@ public class RegisterActivity extends AppCompatActivity {
     // @vraj fill this up, procure password from the passwordField
     // userAccount is an instance variable anyway
     private void uploadAccountToFirebase() {
-
+        Map<String, Object> uploader = new HashMap<>();
+        uploader.put(binding.usernameField.getText().toString(), binding.passwordField.getText().toString());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //saving username and password on database for reference when logging in
+        db.collection(PAST_USERS)
+                .document(USER_NAMES)
+                .set(uploader)
+                .addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+                    System.out.println("Success");
+                })
+                .addOnFailureListener((e) -> {
+                    System.out.println("Fail");
+                });
+        //saving all new user data on database
+        uploader.put(GMAILID_COLUMN_NAME, userAccount.getGmailId());
+        uploader.put(PHNO_COLUMN_NAME, userAccount.getPhno());
+        Profession p = userAccount.getProfession();
+        String s = null;
+        if (p == Profession.workingProfessional) s = "workingProfessional";
+        else if (p == Profession.jobSeeker) s = "jobSeeker";
+        else if (p == Profession.bachelor) s = "bachelor";
+        else if (p == Profession.homeMaker) s = "homeMaker";
+        else if (p == Profession.others) s = "others";
+        uploader.put(PROF_COLUMN_NAME, s);
+        db.collection(USERS_TABLE_NAME)
+                .document(userAccount.getUsername())
+                .set(uploader)
+                .addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+                    System.out.println("Success");
+                })
+                .addOnFailureListener((e) -> {
+                    System.out.println("Fail");
+                });
+        Map<String, String> u = new HashMap<>();
+        u.put(userAccount.getGmailId(), "true");
+        db.collection(PAST_USERS)
+                .document(GMAILID_COLUMN_NAME)
+                .set(u);
     }
 }
