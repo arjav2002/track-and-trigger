@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackAndTrigger">
         <activity
-            android:name=".dashboard.TodoListActivity"
+            android:name=".dashboard.todolists.TodoListActivity"
             android:configChanges="orientation"
             />
         <activity android:name=".regandlogin.RegisterActivity" />

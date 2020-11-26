@@ -8,15 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
+import com.oopcows.trackandtrigger.dashboard.todolists.TodoListAdapter;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
-import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;

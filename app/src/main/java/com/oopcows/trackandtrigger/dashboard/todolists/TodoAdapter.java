@@ -1,16 +1,10 @@
-package com.oopcows.trackandtrigger.dashboard;
+package com.oopcows.trackandtrigger.dashboard.todolists;
 
-import android.content.ClipData;
-import android.graphics.Canvas;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;

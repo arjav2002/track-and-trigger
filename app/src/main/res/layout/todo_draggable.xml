@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.oopcows.trackandtrigger.dashboard.DragButton
+    <com.oopcows.trackandtrigger.dashboard.todolists.DragButton
         android:id="@+id/dragButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -1,21 +1,13 @@
-package com.oopcows.trackandtrigger.dashboard;
+package com.oopcows.trackandtrigger.dashboard.todolists;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.DragEvent;
-import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
-import android.view.View;
 
-import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.databinding.ActivityTodoListBinding;
-import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
-
-import java.util.zip.Inflater;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 

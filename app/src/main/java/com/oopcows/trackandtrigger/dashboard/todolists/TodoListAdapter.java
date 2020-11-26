@@ -1,22 +1,17 @@
-package com.oopcows.trackandtrigger.dashboard;
+package com.oopcows.trackandtrigger.dashboard.todolists;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 
@@ -24,8 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoListHolder> {
 
