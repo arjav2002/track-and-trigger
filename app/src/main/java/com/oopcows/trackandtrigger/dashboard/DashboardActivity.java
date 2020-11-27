@@ -11,6 +11,7 @@ import android.view.View;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
+import com.oopcows.trackandtrigger.helpers.CategoryItem;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.TodoList;
@@ -114,6 +115,18 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 todoListAdapter.notifyItemChanged(todoListClicked);
                 todoListClicked = -1;
                 dh.insertTodoList(todoList);
+            }
+        }
+        else if (requestCode == CATEGORY_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                Category category = (Category) data.getExtras().get(CATEGORY_INTENT_KEY);
+                System.out.println(category.getCategoryName() + ": " + category.getItems().size());
+                for(CategoryItem item : category.getItems()) {
+                    System.out.println(item.getItemName() + ": " + item.getQuantity());
+                }
+                categories.add(category);
+                categoryAdapter.notifyItemChanged(categoryClicked);
+                categoryClicked = -1;
             }
         }
     }

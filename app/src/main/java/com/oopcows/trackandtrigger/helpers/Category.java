@@ -15,6 +15,7 @@ public class Category implements Parcelable {
     @Ignore
     public Category(String categoryName) {
         this.categoryName = categoryName;
+        items = new ArrayList<CategoryItem>();
     }
 
     public Category(String categoryName, ArrayList<CategoryItem> items) {

@@ -116,12 +116,4 @@ public class TodoAdapter extends ResultRecyclerView {
             addButton = itemView.findViewById(R.id.add_todo);
         }
     }
-
-    @Override
-    protected void deleteHolder(RecyclerView.ViewHolder holder) {
-        int pos = holder.getAdapterPosition();
-        todos.remove(todos.get(pos));
-        notifyItemRemoved(pos);
-    }
-
 }

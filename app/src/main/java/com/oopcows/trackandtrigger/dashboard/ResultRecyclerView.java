@@ -61,21 +61,9 @@ public abstract class ResultRecyclerView extends RecyclerView.Adapter<RecyclerVi
         recyclerView.setAdapter(this);
     }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    protected void deleteHolder(RecyclerView.ViewHolder holder) {
+        int pos = holder.getAdapterPosition();
+        dataSet.remove(dataSet.get(pos));
+        notifyItemRemoved(pos);
     }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-    protected abstract void deleteHolder(RecyclerView.ViewHolder holder);
 }
