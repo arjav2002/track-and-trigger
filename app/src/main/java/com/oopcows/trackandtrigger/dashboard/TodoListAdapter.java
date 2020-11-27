@@ -1,4 +1,4 @@
-package com.oopcows.trackandtrigger.dashboard.todolists;
+package com.oopcows.trackandtrigger.dashboard;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +51,7 @@ public class TodoListAdapter extends DashboardRecyclerView {
 
         holder.itemView.setOnLongClickListener((v) -> {return true;});
         holder.itemView.setOnClickListener((v) -> {
-            dashboardActivity.gotoTodoListActivity(todoLists.get(position));
+            dashboardActivity.gotoTodoListActivity(todoLists.get(holder.getAdapterPosition()));
         });
     }
 

@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oopcows.trackandtrigger.dashboard.todolists.TodoListAdapter;
-import com.oopcows.trackandtrigger.helpers.TodoList;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

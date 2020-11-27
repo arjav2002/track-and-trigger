@@ -1,5 +1,8 @@
 package com.oopcows.trackandtrigger.dashboard.todolists;
 
+import android.text.Editable;
+import android.text.Layout;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +32,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ItemTouchHelper touchHelper;
     private RecyclerView recyclerView;
 
-    public TodoAdapter(RecyclerView recyclerView, LinkedList<Todo> todos) {
+    public TodoAdapter(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, LinkedList<Todo> todos) {
         this.todos = todos;
         touchHelper = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
@@ -66,6 +69,8 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 });
         touchHelper.attachToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(this);
     }
 
     @Override
@@ -96,12 +101,22 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             todoHolder.removeButton.setOnClickListener((v) -> {
                 deleteHolder(holder);
             });
-            updateTodos();
+            todoHolder.todo.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    todos.set(holder.getAdapterPosition(), new Todo(String.valueOf(charSequence), todos.get(holder.getAdapterPosition()).isDone()));
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {}
+            });
         }
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
             addTodoHolder.addButton.setOnClickListener((v) -> {
-                updateTodos();
                 todos.add(new Todo("", false));
                 notifyItemChanged(holder.getAdapterPosition());
             });
@@ -125,16 +140,6 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             checkbox = itemView.findViewById(R.id.checkbox);
             todo = itemView.findViewById(R.id.todo_field);
             removeButton = itemView.findViewById(R.id.remove_todo);
-        }
-    }
-
-    public void updateTodos() {
-        for(int i = 0; i < getItemCount(); i++) {
-            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(i);;
-            if(viewHolder instanceof TodoHolder) {
-                TodoHolder holder = (TodoHolder) viewHolder;
-                todos.set(i, new Todo(String.valueOf(holder.todo.getText()), holder.checkbox.isChecked()));
-            }
         }
     }
 

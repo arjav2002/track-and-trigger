@@ -26,14 +26,11 @@ public class TodoListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         todoList = (TodoList) intent.getExtras().get(TODO_LIST_INTENT_KEY);
         binding.headingField.setText(todoList.getHeading());
-        todoAdapter = new TodoAdapter(binding.todosLayout, todoList.getTodos());
-        binding.todosLayout.setLayoutManager(new LinearLayoutManager(this));
-        binding.todosLayout.setAdapter(todoAdapter);
+        todoAdapter = new TodoAdapter(binding.todosLayout, new LinearLayoutManager(this), todoList.getTodos());
     }
 
     @Override
     public void onBackPressed() {
-        todoAdapter.updateTodos();
         todoList.setHeading(String.valueOf(binding.headingField.getText()));
         Intent intent = new Intent();
         intent.putExtra(TODO_LIST_INTENT_KEY, todoList);

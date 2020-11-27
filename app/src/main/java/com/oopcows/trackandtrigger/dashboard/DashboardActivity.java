@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
-import com.oopcows.trackandtrigger.dashboard.todolists.TodoListAdapter;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
