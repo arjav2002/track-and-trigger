@@ -15,7 +15,6 @@ public class TodoListActivity extends AppCompatActivity {
 
     private TodoList todoList;
     private ActivityTodoListBinding binding;
-    private TodoAdapter todoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class TodoListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         todoList = (TodoList) intent.getExtras().get(TODO_LIST_INTENT_KEY);
         binding.headingField.setText(todoList.getHeading());
-        todoAdapter = new TodoAdapter(binding.todosLayout, new LinearLayoutManager(this), todoList.getTodos());
+        TodoAdapter todoAdapter = new TodoAdapter(binding.todosLayout, new LinearLayoutManager(this), todoList.getTodos());
     }
 
     @Override
