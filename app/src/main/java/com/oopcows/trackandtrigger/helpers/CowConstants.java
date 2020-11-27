@@ -20,4 +20,6 @@ public class CowConstants {
     public static final String PROF_COLUMN_NAME = "profession";
     public static final int TODO_VIEW_HOLDER = 0;
     public static final int ADD_VIEW_HOLDER = 1;
+    public static final int TODO_LIST_REQUEST_CODE = 1;
+    public static final int CATEGORY_REQUEST_CODE = 2;
 }

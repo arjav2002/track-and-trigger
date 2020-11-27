@@ -19,6 +19,7 @@ import com.oopcows.trackandtrigger.helpers.UserAccount;
 import java.util.ArrayList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
 public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.ProfessionFillable {
@@ -95,7 +96,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == TODO_LIST_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 TodoList todoList = (TodoList) data.getExtras().get(TODO_LIST_INTENT_KEY);
                 todoLists.set(todoListClicked, todoList);
@@ -110,7 +111,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         Intent intent = new Intent(this, TodoListActivity.class);
         intent.putExtra(TODO_LIST_INTENT_KEY, todoList);
         todoListClicked = todoLists.indexOf(todoList);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, TODO_LIST_REQUEST_CODE);
     }
 
 }
