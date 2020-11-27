@@ -1,4 +1,4 @@
-package com.oopcows.trackandtrigger.dashboard.todolists;
+package com.oopcows.trackandtrigger.dashboard;
 
 import android.view.LayoutInflater;
 import android.view.View;

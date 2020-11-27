@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackAndTrigger">
+        <activity android:name=".dashboard.CategoryActivity"></activity>
         <activity
             android:name=".dashboard.todolists.TodoListActivity"
-            android:configChanges="orientation"
-            />
+            android:configChanges="orientation" />
         <activity android:name=".regandlogin.RegisterActivity" />
         <activity android:name=".regandlogin.PhNoOtpActivity" />
         <activity android:name=".regandlogin.EmailVerifyActivitiy" />
         <activity
             android:name=".dashboard.DashboardActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation" />
         <activity android:name=".regandlogin.LoginActivity">
             <intent-filter>
                 <action android:name=".RegisterActivity" />

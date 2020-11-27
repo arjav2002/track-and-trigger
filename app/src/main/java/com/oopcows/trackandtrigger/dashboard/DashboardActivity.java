@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
+import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.TodoList;
@@ -17,6 +18,8 @@ import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.ArrayList;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
@@ -28,8 +31,11 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private ActivityDashboardBinding binding;
     private View homeMaintenanceButton, kitchenApplianceButton;
     private ArrayList<TodoList> todoLists;
+    private ArrayList<Category> categories;
     private int todoListClicked;
+    private int categoryClicked;
     private TodoListAdapter todoListAdapter;
+    private CategoryAdapter categoryAdapter;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -40,7 +46,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         dh = DatabaseHelper.getInstance(this);
 
         todoLists = new ArrayList<TodoList>(dh.getTodoLists());
-        todoListClicked = -1;
+        categories = new ArrayList<Category>();
+        todoListClicked = categoryClicked = -1;
 
         createUI();
     }
@@ -77,12 +84,19 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         binding.specialButtons.removeAllViews();
         binding.specialButtons.addView(groceryButton);
 
-        todoListAdapter = new TodoListAdapter(this, binding.myRecyclerView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
+        todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
+        categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
 
         binding.addTodoList.setOnClickListener((v) -> {
             TodoList todoList = new TodoList();
             todoLists.add(todoList);
             gotoTodoListActivity(todoList);
+        });
+
+        binding.addCategory.setOnClickListener((v) -> {
+            Category category = new Category("");
+            categories.add(category);
+            gotoCategoryActivity(category);
         });
 
         if(userAccount.getProfession() == Profession.nullProfession) {
@@ -109,6 +123,13 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         intent.putExtra(TODO_LIST_INTENT_KEY, todoList);
         todoListClicked = todoLists.indexOf(todoList);
         startActivityForResult(intent, TODO_LIST_REQUEST_CODE);
+    }
+
+    public void gotoCategoryActivity(Category category) {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra(CATEGORY_INTENT_KEY, category);
+        categoryClicked = categories.indexOf(category);
+        startActivityForResult(intent, CATEGORY_REQUEST_CODE);
     }
 
 }
