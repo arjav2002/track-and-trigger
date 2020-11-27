@@ -32,16 +32,17 @@
             android:layout_marginBottom="188dp"
             android:autofillHints="password"
             android:hint="@string/password_hint"
-            android:inputType="textPassword"
             android:maxEms="10"
             android:minEms="10"
             android:textSize="14sp"
+            app:endIconMode="password_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordField"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -54,14 +55,6 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
                 app:layout_constraintEnd_toStartOf= "@+id/usernameField" />
 
-            <TextView
-                android:id="@+id/usernameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
-                android:text="@string/username_label"
-                app:layout_constraintBottom_toTopOf="@+id/passwordField"
-                app:layout_constraintEnd_toStartOf="@+id/usernameField" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -103,6 +96,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/usernameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="11dp"
+                android:text="@string/username_label"
+                app:layout_constraintBottom_toTopOf="@+id/passwordField"
+                app:layout_constraintEnd_toStartOf="@+id/usernameField" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameField"
