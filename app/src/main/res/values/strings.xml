@@ -28,5 +28,9 @@
     <string name="groceries">Groceries</string>
     <string name="kitchen_appliances">Kitchen</string>
     <string name="home_maintenance">House</string>
+    <string name="new_todo_list">New Todo List</string>
+    <string name="new_category">New Category</string>
+    <string name="add_item">Add Item</string>
+    <string name="empty_category_name">Empty Category Name is not allowed</string>
 
 </resources>

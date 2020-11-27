@@ -18,11 +18,9 @@ import com.oopcows.trackandtrigger.helpers.Profession;
 import java.util.Objects;
 
 public class ProfessionChooseFragment extends DialogFragment {
-
-    private ProfessionChooseViewModel mViewModel;
     private ProfessionChooseFragmentBinding binding;
 
-    public interface PersonalDetailsFillable {
+    public interface ProfessionFillable {
         void fillDetails(Profession profession);
     }
 
@@ -40,18 +38,17 @@ public class ProfessionChooseFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ProfessionChooseFragmentBinding.inflate(inflater);
-        View view = binding.getRoot();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ProfessionChooseViewModel.class);
+        ProfessionChooseViewModel mViewModel = new ViewModelProvider(this).get(ProfessionChooseViewModel.class);
 
         binding.chooseProfessionSpinner.setAdapter(mViewModel.getSpinnerAdapter(this));
         binding.confirmProfessionButton.setOnClickListener((v)-> {
-            ((PersonalDetailsFillable) Objects.requireNonNull(getActivity())).fillDetails(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
+            ((ProfessionFillable) Objects.requireNonNull(getActivity())).fillDetails(Profession.valueOf((String) binding.chooseProfessionSpinner.getSelectedItem()));
             dismiss();
         });
         setCancelable(false);

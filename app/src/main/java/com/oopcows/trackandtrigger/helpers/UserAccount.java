@@ -10,6 +10,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 
+import org.jetbrains.annotations.NotNull;
+
 import static com.oopcows.trackandtrigger.helpers.CowConstants.GMAILID_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.PHNO_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
@@ -51,6 +53,7 @@ public class UserAccount implements Parcelable {
         profession = Profession.valueOf(in.readString());
     }
 
+    @NotNull
     public String getUsername() {
         return username;
     }
