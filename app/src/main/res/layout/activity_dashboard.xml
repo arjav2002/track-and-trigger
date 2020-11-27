@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/new_category"
-        android:drawableStart="@android:drawable/ic_input_add"
+        android:drawableStart="@drawable/ic_baseline_add_24"
         />
 
     <LinearLayout
@@ -65,6 +65,16 @@
         android:scrollbars="vertical"
         />
 
+    <TextView
+        android:id="@+id/empty_category"
+        android:layout_width="392dp"
+        android:layout_height="210dp"
+        android:paddingTop="60dp"
+        android:text="@string/empty_category"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -77,7 +87,7 @@
             android:id="@+id/add_todo_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableStart="@android:drawable/ic_input_add"
+            android:drawableStart="@drawable/ic_baseline_add_24"
             android:text="@string/new_todo_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +99,20 @@
             android:layout_height="0dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+
+        <TextView
+            android:id="@+id/empty_todo"
+            android:layout_width="392dp"
+            android:layout_height="210dp"
+            android:paddingTop="60dp"
+            android:text="@string/empty_todo"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/todo_lists_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />

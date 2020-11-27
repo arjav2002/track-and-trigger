@@ -32,5 +32,7 @@
     <string name="new_category">New Category</string>
     <string name="add_item">Add Item</string>
     <string name="empty_category_name">Empty Category Name is not allowed</string>
+    <string name="empty_category">There are no categories yet. Add a new one!</string>
+    <string name="empty_todo">There are no To-do lists yet. Add a new one!</string>
 
 </resources>
