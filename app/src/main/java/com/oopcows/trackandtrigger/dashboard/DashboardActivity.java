@@ -124,7 +124,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 for(CategoryItem item : category.getItems()) {
                     System.out.println(item.getItemName() + ": " + item.getQuantity());
                 }
-                categories.add(category);
+                categories.set(categoryClicked, category);
                 categoryAdapter.notifyItemChanged(categoryClicked);
                 categoryClicked = -1;
             }
