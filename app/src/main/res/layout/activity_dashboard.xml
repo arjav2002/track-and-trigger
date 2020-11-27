@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/grocery_list_button"
@@ -31,8 +32,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_grocery"
             android:elevation="5dp"
+            android:drawableLeft="@drawable/ic_grocery"
             android:text="@string/groceries" />
 
         <Button
@@ -41,8 +42,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_maintenance"
             android:elevation="5dp"
+            android:drawableLeft="@drawable/ic_maintenance"
             android:text="@string/home_maintenance" />
 
         <Button
@@ -51,8 +52,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_kitchen"
             android:elevation="5dp"
+            android:drawableLeft="@drawable/ic_kitchen"
             android:text="@string/kitchen_appliances" />
 
     </LinearLayout>

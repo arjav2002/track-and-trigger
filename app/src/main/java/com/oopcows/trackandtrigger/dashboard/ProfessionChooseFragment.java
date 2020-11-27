@@ -18,7 +18,6 @@ import com.oopcows.trackandtrigger.helpers.Profession;
 import java.util.Objects;
 
 public class ProfessionChooseFragment extends DialogFragment {
-
     private ProfessionChooseFragmentBinding binding;
 
     public interface ProfessionFillable {
