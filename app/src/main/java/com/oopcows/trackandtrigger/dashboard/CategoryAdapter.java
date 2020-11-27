@@ -43,6 +43,9 @@ public class CategoryAdapter extends DashboardRecyclerView {
         if(holder instanceof CategoryHolder) {
             CategoryHolder categoryHolder = (CategoryHolder) holder;
             categoryHolder.categoryButton.setText(categories.get(position).getCategoryName());
+            categoryHolder.categoryButton.setOnClickListener((v) -> {
+                dashboardActivity.gotoCategoryActivity(categories.get(position));
+            });
         }
     }
 
