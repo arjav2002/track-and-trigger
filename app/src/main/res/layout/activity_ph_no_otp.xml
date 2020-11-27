@@ -59,6 +59,7 @@
             android:inputType="number"
             android:maxEms="10"
             android:minEms="10"
+            app:endIconMode="password_toggle"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
