@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class DashboardRecyclerView extends RecyclerView.Adapter<TodoListAdapter.TodoListHolder>{
+public abstract class DashboardRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<Object> dataSet;
     protected DashboardActivity dashboardActivity;

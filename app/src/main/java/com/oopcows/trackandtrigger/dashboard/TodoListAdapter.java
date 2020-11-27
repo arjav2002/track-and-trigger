@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.dashboard.DashboardRecyclerView;
+import com.oopcows.trackandtrigger.dashboard.todolists.TodoAdapter;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 
@@ -38,6 +39,12 @@ public class TodoListAdapter extends DashboardRecyclerView {
     }
 
     @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof TodoListHolder) {
+            onBindViewHolder((TodoListHolder) holder, position);
+        }
+    }
+
     public void onBindViewHolder(@NonNull TodoListHolder holder, int position) {
         TodoList tl = todoLists.get(position);
 
