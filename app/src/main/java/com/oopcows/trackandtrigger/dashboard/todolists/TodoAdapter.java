@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -116,7 +117,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final DragButton dragButton;
         private final CheckBox checkbox;
         private final EditText todo;
-        private final Button removeButton;
+        private final ImageButton removeButton;
 
         public TodoHolder(@NonNull View itemView) {
             super(itemView);

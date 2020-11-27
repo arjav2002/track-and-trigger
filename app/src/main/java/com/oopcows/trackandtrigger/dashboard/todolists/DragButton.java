@@ -3,13 +3,14 @@ package com.oopcows.trackandtrigger.dashboard.todolists;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-public class DragButton extends AppCompatImageView {
+public class DragButton extends AppCompatImageButton {
 
     private ItemTouchHelper touchHelper;
     private TodoAdapter.TodoHolder holder;

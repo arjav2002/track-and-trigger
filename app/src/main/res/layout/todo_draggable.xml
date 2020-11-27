@@ -15,8 +15,7 @@
         <!-- @subs make/get smol img like in google keep, which is used to grab and drag each
         todo and make it the src for this child of imageview,
          also pls delete all of "@subs" once you're done with implementing them
-         also provide some padding so that it is easier to touch the drag button and it
-         looks nice in genral-->
+         -->
 
     <CheckBox
         android:id="@+id/checkbox"
@@ -35,7 +34,7 @@
         app:layout_constraintStart_toEndOf="@+id/checkbox"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/remove_todo"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -43,6 +42,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!-- @subs make this button look like '-' (remove) button -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
