@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
+import com.oopcows.trackandtrigger.dashboard.DashboardRecyclerView;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 
@@ -20,69 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoListHolder> {
+public class TodoListAdapter extends DashboardRecyclerView {
 
-    private ArrayList<TodoList> todoLists;
-    private DashboardActivity dashboardActivity;
-    private RecyclerView recyclerView;
-    private ItemTouchHelper touchHelper;
+    private final ArrayList<TodoList> todoLists;
 
-    public TodoListAdapter(DashboardActivity dashboardActivity, RecyclerView recyclerView, ArrayList<TodoList> todoLists) {
+    public TodoListAdapter(DashboardActivity dashboardActivity, RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<TodoList> todoLists) {
+        super(dashboardActivity, recyclerView, layoutManager, todoLists);
         this.todoLists = todoLists;
-        this.dashboardActivity = dashboardActivity;
-        touchHelper = new ItemTouchHelper(
-                new ItemTouchHelper.Callback() {
-
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return true;
-                    }
-
-                    @Override
-                    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                        return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-                    }
-
-                    @Override
-                    public boolean onMove(@NotNull RecyclerView recyclerView,
-                                          @NotNull RecyclerView.ViewHolder viewHolder, @NotNull RecyclerView.ViewHolder target) {
-                        final int fromPosition = viewHolder.getAdapterPosition();
-                        final int toPosition = target.getAdapterPosition();
-                        if (fromPosition < toPosition) {
-                            for (int i = fromPosition; i < toPosition; i++) {
-                                Collections.swap(todoLists, i, i + 1);
-                            }
-                        } else {
-                            for (int i = fromPosition; i > toPosition; i--) {
-                                Collections.swap(todoLists, i, i - 1);
-                            }
-                        }
-                        notifyItemMoved(fromPosition, toPosition);
-                        return true;
-                    }
-
-                    @Override
-                    public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        deleteHolder(viewHolder);
-                    }
-
-                    @Override
-                    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
-                                                  int actionState) {
-
-
-                        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                            if (viewHolder instanceof TodoListHolder) {
-                                onTodoListSelected((TodoListHolder) viewHolder);
-                            }
-                        }
-
-                        super.onSelectedChanged(viewHolder, actionState);
-                    }
-
-                });
-        touchHelper.attachToRecyclerView(recyclerView);
-        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -126,14 +71,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         }
     }
 
-    private void deleteHolder(RecyclerView.ViewHolder holder) {
-        todoLists.remove(holder.getAdapterPosition());
-        notifyItemRemoved(holder.getAdapterPosition());
-    }
 
     // @subs do funs here, this function is called whenever holder is selected
     // make the holder.itemView look like it is selected
-    private void onTodoListSelected(TodoListHolder holder) {
+    @Override
+    protected void onHolderSelected(RecyclerView.ViewHolder holder) {
         System.out.println("I am selected yo");
     }
 

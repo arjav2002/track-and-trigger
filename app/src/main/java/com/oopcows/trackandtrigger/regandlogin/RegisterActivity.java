@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inputsAreValid()) {
+                if(true/*inputsAreValid()*/) {
                     userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
                     uploadAccountToFirebase();
                     Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
