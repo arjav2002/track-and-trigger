@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
@@ -28,6 +32,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
     private UserAccount userAccount;
+    private FirebaseDatabase db;
+    private DatabaseReference dr;
+    private boolean check = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inputsAreValid()) {
-                    boolean check = checkIfUserAlreadyExists();
+                if (inputsAreValid()) {
+                    checkIfUserAlreadyExists();
                     if (!check) {
                         userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
                         uploadAccountToFirebase();
@@ -56,18 +63,42 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     // inputs are invalid, tell the user in a seski way @subs
                 }
+                check = false;
             }
         });
     }
 
-    private boolean checkIfUserAlreadyExists() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private void valueSaver(Map<String, Object> users) {
+        for (Map.Entry<String, Object> entry : users.entrySet()) {
+            if (entry.getKey().equals(binding.usernameField.getText().toString()) && (entry.getValue() == null)) {
+                check = true;
+                break;
+            }
+        }
+    }
+
+    private void checkIfUserAlreadyExists() {
+        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> query = db.collection(PAST_USERS)
                 .document(USER_NAMES)
                 .get()
                 .getResult()
-                .getData();
-        return (query.containsKey(binding.usernameField.getText().toString()));
+                .getData(); */
+        //return (query.containsKey(binding.usernameField.getText().toString()));
+        db = FirebaseDatabase.getInstance();
+
+        dr = db.getReference().child(PAST_USERS).child(USER_NAMES); //.child(binding.usernameField.getText().toString());
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                valueSaver((Map<String, Object>) snapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("ERROR in retrieving data:" + error.getMessage());
+            }
+        });
 
     }
 
@@ -82,7 +113,10 @@ public class RegisterActivity extends AppCompatActivity {
     private void uploadAccountToFirebase() {
         Map<String, Object> uploader = new HashMap<>();
         uploader.put(binding.usernameField.getText().toString(), binding.passwordField.getText().toString());
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseDatabase.getInstance();
+        dr = db.getReference().child(PAST_USERS).child(USER_NAMES);
+        dr.setValue(binding.usernameField.getText().toString(), binding.passwordField.getText().toString());
+        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
         //saving username and password on database for reference when logging in
         db.collection(PAST_USERS)
                 .document(USER_NAMES)
@@ -93,6 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener((e) -> {
                     System.out.println("Fail");
                 });
+         */
         //saving all new user data on database
         uploader.put(GMAILID_COLUMN_NAME, userAccount.getGmailId());
         uploader.put(PHNO_COLUMN_NAME, userAccount.getPhno());
@@ -104,7 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
         else if (p == Profession.homeMaker) s = "homeMaker";
         else if (p == Profession.others) s = "others";
         uploader.put(PROF_COLUMN_NAME, s);
-        db.collection(USERS_TABLE_NAME)
+        dr = db.getReference().child(USERS_TABLE_NAME).child(userAccount.getUsername());
+        dr.setValue(PROF_COLUMN_NAME, s);
+        dr.setValue(GMAILID_COLUMN_NAME, userAccount.getGmailId());
+        dr.setValue(PHNO_COLUMN_NAME, userAccount.getPhno());
+
+        /*db.collection(USERS_TABLE_NAME)
                 .document(userAccount.getUsername())
                 .set(uploader)
                 .addOnSuccessListener((OnSuccessListener) (aVoid) -> {
@@ -113,11 +153,16 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener((e) -> {
                     System.out.println("Fail");
                 });
+
+         */
+
         //saving gmail id for reference when logging in
         Map<String, String> u = new HashMap<>();
-        u.put(userAccount.getGmailId(), "true");
-        db.collection(PAST_USERS)
+        dr = db.getReference().child(PAST_USERS).child(GMAILID_COLUMN_NAME);
+        dr.setValue(userAccount.getGmailId(), "true");
+        /*db.collection(PAST_USERS)
                 .document(GMAILID_COLUMN_NAME)
                 .set(u);
+    } */
     }
 }
