@@ -5,6 +5,7 @@ import androidx.room.TypeConverter;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.Todo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import io.perfmark.Link;
@@ -23,17 +24,17 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromTodos(LinkedList<Todo> todos) {
+    public static String fromTodos(ArrayList<Todo> todos) {
         String result="";
         for(Todo todo : todos) {
-            result += todo.getTask() + (todo.isDone()? '\1' : '\0');
+            result += todo.getTask() + (todo.isDone()? '\1' : '\2');
         }
         return result;
     }
 
     @TypeConverter
-    public static LinkedList<Todo> fromDelimitedString(String delimitedString) {
-        LinkedList<Todo> todos = new LinkedList<Todo>();
+    public static ArrayList<Todo> fromDelimitedString(String delimitedString) {
+        ArrayList<Todo> todos = new ArrayList<Todo>();
         String task = "";
         for(int i = 0; i < delimitedString.length(); i++) {
             char ch = delimitedString.charAt(i);
@@ -41,7 +42,7 @@ public class Converters {
                 todos.add(new Todo(task, true));
                 task = "";
             }
-            else if(ch == '\0') {
+            else if(ch == '\2') {
                 todos.add(new Todo(task, false));
                 task = "";
             }

@@ -1,5 +1,6 @@
 package com.oopcows.trackandtrigger.dashboard.todolists;
 
+import android.database.CursorJoiner;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
@@ -16,61 +17,25 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.ResultRecyclerView;
 import com.oopcows.trackandtrigger.helpers.Todo;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.ADD_VIEW_HOLDER;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_VIEW_HOLDER;
 
-public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TodoAdapter extends ResultRecyclerView {
 
-    private LinkedList<Todo> todos;
-    private ItemTouchHelper touchHelper;
-    private RecyclerView recyclerView;
+    private final ArrayList<Todo> todos;
 
-    public TodoAdapter(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, LinkedList<Todo> todos) {
+    public TodoAdapter(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<Todo> todos) {
+        super(recyclerView, layoutManager, todos);
         this.todos = todos;
-        touchHelper = new ItemTouchHelper(
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onMove(@NotNull RecyclerView recyclerView,
-                                          @NotNull RecyclerView.ViewHolder viewHolder, @NotNull RecyclerView.ViewHolder target) {
-                        if(target instanceof AddTodoHolder) return false;
-                        final int fromPosition = viewHolder.getAdapterPosition();
-                        final int toPosition = target.getAdapterPosition();
-                        if (fromPosition < toPosition) {
-                            for (int i = fromPosition; i < toPosition; i++) {
-                                Collections.swap(todos, i, i + 1);
-                            }
-                        } else {
-                            for (int i = fromPosition; i > toPosition; i--) {
-                                Collections.swap(todos, i, i - 1);
-                            }
-                        }
-                        notifyItemMoved(fromPosition, toPosition);
-                        return true;
-                    }
-
-                    @Override
-                    public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        deleteHolder(viewHolder);
-                    }
-                });
-        touchHelper.attachToRecyclerView(recyclerView);
-        this.recyclerView = recyclerView;
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(this);
     }
 
     @Override
@@ -152,7 +117,8 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    private void deleteHolder(RecyclerView.ViewHolder holder) {
+    @Override
+    protected void deleteHolder(RecyclerView.ViewHolder holder) {
         int pos = holder.getAdapterPosition();
         todos.remove(todos.get(pos));
         notifyItemRemoved(pos);
