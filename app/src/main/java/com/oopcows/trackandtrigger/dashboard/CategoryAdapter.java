@@ -60,7 +60,7 @@ public class CategoryAdapter extends DashboardRecyclerView {
     @Override
     protected boolean holderContainsString(@NonNull SearchResultViewHolder searchResultViewHolder, String searchString) {
         SearchCategoryHolder holder = (SearchCategoryHolder) searchResultViewHolder;
-        return String.valueOf(holder.categoryName.getText()).contains(searchString);
+        return containsIgnoreCase(String.valueOf(holder.categoryName.getText()), searchString);
     }
 
     @Override
@@ -77,6 +77,8 @@ public class CategoryAdapter extends DashboardRecyclerView {
         }
     }
 
+    // @subs maybe display rest of the items of the category and highlight the matching ones?
+    // could do the same for todolistadapter but see if you can come up with something better
     private static class SearchCategoryHolder extends SearchResultViewHolder {
         private final TextView categoryName;
 

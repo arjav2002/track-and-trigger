@@ -119,12 +119,11 @@ public class TodoListAdapter extends DashboardRecyclerView {
     @Override
     protected boolean holderContainsString(@NonNull SearchResultViewHolder searchResultViewHolder, String searchString) {
         TodoListSearchResultHolder holder = (TodoListSearchResultHolder) searchResultViewHolder;
-        System.out.println("fuml bruh");
-        if(String.valueOf(holder.heading.getText()).contains(searchString)) return true;
+        if(containsIgnoreCase(String.valueOf(holder.heading.getText()),searchString)) return true;
 
         for(int i = 0; i < holder.todosLayout.getChildCount(); i++) {
             TextView tv = (TextView) holder.todosLayout.getChildAt(i);
-            if(String.valueOf(tv.getText()).contains(searchString)) return true;
+            if(containsIgnoreCase(String.valueOf(tv.getText()), searchString)) return true;
         }
 
         return false;

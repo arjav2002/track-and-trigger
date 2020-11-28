@@ -148,4 +148,8 @@ public abstract class DashboardRecyclerView extends RecyclerView.Adapter<Recycle
         }
     }
 
+    protected static boolean containsIgnoreCase(String str, String str2) {
+        return str.toLowerCase().contains(str2.toLowerCase());
+    }
+
 }

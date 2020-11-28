@@ -27,47 +27,6 @@
         android:drawableStart="@android:drawable/ic_input_add"
         />
 
-    <LinearLayout
-        android:id="@+id/special_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/grocery_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_grocery"
-            android:text="@string/groceries" />
-
-        <Button
-            android:id="@+id/mainatenance_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_maintenance"
-            android:text="@string/home_maintenance" />
-
-        <Button
-            android:id="@+id/kitchen_appliances_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_kitchen"
-            android:text="@string/kitchen_appliances" />
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
