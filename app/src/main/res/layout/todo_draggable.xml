@@ -8,7 +8,7 @@
         android:id="@+id/dragButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_grocery"
+        android:src="@drawable/ic_baseline_drag_indicator_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

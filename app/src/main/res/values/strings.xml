@@ -35,5 +35,6 @@
     <string name="is_reserved_category_name">is a reserved Category name</string>
     <string name="cannot_change_category_name">Cannot change the name of a reserved Category</string>
     <string name="change_it_back">Change it back to</string>
+    <string name="logout">Logout</string>
 
 </resources>
