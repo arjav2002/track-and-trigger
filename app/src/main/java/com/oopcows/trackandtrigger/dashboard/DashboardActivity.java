@@ -211,7 +211,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         return -1;
     }
 
-    private int getSpecialCategoryIndex(String categoryName) {
+    public int getSpecialCategoryIndex(String categoryName) {
         for(int i = 0; i < specialCategories.length; i++) {
             if(categoryName.equalsIgnoreCase(getString(SPECIAL_CATEGORIES_NAME_RESIDS[i]))) return i;
         }

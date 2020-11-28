@@ -17,6 +17,8 @@ import com.oopcows.trackandtrigger.helpers.Category;
 
 import java.util.ArrayList;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_DRAWABLE_RESIDS;
+
 public class CategoryAdapter extends DashboardRecyclerView {
 
     private final ArrayList<Category> categories;
@@ -49,6 +51,12 @@ public class CategoryAdapter extends DashboardRecyclerView {
         categoryHolder.categoryButton.setOnClickListener((v) -> {
             dashboardActivity.gotoCategoryActivity(categories.get(position));
         });
+        int index = dashboardActivity.getSpecialCategoryIndex(
+                String.valueOf(categoryHolder.categoryButton.getText()));
+        if(index != -1) {
+            categoryHolder.categoryButton.setCompoundDrawablesWithIntrinsicBounds(
+                    CATEGORY_DRAWABLE_RESIDS[index], 0, 0, 0);
+        }
     }
 
     @Override

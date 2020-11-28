@@ -9,6 +9,7 @@ public class CowConstants {
     public static final String CATEGORY_INTENT_KEY = Category.class.getCanonicalName();
     public static final String IS_NEW_ACCOUNT_INTENT_KEY = "isNewAccount";
     public static final int[] SPECIAL_CATEGORIES_NAME_RESIDS = {R.string.groceries, R.string.home_maintenance, R.string.kitchen_appliances};
+    public static final int[] CATEGORY_DRAWABLE_RESIDS = {R.drawable.ic_grocery, R.drawable.ic_maintenance, R.drawable.ic_kitchen};
     public static final int G_SIGN_IN = 1;
     public static final int TIME_TAKEN_TO_RESEND_OTP = 60;
     public static final int OTP_LENGTH = 6;
