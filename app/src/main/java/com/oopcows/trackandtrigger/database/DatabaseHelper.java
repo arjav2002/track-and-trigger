@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.room.Room;
 
+import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
@@ -30,6 +31,7 @@ public class DatabaseHelper implements Runnable {
     private final Thread thread;
     private final UserDao userDao;
     private final TodoListDao todoListDao;
+    private final CategoryDao categoryDao;
     private volatile Object result;
     private static DatabaseHelper instance;
 
@@ -45,6 +47,7 @@ public class DatabaseHelper implements Runnable {
         thread = new Thread(this);
         userDao = AppDatabase.getInstance(context).getUserDao();
         todoListDao = AppDatabase.getInstance(context).getTodoListDao();
+        categoryDao = AppDatabase.getInstance(context).getCategoryDao();
     }
 
     private void start() {
@@ -62,6 +65,68 @@ public class DatabaseHelper implements Runnable {
                 task = null;
             }
         }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized Category getCategory(final String categoryName) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                result = categoryDao.getCategory(categoryName);
+            }
+        };
+        while(task != null);
+        return (Category) result;
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void insertCategory(Category category) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.insertCategory(category);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void updateCategory(Category category) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.updateCategory(category);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized void deleteCategory(Category category) {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.deleteCategory(category);
+            }
+        };
+        while(task != null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public synchronized List<Category> getCategories()  {
+        if(!running) start();
+        task = new Runnable() {
+            @Override
+            public void run() {
+                result = todoListDao.getTodoLists();
+            }
+        };
+        while(task != null);
+        return (List<Category>) result;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

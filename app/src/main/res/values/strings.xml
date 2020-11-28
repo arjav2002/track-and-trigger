@@ -32,5 +32,6 @@
     <string name="new_category">New Category</string>
     <string name="add_item">Add Item</string>
     <string name="empty_category_name">Empty Category Name is not allowed</string>
+    <string name="is_reserved_category_name">is a reserved Category name</string>
 
 </resources>

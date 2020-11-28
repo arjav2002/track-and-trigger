@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackAndTrigger">
-        <activity android:name=".dashboard.CategoryActivity"></activity>
+        <activity android:name=".dashboard.categories.CategoryActivity"></activity>
         <activity
             android:name=".dashboard.todolists.TodoListActivity"
             android:configChanges="orientation" />

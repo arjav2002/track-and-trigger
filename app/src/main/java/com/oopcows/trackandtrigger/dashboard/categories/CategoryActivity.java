@@ -1,4 +1,4 @@
-package com.oopcows.trackandtrigger.dashboard;
+package com.oopcows.trackandtrigger.dashboard.categories;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +19,7 @@ import com.oopcows.trackandtrigger.helpers.CategoryItem;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TAKE_PHOTO_REQUEST_CODE;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -26,12 +27,14 @@ public class CategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
     private Category category;
     private ItemAdapter itemAdapter;
+    private boolean isSpecialCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        isSpecialCategory = false;
 
         Intent intent = getIntent();
         category = (Category) intent.getExtras().get(CATEGORY_INTENT_KEY);
@@ -41,6 +44,14 @@ public class CategoryActivity extends AppCompatActivity {
             category.getItems().add(new CategoryItem("", "", 0));
             itemAdapter.notifyItemChanged(category.getItems().size()-1);
         });
+
+        for(int resid : SPECIAL_CATEGORIES_NAME_RESIDS) {
+            if(getString(resid).equalsIgnoreCase(category.getCategoryName())) {
+                isSpecialCategory = true;
+                break;
+            }
+        }
+
     }
 
     @Override
@@ -48,6 +59,14 @@ public class CategoryActivity extends AppCompatActivity {
         if(String.valueOf(binding.categoryName.getText()).isEmpty()) {
             Toast.makeText(this, R.string.empty_category_name, Toast.LENGTH_SHORT).show();
             return;
+        }
+        if(!isSpecialCategory) {
+            for (int res_id : SPECIAL_CATEGORIES_NAME_RESIDS) {
+                if (String.valueOf(binding.categoryName.getText()).equalsIgnoreCase(getString(res_id))) {
+                    Toast.makeText(this, String.valueOf(binding.categoryName.getText()) + " " + getString(R.string.is_reserved_category_name), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
         }
         Category newCategory = new Category(String.valueOf(binding.categoryName.getText()), category.getItems());
         Intent intent = new Intent();

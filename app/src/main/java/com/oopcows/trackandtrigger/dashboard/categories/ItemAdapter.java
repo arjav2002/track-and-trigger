@@ -1,10 +1,9 @@
-package com.oopcows.trackandtrigger.dashboard;
+package com.oopcows.trackandtrigger.dashboard.categories;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +18,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.ResultRecyclerView;
+import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.helpers.CategoryItem;
 
 import java.util.ArrayList;
@@ -49,14 +50,15 @@ public class ItemAdapter extends ResultRecyclerView {
         if(holder instanceof ItemHolder) {
             ItemHolder itemHolder = (ItemHolder) holder;
             int pos = holder.getAdapterPosition();
+            itemHolder.itemName.setText(String.valueOf(items.get(pos).getItemName()));
             itemHolder.quantity.setText(String.valueOf(items.get(pos).getQuantity()));
             itemHolder.incQuantity.setOnClickListener((v) -> {
                 items.get(pos).increaseQuantity();
-                itemHolder.quantity.setText(String.valueOf(items.get(pos).getQuantity()));
+                notifyItemChanged(pos);
             });
             itemHolder.decQuantity.setOnClickListener((v) -> {
                 items.get(pos).decreaseQuantity();
-                itemHolder.quantity.setText(String.valueOf(items.get(pos).getQuantity()));
+                notifyItemChanged(pos);
             });
             itemHolder.itemName.addTextChangedListener(new TextWatcher() {
                 @Override

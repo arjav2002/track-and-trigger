@@ -3,13 +3,27 @@ package com.oopcows.trackandtrigger.helpers;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORIES_TABLE_NAME;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_DATA_COLUMN;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_NAME_COLUMN;
+
+@Entity(tableName = CATEGORIES_TABLE_NAME)
 public class Category implements Parcelable {
 
+    @ColumnInfo(name = CATEGORY_DATA_COLUMN)
     private ArrayList<CategoryItem> items;
+
+    @ColumnInfo(name = CATEGORY_NAME_COLUMN)
+    @PrimaryKey
+    @NonNull
     private String categoryName;
 
     @Ignore
