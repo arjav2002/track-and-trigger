@@ -4,10 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/dashboard_root"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".dashboard.DashboardActivity">
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        style="@style/MaterialSearchBarLight"
+        app:mt_speechMode="true"
+        app:mt_hint="Custom hint"
+        app:mt_maxSuggestionsCount="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_bar" />
 
     <Button
         android:id="@+id/add_category"
@@ -16,47 +26,6 @@
         android:text="@string/new_category"
         android:drawableStart="@drawable/ic_baseline_add_24"
         />
-
-    <LinearLayout
-        android:id="@+id/special_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/grocery_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_grocery"
-            android:text="@string/groceries" />
-
-        <Button
-            android:id="@+id/mainatenance_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_maintenance"
-            android:text="@string/home_maintenance" />
-
-        <Button
-            android:id="@+id/kitchen_appliances_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:elevation="5dp"
-            android:drawableLeft="@drawable/ic_kitchen"
-            android:text="@string/kitchen_appliances" />
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -79,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:id="@+id/todo_lists_root"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/special_buttons">
