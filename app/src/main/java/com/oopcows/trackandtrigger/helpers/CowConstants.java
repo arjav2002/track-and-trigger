@@ -32,4 +32,6 @@ public class CowConstants {
     public static final int CATEGORY_REQUEST_CODE = 2;
     public static final int TAKE_PHOTO_REQUEST_CODE = 1;
     public static final int CHOOSE_PICTURE_REQUEST_CODE = 2;
+    public static final int NORMAL_VIEW_HOLDER = 1;
+    public static final int SEARCH_RESULT_VIEW_HOLDER = 2;
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mancj.materialsearchbar.MaterialSearchBar;
@@ -126,15 +127,17 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchString = String.valueOf(charSequence);
-                if(!searchString.isEmpty()) {
-                    binding.dashboardRoot.removeView(binding.addCategory);
-                    binding.dashboardRoot.removeView(binding.addTodoList);
-
+                if(String.valueOf(charSequence).isEmpty()) {
+                    binding.addCategory.setVisibility(View.VISIBLE);
+                    binding.addTodoList.setVisibility(View.VISIBLE);
                 }
                 else {
-
+                    binding.addCategory.setVisibility(View.GONE);
+                    binding.addTodoList.setVisibility(View.GONE);
                 }
+                searchString = String.valueOf(charSequence);
+                categoryAdapter.searchString(searchString);
+                todoListAdapter.searchString(searchString);
             }
 
             @Override
@@ -282,9 +285,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private void clearDatabase() {
         ArrayList<Category> categories = new ArrayList<Category>(dh.getCategories());
         ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
-        for(int i = 0; i < categories.size(); i++) {
-            System.out.println(categories.get(i));
-        }
         for(Category c : categories) {
             dh.deleteCategory(c);
         }
