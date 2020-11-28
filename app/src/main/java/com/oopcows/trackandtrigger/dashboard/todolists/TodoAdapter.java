@@ -90,6 +90,7 @@ public class TodoAdapter extends ResultRecyclerView {
                 itemSelected = todoHolder.getAdapterPosition();
                 todoListActivity.setDateTime();
             });
+            todoHolder.dateTimeView.setText(day + "/" + month + "/" + year + "\t" + hour +":" + minute);
         }
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
