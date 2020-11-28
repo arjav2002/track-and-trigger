@@ -122,7 +122,7 @@ public class DatabaseHelper implements Runnable {
         task = new Runnable() {
             @Override
             public void run() {
-                result = todoListDao.getTodoLists();
+                result = categoryDao.getCategories();
             }
         };
         while(task != null);
@@ -167,7 +167,7 @@ public class DatabaseHelper implements Runnable {
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    public synchronized void deleteUser(TodoList todoList) {
+    public synchronized void deleteTodoList(TodoList todoList) {
         if(!running) start();
         task = new Runnable() {
             @Override

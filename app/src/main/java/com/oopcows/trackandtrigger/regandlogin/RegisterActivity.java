@@ -11,6 +11,7 @@ import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
                     uploadAccountToFirebase();
                     Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                    dashboardActivity.putExtra(IS_NEW_ACCOUNT_INTENT_KEY, true);
                     startActivity(dashboardActivity);
                     finish();
                 }
