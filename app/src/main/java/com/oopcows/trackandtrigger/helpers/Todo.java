@@ -1,3 +1,4 @@
+
 package com.oopcows.trackandtrigger.helpers;
 
 import android.os.Parcel;

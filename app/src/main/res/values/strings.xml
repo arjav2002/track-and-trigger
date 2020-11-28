@@ -38,5 +38,6 @@
     <string name="cannot_change_category_name">Cannot change the name of a reserved Category</string>
     <string name="change_it_back">Change it back to</string>
     <string name="logout">Logout</string>
+    <string name="set_date_and_time">Set Date and Time</string>
 
 </resources>

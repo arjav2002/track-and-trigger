@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -33,9 +34,15 @@ public class TodoAdapter extends ResultRecyclerView {
 
     private final ArrayList<Todo> todos;
 
-    public TodoAdapter(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<Todo> todos) {
+    private int itemSelected;
+    private TodoListActivity todoListActivity;
+    private int year, month, day, hour, minute;
+
+    public TodoAdapter(TodoListActivity todoListActivity, RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<Todo> todos) {
         super(recyclerView, layoutManager, todos);
         this.todos = todos;
+        itemSelected = -1;
+        this.todoListActivity = todoListActivity;
     }
 
     @Override
@@ -78,6 +85,10 @@ public class TodoAdapter extends ResultRecyclerView {
                 @Override
                 public void afterTextChanged(Editable editable) {}
             });
+            todoHolder.setDateTime.setOnClickListener((v) -> {
+                itemSelected = todoHolder.getAdapterPosition();
+                todoListActivity.setDateTime();
+            });
         }
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
@@ -98,6 +109,8 @@ public class TodoAdapter extends ResultRecyclerView {
         private final CheckBox checkbox;
         private final EditText todo;
         private final ImageButton removeButton;
+        private final Button setDateTime;
+        private final TextView dateTimeView;
 
         public TodoHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +118,8 @@ public class TodoAdapter extends ResultRecyclerView {
             checkbox = itemView.findViewById(R.id.checkbox);
             todo = itemView.findViewById(R.id.todo_field);
             removeButton = itemView.findViewById(R.id.remove_todo);
+            setDateTime = itemView.findViewById(R.id.set_date_time);
+            dateTimeView = itemView.findViewById(R.id.date_time_label);
         }
     }
 
@@ -115,5 +130,22 @@ public class TodoAdapter extends ResultRecyclerView {
             super(itemView);
             addButton = itemView.findViewById(R.id.add_todo);
         }
+    }
+
+    public void setTime(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public void setDate(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    public void finishSettingDateTime() {
+        TodoHolder holder = (TodoHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemSelected));
+        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone()));
+        holder.dateTimeView.setText(day + "/" + month + "/" + year + "\t" + hour +":" + minute);
     }
 }
