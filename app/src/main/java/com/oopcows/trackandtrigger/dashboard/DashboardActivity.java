@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
@@ -33,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private UserAccount userAccount;
     private DatabaseHelper dh;
     private ActivityDashboardBinding binding;
+    private MaterialSearchBar searchBar;
     private View homeMaintenanceButton, kitchenApplianceButton;
     private ArrayList<TodoList> todoLists;
     private ArrayList<Category> categories;
@@ -42,6 +46,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private CategoryAdapter categoryAdapter;
     private Category[] specialCategories;
     private boolean isNewAccount;
+    private String searchString;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -56,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         categories = new ArrayList<Category>();
         todoListClicked = categoryClicked = -1;
         specialCategories = new Category[SPECIAL_CATEGORIES_NAME_RESIDS.length];
+        searchString = "";
 
         createUI();
 
@@ -98,35 +104,22 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     public void fillDetails(Profession profession) {
         userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
         dh.updateUser(userAccount);
-        addAppropriateButtons();
+        addSpecialCategoryButtons();
     }
 
-    private void addAppropriateButtons() {
-        if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
-            binding.specialButtons.addView(homeMaintenanceButton);
-
-            if(isNewAccount) {
-                uploadCategory(new Category(getString(R.string.home_maintenance)));
-            }
-
-            specialCategories[getSpecialCategoryIndex(R.string.home_maintenance)] = new Category(getString(R.string.home_maintenance));
-            homeMaintenanceButton.setOnClickListener((v) -> {
-                System.out.println("house ko maintain karna achhi baat hai");
-                gotoCategoryActivity(specialCategories[getSpecialCategoryIndex(R.string.home_maintenance)]);
-            });
-
+    private void addSpecialCategoryButtons() {
+        if(userAccount.getProfession() == Profession.nullProfession) {
+            displayDialogue();
         }
-        if(userAccount.getProfession().equals(Profession.homeMaker)) {
-            binding.specialButtons.addView(kitchenApplianceButton);
-
-            if(isNewAccount) {
-                uploadCategory(new Category(getString(R.string.kitchen_appliances)));
+        else {
+            addSpecialCategory(R.string.groceries);
+            if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
+                addSpecialCategory(R.string.home_maintenance);
             }
-
-            specialCategories[getSpecialCategoryIndex(R.string.kitchen_appliances)] = new Category(getString(R.string.kitchen_appliances));;
-            kitchenApplianceButton.setOnClickListener((v) -> {
-                gotoCategoryActivity(specialCategories[getSpecialCategoryIndex(R.string.kitchen_appliances)]);
-            });
+            if(userAccount.getProfession().equals(Profession.homeMaker)) {
+                addSpecialCategory(R.string.kitchen_appliances);
+            }
+            categoryAdapter.notifyDataSetChanged();
         }
     }
 
@@ -135,20 +128,32 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         View view = binding.getRoot();
         setContentView(view);
 
-        View groceryButton = binding.groceryListButton;
-        homeMaintenanceButton = binding.mainatenanceListButton;
-        kitchenApplianceButton = binding.kitchenAppliancesButton;
-        binding.specialButtons.removeAllViews();
-        binding.specialButtons.addView(groceryButton);
+        searchBar = binding.searchBar;
+        searchBar.setSpeechMode(true);
+        searchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-        if(isNewAccount) {
-            uploadCategory(new Category(getString(R.string.groceries)));
-        }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(String.valueOf(charSequence).isEmpty()) {
+                    binding.addCategory.setVisibility(View.VISIBLE);
+                    binding.addTodoList.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.addCategory.setVisibility(View.GONE);
+                    binding.addTodoList.setVisibility(View.GONE);
+                }
+                searchString = String.valueOf(charSequence);
+                categoryAdapter.searchString(searchString);
+                todoListAdapter.searchString(searchString);
+            }
 
-        specialCategories[getSpecialCategoryIndex(R.string.groceries)] = new Category(getString(R.string.groceries));;
-        groceryButton.setOnClickListener((v) -> {
-            gotoCategoryActivity(specialCategories[getSpecialCategoryIndex(R.string.groceries)]);
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
+
+        addSpecialCategoryButtons();
 
         todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
         categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
@@ -165,10 +170,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             gotoCategoryActivity(category);
         });
 
-        if(userAccount.getProfession() == Profession.nullProfession) {
-            displayDialogue();
-        }
-        else addAppropriateButtons();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -234,7 +235,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         return -1;
     }
 
-    private int getSpecialCategoryIndex(String categoryName) {
+    public int getSpecialCategoryIndex(String categoryName) {
         for(int i = 0; i < specialCategories.length; i++) {
             if(categoryName.equalsIgnoreCase(getString(SPECIAL_CATEGORIES_NAME_RESIDS[i]))) return i;
         }
@@ -276,9 +277,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private void clearDatabase() {
         ArrayList<Category> categories = new ArrayList<Category>(dh.getCategories());
         ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
-        for(int i = 0; i < categories.size(); i++) {
-            System.out.println(categories.get(i));
-        }
         for(Category c : categories) {
             dh.deleteCategory(c);
         }
@@ -297,6 +295,15 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         for(TodoList t : todoLists) {
             dh.insertTodoList(t);
         }
+    }
+
+    private void addSpecialCategory(int categoryNameResId) {
+        Category c = new Category(getString(categoryNameResId));
+        if(isNewAccount) {
+            uploadCategory(c);
+        }
+        specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
+        categories.add(c);
     }
 
 }
