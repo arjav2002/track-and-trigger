@@ -54,16 +54,6 @@
                 android:id="@+id/categories_view"
                 android:scrollbars="vertical" />
 
-            <TextView
-                android:id="@+id/empty_category"
-                android:layout_width="392dp"
-                android:layout_height="210dp"
-                android:paddingTop="60dp"
-                android:text="@string/empty_category"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:visibility="gone" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -95,8 +85,8 @@
 
                 <TextView
                     android:id="@+id/empty_todo"
-                    android:layout_width="392dp"
-                    android:layout_height="210dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:paddingTop="60dp"
                     android:text="@string/empty_todo"
                     android:textAlignment="center"

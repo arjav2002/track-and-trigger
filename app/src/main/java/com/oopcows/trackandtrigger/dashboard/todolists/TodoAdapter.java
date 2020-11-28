@@ -79,7 +79,8 @@ public class TodoAdapter extends ResultRecyclerView {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    todos.set(holder.getAdapterPosition(), new Todo(String.valueOf(charSequence), todos.get(holder.getAdapterPosition()).isDone()));
+                    String str = String.valueOf(((TodoHolder) holder).dateTimeView.getText());
+                    todos.set(holder.getAdapterPosition(), new Todo(String.valueOf(charSequence), todos.get(holder.getAdapterPosition()).isDone(), str==null||str.isEmpty()?"0 0 0 0 0":str));
                 }
 
                 @Override
@@ -93,7 +94,7 @@ public class TodoAdapter extends ResultRecyclerView {
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
             addTodoHolder.addButton.setOnClickListener((v) -> {
-                todos.add(new Todo("", false));
+                todos.add(new Todo("", false, "0 0 0 0 0"));
                 notifyItemChanged(holder.getAdapterPosition());
             });
         }
@@ -145,7 +146,7 @@ public class TodoAdapter extends ResultRecyclerView {
 
     public void finishSettingDateTime() {
         TodoHolder holder = (TodoHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemSelected));
-        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone()));
+        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone(), year, month, day, hour, minute));
         holder.dateTimeView.setText(day + "/" + month + "/" + year + "\t" + hour +":" + minute);
     }
 }

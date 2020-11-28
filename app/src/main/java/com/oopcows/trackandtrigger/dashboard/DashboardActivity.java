@@ -94,17 +94,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     protected void onStart() {
         super.onStart();
 
-        todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
-        categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
-
-        if (categoryAdapter.getItemCount() == 0) {
-            binding.categoriesView.setVisibility(View.GONE);
-            binding.emptyCategory.setVisibility(View.VISIBLE);
-        } else {
-            binding.categoriesView.setVisibility(View.VISIBLE);
-            binding.emptyCategory.setVisibility(View.GONE);
-        }
-
         if (todoListAdapter.getItemCount() == 0) {
             binding.todoListsView.setVisibility(View.GONE);
             binding.emptyTodo.setVisibility(View.VISIBLE);
@@ -112,6 +101,9 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             binding.todoListsView.setVisibility(View.VISIBLE);
             binding.emptyTodo.setVisibility(View.GONE);
         }
+
+        todoListAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
     }
 
     private void displayDialogue() {
