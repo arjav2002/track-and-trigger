@@ -1,5 +1,7 @@
 package com.oopcows.trackandtrigger.regandlogin;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.oopcows.trackandtrigger.databinding.ActivityRegisterBinding;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,19 +51,16 @@ public class RegisterActivity extends AppCompatActivity {
         binding.regAndLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputsAreValid()) {
-                    checkIfUserAlreadyExists();
-                    if (!check) {
-                        userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
-                        uploadAccountToFirebase();
-                        Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
-                        dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                        startActivity(dashboardActivity);
-                        finish();
-                    } else {
-                        //@subs please tell user username already exists and to try another username
-                    }
-                } else {
+                if(true/*inputsAreValid()*/) {
+                    userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), userAccount.getGmailId(), userAccount.getPhno(), Profession.nullProfession);
+                    uploadAccountToFirebase();
+                    Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
+                    dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                    dashboardActivity.putExtra(IS_NEW_ACCOUNT_INTENT_KEY, true);
+                    startActivity(dashboardActivity);
+                    finish();
+                }
+                else {
                     // inputs are invalid, tell the user in a seski way @subs
                 }
                 check = false;
@@ -154,15 +154,5 @@ public class RegisterActivity extends AppCompatActivity {
                     System.out.println("Fail");
                 });
 
-         */
-
-        //saving gmail id for reference when logging in
-        Map<String, String> u = new HashMap<>();
-        dr = db.getReference().child(PAST_USERS).child(GMAILID_COLUMN_NAME);
-        dr.setValue(userAccount.getGmailId(), "true");
-        /*db.collection(PAST_USERS)
-                .document(GMAILID_COLUMN_NAME)
-                .set(u);
-    } */
     }
 }

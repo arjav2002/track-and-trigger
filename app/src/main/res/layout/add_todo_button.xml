@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @subs pls make it look more like google keep todo list, this add button-->
+<Button android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/add_todo"
+    android:text="Add"
+    android:drawableStart="@drawable/ic_baseline_add_24"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

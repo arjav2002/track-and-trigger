@@ -11,16 +11,16 @@
     <string name="get_otp_label">Get OTP</string>
     <string name="reg_and_login_label">Register and Login</string>
     <string name="g_signin_suggestion">Use Google Sign-in to Register/Sign in to your registered account</string>
-    <string name="g_siginin_fail">Google Sign-in failed</string>
+    <string name="g_siginin_fail">Google Sign-in failed!</string>
     <string name="username_hint">Username</string>
     <string name="auto_username_hint">iampanner69</string>
     <string name="password_hint">Password</string>
     <string name="confirm_password_hint">Confirm Password</string>
-    <string name="gmail_id_hint">Gmail ID here</string>
-    <string name="phno_hint">Phone Number here</string>
+    <string name="gmail_id_hint">Gmail ID</string>
+    <string name="phno_hint">Phone Number</string>
     <string name="otp_sent">OTP sent!</string>
     <string name="wrong_otp">Wrong OTP entered!</string>
-    <string name="otp_hint">OTP here</string>
+    <string name="otp_hint">OTP</string>
     <string name="get_verification_link_label">Get Verification Link</string>
     <string name="choose_profession_label">Choose Profession</string>
     <string name="confirm_profession_button">OK</string>
@@ -29,5 +29,13 @@
     <string name="kitchen_appliances">Kitchen</string>
     <string name="home_maintenance">House</string>
     <string name="new_todo_list">New Todo List</string>
+    <string name="new_category">New Category</string>
+    <string name="add_item">Add Item</string>
+    <string name="empty_category_name">Empty Category Name is not allowed</string>
+    <string name="empty_category">There are no categories yet. Add a new one!</string>
+    <string name="empty_todo">There are no To-do lists yet. Add a new one!</string>
+    <string name="is_reserved_category_name">is a reserved Category name</string>
+    <string name="cannot_change_category_name">Cannot change the name of a reserved Category</string>
+    <string name="change_it_back">Change it back to</string>
 
 </resources>

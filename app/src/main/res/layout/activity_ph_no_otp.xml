@@ -9,78 +9,113 @@
     android:gravity="center">
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="331dp"
+        android:layout_height="510dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phnoContainer"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:hint="@string/phno_hint"
+            android:inputType="phone"
+            android:maxEms="10"
+            android:minEms="10"
+            app:layout_constraintBottom_toTopOf="@+id/otpContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.875"
+            tools:layout_conversion_absoluteHeight="45dp"
+            tools:layout_conversion_absoluteWidth="210dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phnoField"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/phnoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/phno_label" />
+                android:layout_marginEnd="1dp"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
+                app:layout_constraintEnd_toStartOf="@+id/otpField" />
 
-            <EditText
-                android:id="@+id/phnoField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/phno_hint"
-                android:inputType="phone"
-                android:maxEms="10"
-                android:minEms="10" />
 
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otpContainer"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/otp_hint"
+            android:inputType="number"
+            android:maxEms="10"
+            android:minEms="10"
+            app:endIconMode="password_toggle"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_conversion_absoluteHeight="45dp"
+            tools:layout_conversion_absoluteWidth="210dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otpField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberPassword" />
 
             <TextView
                 android:id="@+id/otpLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/otp_label" />
+                android:layout_marginEnd="1dp"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/otpField"
+                app:layout_constraintEnd_toStartOf="@+id/otpField" />
 
-            <EditText
-                android:id="@+id/otpField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/otp_hint"
-                android:maxEms="10"
-                android:minEms="10" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="187dp"
+            android:layout_height="57dp"
+            android:layout_marginBottom="148dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
                 android:id="@+id/getOtpButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/get_otp_label" />
+                android:text="@string/get_otp_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/nextButton"
+                app:layout_constraintHorizontal_bias="0.122"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/nextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/next_label" />
-        </LinearLayout>
+                android:layout_marginEnd="4dp"
+                android:text="@string/next_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
