@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -98,6 +99,10 @@ public class TodoAdapter extends ResultRecyclerView {
         private final CheckBox checkbox;
         private final EditText todo;
         private final ImageButton removeButton;
+        private final Button dateButton;
+        private final Button timeButton;
+        private final TextView dateView;
+        private final TextView timeView;
 
         public TodoHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,11 +110,16 @@ public class TodoAdapter extends ResultRecyclerView {
             checkbox = itemView.findViewById(R.id.checkbox);
             todo = itemView.findViewById(R.id.todo_field);
             removeButton = itemView.findViewById(R.id.remove_todo);
+            dateButton = itemView.findViewById(R.id.setDate);
+            timeButton = itemView.findViewById(R.id.setTime);
+            dateView = itemView.findViewById(R.id.Date);
+            timeView = itemView.findViewById(R.id.Time);
         }
     }
 
     public static class AddTodoHolder extends RecyclerView.ViewHolder {
         private final Button addButton;
+
 
         public AddTodoHolder(@NonNull View itemView) {
             super(itemView);

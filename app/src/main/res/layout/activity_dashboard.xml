@@ -2,6 +2,7 @@
 
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +21,7 @@
                 <ImageButton
                     android:id="@+id/menu_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_menu_animated"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +29,9 @@
 
                 <com.mancj.materialsearchbar.MaterialSearchBar
                     android:id="@+id/search_bar"
-                    style="@style/MaterialSearchBarLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/Theme.TrackAndTrigger"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -48,27 +49,29 @@
                 android:text="@string/new_category"
                 android:drawableStart="@drawable/ic_baseline_add_24"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/categories_view"
-                android:scrollbars="vertical" />
-
             <TextView
                 android:id="@+id/empty_category"
-                android:layout_width="392dp"
-                android:layout_height="210dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="60dp"
+                android:paddingBottom="60dp"
                 android:text="@string/empty_category"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categories_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/todo_lists_root"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:id="@+id/todo_lists_root"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/special_buttons">
@@ -83,26 +86,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/empty_todo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="60dp"
+                    android:text="@string/empty_todo"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todo_lists_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:scrollbars="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
-
-                <TextView
-                    android:id="@+id/empty_todo"
-                    android:layout_width="392dp"
-                    android:layout_height="210dp"
-                    android:paddingTop="60dp"
-                    android:text="@string/empty_todo"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/todo_lists_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
@@ -120,19 +122,88 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@android:color/background_dark" />
+            android:background="@android:color/background_light" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <ImageView
+                    android:id="@+id/profilepic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_person_24"
+                    app:tint="@color/black"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Username"
+                    android:textColor="@android:color/secondary_text_dark"
+                    android:background="@android:color/background_dark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profilepic"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <!-- add user account related bullshit-->
+            <Button
+                android:id="@+id/household"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Household"
+                android:drawableTint="@color/black"
+                android:drawableStart="@drawable/ic_baseline_people_24"
+                android:background="@android:color/background_dark"
+                app:layout_constraintBottom_toTopOf="@id/logout_button"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/logout"
                 android:id="@+id/logout_button"
+                android:background="@android:color/background_dark"
+                android:drawableTint="@color/black"
+                android:drawableStart="@drawable/ic_baseline_power_settings_new_24"
+                app:layout_constraintBottom_toTopOf="@id/sync_data"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sync Data"
+                android:id="@+id/sync_data"
+                android:background="@android:color/background_dark"
+                android:drawableTint="@color/black"
+                android:drawableStart="@drawable/ic_baseline_sync_24"
+                app:layout_constraintBottom_toTopOf="@id/download_data"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Download data"
+                android:id="@+id/download_data"
+                android:drawableStart="@drawable/ic_baseline_cloud_download_24"
+                android:background="@android:color/background_dark"
+                android:drawableTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
