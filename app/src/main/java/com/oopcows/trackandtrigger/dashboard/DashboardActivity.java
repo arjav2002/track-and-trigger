@@ -19,6 +19,7 @@ import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -76,7 +77,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             binding.specialButtons.addView(homeMaintenanceButton);
             // if new account
             // @vraj upload empty "house" category (use R.string.home_maintenance)
-            // else if old account, download "house" category
             specialCategories[getSpecialCategoryIndex(R.string.home_maintenance)] = new Category(getString(R.string.home_maintenance));
             homeMaintenanceButton.setOnClickListener((v) -> {
                 System.out.println("house ko maintain karna achhi baat hai");
@@ -129,6 +129,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             displayDialogue();
         }
         else addAppropriateButtons();
+
+        downloadAndSortCategories();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,6 +149,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 Category category = (Category) data.getExtras().get(CATEGORY_INTENT_KEY);
                 setCategory(category);
                 dh.insertCategory(category);
+                uploadCategory(category);
             }
         }
     }
@@ -190,6 +193,46 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             if(resId == SPECIAL_CATEGORIES_NAME_RESIDS[i]) return i;
         }
         return -1;
+    }
+
+    private int getSpecialCategoryIndex(String categoryName) {
+        for(int i = 0; i < specialCategories.length; i++) {
+            if(categoryName.equalsIgnoreCase(getString(SPECIAL_CATEGORIES_NAME_RESIDS[i]))) return i;
+        }
+        return -1;
+    }
+
+    private ArrayList<Category> downloadCategories() {
+        ArrayList<Category> downloadedCategories = new ArrayList<Category>();
+        // @vraj download all categories
+        return downloadedCategories;
+    }
+
+    private void uploadCategory(Category category) {
+        // @vraj fill pls
+    }
+
+    private void uploadCategories() {
+        for(Category category : specialCategories) {
+            uploadCategory(category);
+        }
+        for(Category category : categories) {
+            uploadCategory(category);
+        }
+    }
+
+    private void downloadAndSortCategories() {
+        ArrayList<Category> downloadedCategories = downloadCategories();
+        for(Category c : downloadedCategories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
     }
 
 }

@@ -27,14 +27,14 @@ public class CategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
     private Category category;
     private ItemAdapter itemAdapter;
-    private boolean isSpecialCategory;
+    private String specialCategoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        isSpecialCategory = false;
+        specialCategoryName = "";
 
         Intent intent = getIntent();
         category = (Category) intent.getExtras().get(CATEGORY_INTENT_KEY);
@@ -47,7 +47,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         for(int resid : SPECIAL_CATEGORIES_NAME_RESIDS) {
             if(getString(resid).equalsIgnoreCase(category.getCategoryName())) {
-                isSpecialCategory = true;
+                specialCategoryName = category.getCategoryName();
                 break;
             }
         }
@@ -60,12 +60,18 @@ public class CategoryActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.empty_category_name, Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!isSpecialCategory) {
+        if(specialCategoryName.isEmpty()) {
             for (int res_id : SPECIAL_CATEGORIES_NAME_RESIDS) {
                 if (String.valueOf(binding.categoryName.getText()).equalsIgnoreCase(getString(res_id))) {
                     Toast.makeText(this, String.valueOf(binding.categoryName.getText()) + " " + getString(R.string.is_reserved_category_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
+            }
+        }
+        else {
+            if(!String.valueOf(binding.categoryName.getText()).equals(specialCategoryName)) {
+                Toast.makeText(this, getString(R.string.cannot_change_category_name) + ", " + getString(R.string.change_it_back) + " " + specialCategoryName , Toast.LENGTH_SHORT).show();
+                return;
             }
         }
         Category newCategory = new Category(String.valueOf(binding.categoryName.getText()), category.getItems());
