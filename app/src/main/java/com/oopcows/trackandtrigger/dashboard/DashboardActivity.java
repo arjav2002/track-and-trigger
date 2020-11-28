@@ -1,16 +1,33 @@
 package com.oopcows.trackandtrigger.dashboard;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.SimpleOnSearchActionListener;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
@@ -47,6 +64,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private Category[] specialCategories;
     private boolean isNewAccount;
     private String searchString;
+    private DrawerLayout drawerLayout;
+    private RelativeLayout leftRL;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -124,9 +143,17 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     }
 
     private void createUI() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        leftRL = (RelativeLayout) binding.whatYouWantInLeftDrawer;
+        drawerLayout = (DrawerLayout) binding.drawerLayout;
+
+        binding.menuButton.setOnClickListener((v) -> {
+            drawerLayout.openDrawer(leftRL);
+        });
 
         searchBar = binding.searchBar;
         searchBar.setSpeechMode(true);
@@ -169,7 +196,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             categories.add(category);
             gotoCategoryActivity(category);
         });
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -305,5 +331,4 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
         categories.add(c);
     }
-
 }
