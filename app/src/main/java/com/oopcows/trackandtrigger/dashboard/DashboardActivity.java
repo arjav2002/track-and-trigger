@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Toast;
 
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
@@ -33,6 +37,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private UserAccount userAccount;
     private DatabaseHelper dh;
     private ActivityDashboardBinding binding;
+    private MaterialSearchBar searchBar;
     private View homeMaintenanceButton, kitchenApplianceButton;
     private ArrayList<TodoList> todoLists;
     private ArrayList<Category> categories;
@@ -42,6 +47,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private CategoryAdapter categoryAdapter;
     private Category[] specialCategories;
     private boolean isNewAccount;
+    private String searchString;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -56,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         categories = new ArrayList<Category>();
         todoListClicked = categoryClicked = -1;
         specialCategories = new Category[SPECIAL_CATEGORIES_NAME_RESIDS.length];
+        searchString = "";
 
         createUI();
 
@@ -110,6 +117,29 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        searchBar = binding.searchBar;
+        searchBar.setSpeechMode(true);
+        searchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                searchString = String.valueOf(charSequence);
+                if(!searchString.isEmpty()) {
+                    binding.dashboardRoot.removeView(binding.addCategory);
+                    binding.dashboardRoot.removeView(binding.addTodoList);
+
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         View groceryButton = binding.groceryListButton;
         homeMaintenanceButton = binding.mainatenanceListButton;
