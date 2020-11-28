@@ -28,7 +28,7 @@ public class Converters {
     public static String fromTodos(ArrayList<Todo> todos) {
         StringBuilder result= new StringBuilder();
         for(Todo todo : todos) {
-            result.append(todo.getTask()).append(todo.isDone() ? '\1' : '\2');
+            result.append(todo.getTask()).append(todo).append('\1').append(todo.isDone() ? '\1' : '\2');
         }
         return result.toString();
     }

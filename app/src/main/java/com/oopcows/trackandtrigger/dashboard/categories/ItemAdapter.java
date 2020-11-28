@@ -143,4 +143,9 @@ public class ItemAdapter extends ResultRecyclerView {
     public ImageButton getSelectedImageButton() {
         return selectedHolder.itemImage;
     }
+
+    public void setImgPathOfCurrentImgButton(String imgPath) {
+        CategoryItem item = items.get(selectedHolder.getAdapterPosition());
+        items.set(selectedHolder.getAdapterPosition(), new CategoryItem(item.getItemName(), imgPath, item.getQuantity()));
+    }
 }
