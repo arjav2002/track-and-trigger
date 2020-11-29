@@ -7,17 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;

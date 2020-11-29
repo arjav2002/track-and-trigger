@@ -67,7 +67,7 @@ public class Converters {
     public static String getData(ArrayList<CategoryItem> items) {
         StringBuilder data = new StringBuilder();
         for(CategoryItem item : items) {
-            data.append(item.getItemName()).append('\1').append(item.getImgPath()).append('\1').append(item.getQuantity()).append('\1');
+            data.append(item.getItemName()).append('\1').append(item.getImgPath()).append('\1').append(item.getQuantity()).append('\1').append(item.getDownPath()).append('\1');
         }
         return data.toString();
     }
@@ -79,6 +79,7 @@ public class Converters {
         StringBuilder itemName = new StringBuilder();
         StringBuilder imgPath = new StringBuilder();
         StringBuilder quantity = new StringBuilder();
+        StringBuilder downPath = new StringBuilder();
         for(int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
             if(ch == '\1') delimiters++;
@@ -92,7 +93,10 @@ public class Converters {
                 quantity.append(ch);
             }
             else if(delimiters == 3) {
-                items.add(new CategoryItem(itemName.toString(), imgPath.toString(), Integer.parseInt(quantity.toString())));
+                downPath.append(ch);
+            }
+            else if(delimiters==4) {
+                items.add(new CategoryItem(itemName.toString(), imgPath.toString(), Integer.parseInt(quantity.toString()), downPath.toString()));
                 itemName = new StringBuilder();
                 imgPath = new StringBuilder();
                 quantity = new StringBuilder();
