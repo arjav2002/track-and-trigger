@@ -18,13 +18,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.oopcows.trackandtrigger.MainActivity;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
+import com.oopcows.trackandtrigger.database.Converters;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.Category;
@@ -39,6 +38,7 @@ import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_K
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_REQUEST_CODE;
@@ -63,15 +63,12 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
     private boolean canUseInternet = false;
-    private DatabaseReference databaseReference;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         isNewAccount = getIntent().getBooleanExtra(IS_NEW_ACCOUNT_INTENT_KEY, false);
@@ -85,7 +82,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         createUI();
 
-        if(!canUseInternet) {
+        if(canUseInternet) {
             downloadAndSortCategories();
             downloadTodoLists();
         }
@@ -125,6 +122,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     @Override
     public void fillDetails(Profession profession) {
         userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
+        SharedPreferences sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(PROF_COLUMN_NAME, profession.toString());
+        editor.apply();
         dh.updateUser(userAccount);
         addSpecialCategoryButtons();
     }
@@ -199,10 +200,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             public void afterTextChanged(Editable editable) {}
         });
 
-        addSpecialCategoryButtons();
-
         todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
         categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
+
+        addSpecialCategoryButtons();
 
         binding.addTodoList.setOnClickListener((v) -> {
             TodoList todoList = new TodoList();
@@ -306,9 +307,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
     private void uploadCategory(Category category) {
         // @vraj fill pls
-        databaseReference.child(FirebaseAuth.getInstance().getUid()).child(category.getCategoryName());
-
-
     }
 
     private void uploadTodoList(TodoList todoList) {
@@ -383,6 +381,11 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
     private void loadTodoLists() {
         ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        for(TodoList todoList : todoLists) {
+            for(Todo todo : todoList.getTodos()) {
+                System.out.println(todo.getTask() + " " +todo.isDone());
+            }
+        }
         this.todoLists.addAll(todoLists);
     }
 

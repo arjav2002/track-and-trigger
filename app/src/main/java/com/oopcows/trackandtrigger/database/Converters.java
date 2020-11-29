@@ -25,7 +25,7 @@ public class Converters {
     public static String fromTodos(ArrayList<Todo> todos) {
         StringBuilder result= new StringBuilder();
         for(Todo todo : todos) {
-            result.append(todo.getTask()).append(todo).append('\1').append(todo.isDone() ? '\1' : '\2');
+            result.append(todo.getTask()).append('\1').append(todo.isDone() ? '\1' : '\2').append(todo.getTimeString()).append('\3');
         }
         return result.toString();
     }
@@ -34,17 +34,31 @@ public class Converters {
     public static ArrayList<Todo> fromDelimitedString(String delimitedString) {
         ArrayList<Todo> todos = new ArrayList<Todo>();
         StringBuilder task = new StringBuilder();
+        boolean isDone = false;
+        StringBuilder dateTime = new StringBuilder();
+        boolean readingDatetime = false;
         for(int i = 0; i < delimitedString.length(); i++) {
             char ch = delimitedString.charAt(i);
             if(ch == '\1') {
-                todos.add(new Todo(task.toString(), true, "0 0 0 0 0"));
-                task = new StringBuilder();
+                isDone = true;
+                readingDatetime = true;
             }
-            else if (ch == '\2') {
-                todos.add(new Todo(task.toString(), false, "0 0 0 0 0"));
+            else if(ch == '\2') {
+                readingDatetime = true;
+            }
+            else if(ch == '\3') {
+                todos.add(new Todo(task.toString(), isDone, dateTime.toString()));
                 task = new StringBuilder();
-            } else {
-                task.append(ch);
+                readingDatetime = false;
+                isDone=false;
+            }
+            else {
+                if(readingDatetime) {
+                    dateTime.append(ch);
+                }
+                else {
+                    task.append(ch);
+                }
             }
         }
         return todos;
@@ -54,7 +68,7 @@ public class Converters {
     public static String getData(ArrayList<CategoryItem> items) {
         StringBuilder data = new StringBuilder();
         for(CategoryItem item : items) {
-            data.append(item.getItemName()).append('\1').append(item.getImgPath()).append('\1').append(item.getQuantity()).append('\1');
+            data.append(item.getItemName()).append('\1').append(item.getImgPath()).append('\1').append(item.getQuantity()).append('\1').append(item.getDownPath()).append('\2');
         }
         return data.toString();
     }
@@ -63,12 +77,21 @@ public class Converters {
     public static ArrayList<CategoryItem> getFromData(String data) {
         ArrayList<CategoryItem> items = new ArrayList<CategoryItem>();
         int delimiters = 0;
-        StringBuilder itemName = new StringBuilder();
-        StringBuilder imgPath = new StringBuilder();
-        StringBuilder quantity = new StringBuilder();
+        StringBuffer itemName = new StringBuffer();
+        StringBuffer imgPath = new StringBuffer();
+        StringBuffer quantity = new StringBuffer();
+        StringBuffer downPath = new StringBuffer();
+
         for(int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
             if(ch == '\1') delimiters++;
+            else if(ch=='\2') {
+                items.add(new CategoryItem(itemName.toString(), imgPath.toString(), Integer.parseInt(quantity.toString()), downPath.toString()));
+                itemName.setLength(0);
+                imgPath.setLength(0);
+                quantity.setLength(0);
+                delimiters = 0;
+            }
             else if(delimiters == 0) {
                 itemName.append(ch);
             }
@@ -79,11 +102,7 @@ public class Converters {
                 quantity.append(ch);
             }
             else if(delimiters == 3) {
-                items.add(new CategoryItem(itemName.toString(), imgPath.toString(), Integer.parseInt(quantity.toString())));
-                itemName = new StringBuilder();
-                imgPath = new StringBuilder();
-                quantity = new StringBuilder();
-                delimiters = 0;
+                downPath.append(ch);
             }
         }
         return items;
