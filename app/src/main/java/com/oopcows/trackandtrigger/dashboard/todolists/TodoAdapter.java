@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -33,9 +34,16 @@ public class TodoAdapter extends ResultRecyclerView {
 
     private final ArrayList<Todo> todos;
 
-    public TodoAdapter(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<Todo> todos) {
+    private int itemSelected;
+    private TodoListActivity todoListActivity;
+    private int[] arr;
+
+    public TodoAdapter(TodoListActivity todoListActivity, RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<Todo> todos) {
         super(recyclerView, layoutManager, todos);
         this.todos = todos;
+        itemSelected = -1;
+        this.todoListActivity = todoListActivity;
+        arr = new int[5];
     }
 
     @Override
@@ -72,17 +80,24 @@ public class TodoAdapter extends ResultRecyclerView {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    todos.set(holder.getAdapterPosition(), new Todo(String.valueOf(charSequence), todos.get(holder.getAdapterPosition()).isDone()));
+                    String str = String.valueOf(((TodoHolder) holder).dateTimeView.getText());
+                    todos.set(holder.getAdapterPosition(), new Todo(String.valueOf(charSequence), todos.get(holder.getAdapterPosition()).isDone(), str==null||str.isEmpty()?"0 0 0 0 0":str.replace("/", " ").replace("\t", " ").replace(":", " "), todos.get(position).getIntent(), todos.get(position).getEventId()));
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {}
             });
+            todoHolder.setDateTime.setOnClickListener((v) -> {
+                itemSelected = todoHolder.getAdapterPosition();
+                todoListActivity.setDateTime();
+            });
+            arr = Todo.getTimeFromString(todos.get(position).getTimeString());
+            todoHolder.dateTimeView.setText(arr[2] + "/" + arr[1] + "/" + arr[0] + "\t" + (arr[3] < 10 ? "0"+arr[3] : arr[3]) +":" + (arr[4] < 10 ? "0"+arr[4] : arr[4]));
         }
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
             addTodoHolder.addButton.setOnClickListener((v) -> {
-                todos.add(new Todo("", false));
+                todos.add(new Todo("", false, "0 0 0 0 0"));
                 notifyItemChanged(holder.getAdapterPosition());
             });
         }
@@ -98,6 +113,8 @@ public class TodoAdapter extends ResultRecyclerView {
         private final CheckBox checkbox;
         private final EditText todo;
         private final ImageButton removeButton;
+        private final Button setDateTime;
+        private final TextView dateTimeView;
 
         public TodoHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +122,8 @@ public class TodoAdapter extends ResultRecyclerView {
             checkbox = itemView.findViewById(R.id.checkbox);
             todo = itemView.findViewById(R.id.todo_field);
             removeButton = itemView.findViewById(R.id.remove_todo);
+            setDateTime = itemView.findViewById(R.id.set_date_time);
+            dateTimeView = itemView.findViewById(R.id.date_time_label);
         }
     }
 
@@ -115,5 +134,22 @@ public class TodoAdapter extends ResultRecyclerView {
             super(itemView);
             addButton = itemView.findViewById(R.id.add_todo);
         }
+    }
+
+    public void setTime(int hour, int minute) {
+        arr[3] = hour;
+        arr[4] = minute;
+    }
+
+    public void setDate(int year, int month, int day) {
+        arr[0] = year;
+        arr[1] = month;
+        arr[2] = day;
+    }
+
+    public void finishSettingDateTime() {
+        TodoHolder holder = (TodoHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemSelected));
+        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone(), arr[0], arr[1], arr[2], arr[3], arr[4], todos.get(itemSelected).getIntent(), todos.get(itemSelected).getEventId()));
+        holder.dateTimeView.setText(arr[2] + "/" + arr[1] + "/" + arr[0] + "\t" + (arr[3] < 10 ? "0"+arr[3] : arr[3]) +":" + (arr[4] < 10 ? "0"+arr[4] : arr[4]));
     }
 }
