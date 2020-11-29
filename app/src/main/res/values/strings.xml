@@ -40,5 +40,7 @@
     <string name="set_date_and_time">Set Date and Time</string>
     <string name="trigger">Trigger</string>
     <string name="dashboard">Dashboard</string>
+    <string name="channel_name">Mynotifchannel</string>
+    <string name="channel_description">ChannelDescription</string>
 
 </resources>
