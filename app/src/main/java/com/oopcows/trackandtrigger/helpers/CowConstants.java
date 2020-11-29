@@ -27,6 +27,11 @@ public class CowConstants {
     public static final String GMAILID_COLUMN_NAME = "gmail_id";
     public static final String PHNO_COLUMN_NAME = "phno";
     public static final String PROF_COLUMN_NAME = "profession";
+    public static final String OTP = "OTP";
+    public static final String MAIL = "Mail";
+    public static final String PAST_USERS = "PastUsers";
+    public static final String USER_NAMES = "UserNames";
+
     public static final int TODO_VIEW_HOLDER = 0;
     public static final int ADD_VIEW_HOLDER = 1;
     public static final int TODO_LIST_REQUEST_CODE = 1;

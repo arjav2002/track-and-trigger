@@ -1,3 +1,4 @@
+
 package com.oopcows.trackandtrigger.database;
 
 import androidx.room.TypeConverter;
