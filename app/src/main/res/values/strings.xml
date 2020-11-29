@@ -42,5 +42,6 @@
     <string name="dashboard">Dashboard</string>
     <string name="channel_name">Mynotifchannel</string>
     <string name="channel_description">ChannelDescription</string>
+    <string name="name_of_category">Name of Category</string>
 
 </resources>

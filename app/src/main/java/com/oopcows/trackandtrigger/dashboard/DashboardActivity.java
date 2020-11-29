@@ -28,7 +28,6 @@ import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
-import com.oopcows.trackandtrigger.helpers.CustomAlarmReceiver;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.Todo;
@@ -36,7 +35,6 @@ import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
