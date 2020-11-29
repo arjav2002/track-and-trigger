@@ -70,7 +70,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/Time"
-        app:layout_constraintStart_toEndOf="@id/Date"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="19:30"
         app:layout_constraintTop_toBottomOf="@id/todo_field"
