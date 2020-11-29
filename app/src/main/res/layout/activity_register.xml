@@ -21,7 +21,8 @@
             android:layout_marginBottom="12dp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/password_hint"
+            app:endIconMode="password_toggle"
             app:layout_constraintBottom_toTopOf="@+id/confirmPasswordContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
@@ -31,14 +32,13 @@
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/passwordLabel"
                 android:layout_width="210dp"
                 android:layout_height="70dp"
                 android:layout_marginEnd="1dp"
-                android:visibility="gone"
                 android:text="@string/password_label"
                 app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
                 app:layout_constraintEnd_toStartOf="@+id/otpField" />
@@ -61,7 +61,6 @@
             android:layout_width="210dp"
             android:layout_height="70dp"
             android:layout_marginBottom="20dp"
-            android:visibility="gone"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/confirm_password_hint"
@@ -75,7 +74,6 @@
                 android:id="@+id/confirmPasswordField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:inputType="textPassword" />
 
             <TextView
