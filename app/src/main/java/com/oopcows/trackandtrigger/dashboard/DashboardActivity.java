@@ -64,6 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private String searchString;
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
+    private boolean canUseInternet = false;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -83,8 +84,14 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         createUI();
 
-        downloadAndSortCategories();
-        downloadTodoLists();
+        if(!canUseInternet) {
+            downloadAndSortCategories();
+            downloadTodoLists();
+        }
+        else {
+            loadAndSortCategories();
+            loadTodoLists();
+        }
         clearDatabase();
         writeToDatabase();
     }
@@ -338,6 +345,25 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         binding.drawerLayout.removeAllViews();
         binding.drawerLayout.addView(view);
         binding.drawerLayout.addView(binding.leftDrawer);
+    }
+
+    private void loadAndSortCategories() {
+        ArrayList<Category> categories = new ArrayList<>(dh.getCategories());
+        for(Category c : categories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                this.categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
+    }
+
+    private void loadTodoLists() {
+        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        this.todoLists.addAll(todoLists);
     }
 
 }
