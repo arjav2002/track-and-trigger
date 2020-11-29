@@ -1,48 +1,120 @@
 package com.oopcows.trackandtrigger.dashboard;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.Window;
+import android.widget.RelativeLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.oopcows.trackandtrigger.MainActivity;
+import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
+import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
-import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+import com.oopcows.trackandtrigger.helpers.Category;
+import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.USER_ACCOUNT_INTENT_KEY;
 
-public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.PersonalDetailsFillable {
+public class DashboardActivity extends AppCompatActivity implements ProfessionChooseFragment.ProfessionFillable {
 
     private UserAccount userAccount;
     private DatabaseHelper dh;
     private ActivityDashboardBinding binding;
+    private MaterialSearchBar searchBar;
     private View homeMaintenanceButton, kitchenApplianceButton;
     private ArrayList<TodoList> todoLists;
+    private ArrayList<Category> categories;
     private int todoListClicked;
+    private int categoryClicked;
     private TodoListAdapter todoListAdapter;
+    private CategoryAdapter categoryAdapter;
+    private Category[] specialCategories;
+    private boolean isNewAccount;
+    private String searchString;
+    private DrawerLayout drawerLayout;
+    private RelativeLayout leftRL;
+    private boolean canUseInternet = false;
+    private DatabaseReference databaseReference;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
+        isNewAccount = getIntent().getBooleanExtra(IS_NEW_ACCOUNT_INTENT_KEY, false);
         dh = DatabaseHelper.getInstance(this);
 
-        todoLists = new ArrayList<TodoList>(dh.getTodoLists());
-        todoListClicked = -1;
+        todoLists = new ArrayList<TodoList>();
+        categories = new ArrayList<Category>();
+        todoListClicked = categoryClicked = -1;
+        specialCategories = new Category[SPECIAL_CATEGORIES_NAME_RESIDS.length];
+        searchString = "";
 
         createUI();
+
+        if(!canUseInternet) {
+            downloadAndSortCategories();
+            downloadTodoLists();
+        }
+        else {
+            loadAndSortCategories();
+            loadTodoLists();
+        }
+        clearDatabase();
+        writeToDatabase();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (todoListAdapter.getItemCount() == 0) {
+            binding.todoListsView.setVisibility(View.GONE);
+            binding.emptyTodo.setVisibility(View.VISIBLE);
+        } else {
+            binding.todoListsView.setVisibility(View.VISIBLE);
+            binding.emptyTodo.setVisibility(View.GONE);
+        }
+
+        todoListAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PICTURE_REQUEST_CODE);
+        }
     }
 
     private void displayDialogue() {
@@ -54,55 +126,122 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     public void fillDetails(Profession profession) {
         userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
         dh.updateUser(userAccount);
-        addAppropriateButtons();
+        addSpecialCategoryButtons();
     }
 
-    private void addAppropriateButtons() {
-        if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
-            binding.specialButtons.addView(homeMaintenanceButton);
+    private void addSpecialCategoryButtons() {
+        if(userAccount.getProfession() == Profession.nullProfession) {
+            displayDialogue();
         }
-        if(userAccount.getProfession().equals(Profession.homeMaker)) {
-            binding.specialButtons.addView(kitchenApplianceButton);
+        else {
+            addSpecialCategory(R.string.groceries);
+            if(!userAccount.getProfession().equals(Profession.jobSeeker)) {
+                addSpecialCategory(R.string.home_maintenance);
+            }
+            if(userAccount.getProfession().equals(Profession.homeMaker)) {
+                addSpecialCategory(R.string.kitchen_appliances);
+            }
+            categoryAdapter.notifyDataSetChanged();
         }
     }
 
     private void createUI() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-        View groceryButton = binding.groceryListButton;
-        homeMaintenanceButton = binding.mainatenanceListButton;
-        kitchenApplianceButton = binding.kitchenAppliancesButton;
-        binding.specialButtons.removeAllViews();
-        binding.specialButtons.addView(groceryButton);
+        leftRL = (RelativeLayout) binding.leftDrawer;
+        drawerLayout = (DrawerLayout) binding.drawerLayout;
 
-        todoListAdapter = new TodoListAdapter(this, todoLists);
-        binding.myRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        binding.myRecyclerView.setAdapter(todoListAdapter);
+        binding.menuButton.setOnClickListener((v) -> {
+            drawerLayout.openDrawer(leftRL);
+        });
+
+        binding.triggerButton.setOnClickListener((v) -> {
+            switchFragment(binding.triggerRoot);
+        });
+
+        binding.logoutButton.setOnClickListener((v) -> {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+            firebaseAuth.signOut();
+            Intent mainActivity = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(mainActivity);
+        });
+
+        searchBar = binding.searchBar;
+        searchBar.setSpeechMode(true);
+        searchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (String.valueOf(charSequence).isEmpty()) {
+                    binding.addCategory.setVisibility(View.VISIBLE);
+                    binding.addTodoList.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.addCategory.setVisibility(View.GONE);
+                    binding.addTodoList.setVisibility(View.GONE);
+                }
+                searchString = String.valueOf(charSequence);
+                categoryAdapter.searchString(searchString);
+                todoListAdapter.searchString(searchString);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        addSpecialCategoryButtons();
+
+        todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
+        categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
 
         binding.addTodoList.setOnClickListener((v) -> {
             TodoList todoList = new TodoList();
             todoLists.add(todoList);
-            todoListAdapter.notifyDataSetChanged();
             gotoTodoListActivity(todoList);
         });
 
-        if(userAccount.getProfession() == Profession.nullProfession) {
-            displayDialogue();
-        }
-        else addAppropriateButtons();
+        binding.addCategory.setOnClickListener((v) -> {
+            Category category = new Category("");
+            categories.add(category);
+            gotoCategoryActivity(category);
+        });
+
+        switchFragment(binding.dashboardRoot);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == TODO_LIST_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 TodoList todoList = (TodoList) data.getExtras().get(TODO_LIST_INTENT_KEY);
                 todoLists.set(todoListClicked, todoList);
                 todoListAdapter.notifyItemChanged(todoListClicked);
                 todoListClicked = -1;
                 dh.insertTodoList(todoList);
+                uploadTodoList(todoList);
+                for(Todo todo : todoList.getTodos()) {
+                    System.out.println(todo.getTimeString());
+                    todo.scheduleNotif(this, userAccount);
+                }
+            }
+        }
+        else if (requestCode == CATEGORY_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                Category category = (Category) data.getExtras().get(CATEGORY_INTENT_KEY);
+                setCategory(category);
+                dh.insertCategory(category);
+                uploadCategory(category);
+
             }
         }
     }
@@ -111,7 +250,140 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         Intent intent = new Intent(this, TodoListActivity.class);
         intent.putExtra(TODO_LIST_INTENT_KEY, todoList);
         todoListClicked = todoLists.indexOf(todoList);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, TODO_LIST_REQUEST_CODE);
+    }
+
+    public void gotoCategoryActivity(Category category) {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra(CATEGORY_INTENT_KEY, category);
+        categoryClicked = categories.indexOf(category);
+        if(categoryClicked == -1) {
+            for (int specialCategoriesNameResid : SPECIAL_CATEGORIES_NAME_RESIDS) {
+                categoryClicked--;
+                if (category.getCategoryName().equalsIgnoreCase(getString(specialCategoriesNameResid))) {
+                    break;
+                }
+            }
+        }
+        startActivityForResult(intent, CATEGORY_REQUEST_CODE);
+    }
+
+    private void setCategory(Category category) {
+        System.out.println(categoryClicked);
+        if(categoryClicked < -1) {
+            specialCategories[-(categoryClicked+2)] = category;
+        }
+        else {
+            categories.set(categoryClicked, category);
+            categoryAdapter.notifyItemChanged(categoryClicked);
+        }
+        categoryClicked = -1;
+    }
+
+    private int getSpecialCategoryIndex(int resId) {
+        for(int i = 0; i < specialCategories.length; i++) {
+            if(resId == SPECIAL_CATEGORIES_NAME_RESIDS[i]) return i;
+        }
+        return -1;
+    }
+
+    public int getSpecialCategoryIndex(String categoryName) {
+        for(int i = 0; i < specialCategories.length; i++) {
+            if(categoryName.equalsIgnoreCase(getString(SPECIAL_CATEGORIES_NAME_RESIDS[i]))) return i;
+        }
+        return -1;
+    }
+
+    private ArrayList<Category> downloadCategories() {
+        ArrayList<Category> downloadedCategories = new ArrayList<Category>();
+        // @vraj download all categories
+        return downloadedCategories;
+    }
+
+    private void downloadTodoLists() {
+        // @vraj fill up todoLists arraylist
+    }
+
+    private void uploadCategory(Category category) {
+        // @vraj fill pls
+        databaseReference.child(FirebaseAuth.getInstance().getUid()).child(category.getCategoryName());
+
+
+    }
+
+    private void uploadTodoList(TodoList todoList) {
+        // @vraj upload a todoList
+    }
+
+    private void downloadAndSortCategories() {
+        ArrayList<Category> downloadedCategories = downloadCategories();
+        for(Category c : downloadedCategories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
+    }
+
+    private void clearDatabase() {
+        ArrayList<Category> categories = new ArrayList<Category>(dh.getCategories());
+        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        for(Category c : categories) {
+            dh.deleteCategory(c);
+        }
+        for(TodoList t : todoLists) {
+            dh.deleteTodoList(t);
+        }
+    }
+
+    private void writeToDatabase() {
+        for (Category c : categories) {
+            dh.insertCategory(c);
+        }
+        for(Category c : specialCategories) {
+            if(c != null) dh.insertCategory(c);
+        }
+        for(TodoList t : todoLists) {
+            dh.insertTodoList(t);
+        }
+    }
+
+    private void addSpecialCategory(int categoryNameResId) {
+        Category c = new Category(getString(categoryNameResId));
+        if(isNewAccount) {
+            uploadCategory(c);
+        }
+        specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
+        categories.add(c);
+    }
+
+    private void switchFragment(View view) {
+        binding.drawerLayout.removeAllViews();
+        binding.drawerLayout.addView(view);
+        binding.drawerLayout.addView(binding.leftDrawer);
+    }
+
+    private void loadAndSortCategories() {
+        ArrayList<Category> categories = new ArrayList<>(dh.getCategories());
+        for(Category c : categories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                this.categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
+    }
+
+    private void loadTodoLists() {
+        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        this.todoLists.addAll(todoLists);
     }
 
 }

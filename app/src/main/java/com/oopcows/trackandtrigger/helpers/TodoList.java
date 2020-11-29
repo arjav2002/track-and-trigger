@@ -9,6 +9,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LISTS_TABLE_NAME;
@@ -25,14 +26,14 @@ public class TodoList implements Parcelable {
 
     @ColumnInfo(name = TODO_LIST_TODOS_NAME)
     @NonNull
-    private LinkedList<Todo> todos;
+    private ArrayList<Todo> todos;
 
     @Ignore
     public TodoList() {
-        todos = new LinkedList<Todo>();
+        todos = new ArrayList<Todo>();
     }
 
-    public TodoList(String heading, LinkedList<Todo> todos) {
+    public TodoList(String heading, ArrayList<Todo> todos) {
         this.heading = heading;
         this.todos = todos;
     }
@@ -49,7 +50,7 @@ public class TodoList implements Parcelable {
         return todos.get(i);
     }
 
-    public LinkedList<Todo> getTodos() {
+    public ArrayList<Todo> getTodos() {
         return todos;
     }
 

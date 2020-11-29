@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.oopcows.trackandtrigger">
 
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,16 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackAndTrigger">
+        <activity android:name=".dashboard.categories.CategoryActivity"></activity>
         <activity
-            android:name=".dashboard.TodoListActivity"
-            android:configChanges="orientation"
-            />
+            android:name=".dashboard.todolists.TodoListActivity"
+            android:configChanges="orientation" />
         <activity android:name=".regandlogin.RegisterActivity" />
         <activity android:name=".regandlogin.PhNoOtpActivity" />
         <activity android:name=".regandlogin.EmailVerifyActivitiy" />
         <activity
             android:name=".dashboard.DashboardActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation" />
         <activity android:name=".regandlogin.LoginActivity">
             <intent-filter>
                 <action android:name=".RegisterActivity" />
@@ -33,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:process=":remote" android:name=".helpers.CustomAlarmReceiver"/>
     </application>
 
 </manifest>

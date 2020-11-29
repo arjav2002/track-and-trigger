@@ -1,84 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    tools:context=".dashboard.DashboardActivity">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/special_buttons"
+        android:id="@+id/dashboard_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/menu_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu_animated"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.mancj.materialsearchbar.MaterialSearchBar
+                android:id="@+id/search_bar"
+                style="@style/MaterialSearchBarLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/menu_button"
+                app:mt_hint="Custom hint"
+                app:mt_maxSuggestionsCount="10"
+                app:mt_speechMode="true" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/grocery_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_grocery"
-            android:elevation="5dp"
-            android:text="@string/groceries" />
-
-        <Button
-            android:id="@+id/mainatenance_list_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_maintenance"
-            android:elevation="5dp"
-            android:text="@string/home_maintenance" />
-
-        <Button
-            android:id="@+id/kitchen_appliances_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_kitchen"
-            android:elevation="5dp"
-            android:text="@string/kitchen_appliances" />
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/special_buttons">
-
-        <Button
-            android:id="@+id/add_todo_list"
-            android:layout_width="0dp"
+            android:id="@+id/add_category"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@android:drawable/ic_input_add"
-            android:text="@string/new_todo_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/new_category"
+            android:drawableStart="@drawable/ic_baseline_add_24"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/categories_view"
+            android:scrollbars="vertical" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:id="@+id/todo_lists_root"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+            app:layout_constraintTop_toBottomOf="@+id/special_buttons">
 
+            <Button
+                android:id="@+id/add_todo_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_baseline_add_24"
+                android:text="@string/new_todo_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/todo_lists_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/empty_todo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="60dp"
+                android:text="@string/empty_todo"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/todo_lists_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_todo_list" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/trigger_root"
+        android:orientation="vertical"
+        />
+
+    <!-- Left Drawer -->
+    <RelativeLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" >
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_dark" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <!-- add user account related bullshit-->
+
+            <Button
+                android:id="@+id/dashboard_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/logout_button"
+                android:background="@android:color/background_dark"
+                android:text="@string/dashboard"
+                android:drawableStart="@drawable/ic_baseline_dashboard_24"
+                app:tint="@color/white"
+                />
+
+            <Button
+                android:id="@+id/trigger_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/logout_button"
+                android:background="@android:color/background_dark"
+                android:text="@string/trigger"
+                android:drawableStart="@drawable/ic_baseline_alarm_24"
+                app:tint="@color/white"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:id="@+id/logout_button"
+                android:background="@android:color/background_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- you can have many more widgets here like buttons or labels -->
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

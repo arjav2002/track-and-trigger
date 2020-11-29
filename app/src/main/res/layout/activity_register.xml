@@ -1,52 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- @subs make this seski and login also-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="50dp"
     tools:context=".regandlogin.RegisterActivity">
 
 
-    <EditText
-        android:id="@+id/usernameField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints="@string/username_hint"
-        android:ems="10"
-        android:hint="@string/username_hint"
-        android:inputType="text"
-        android:layout_gravity="start"
-        android:layout_marginBottom="30dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="331dp"
+        android:layout_height="510dp">
 
-    <EditText
-        android:id="@+id/passwordField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        android:layout_gravity="start"
-        android:layout_marginBottom="10dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordContainer"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="Email"
+            app:layout_constraintBottom_toTopOf="@+id/confirmPasswordContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/confirmPasswordField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:hint="@string/confirm_password_hint"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:layout_gravity="start"
-        android:layout_marginBottom="20dp"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/regAndLoginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_and_login_label" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/passwordLabel"
+                android:layout_width="210dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="1dp"
+                android:visibility="gone"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
+                app:layout_constraintEnd_toStartOf="@+id/otpField" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/regAndLoginButton"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="132dp"
+            android:text="@string/reg_and_login_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirmPasswordContainer"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/confirm_password_hint"
+            app:endIconMode="password_toggle"
+            app:layout_constraintBottom_toTopOf="@+id/regAndLoginButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirmPasswordField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/confirmPasswordLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
+                app:layout_constraintEnd_toStartOf="@+id/otpField" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameContainer"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:autofillHints="@string/username_hint"
+            android:ems="10"
+            android:hint="@string/username_hint"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/passwordContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.864">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/usernameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:text="@string/password_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/phnoField"
+                app:layout_constraintEnd_toStartOf="@+id/otpField" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

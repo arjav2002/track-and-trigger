@@ -1,7 +1,5 @@
 package com.oopcows.trackandtrigger.dashboard;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,75 +7,126 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oopcows.trackandtrigger.R;
+import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
+import com.oopcows.trackandtrigger.dashboard.DashboardRecyclerView;
+import com.oopcows.trackandtrigger.dashboard.todolists.TodoAdapter;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
-import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
+public class TodoListAdapter extends DashboardRecyclerView {
 
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoListHolder> {
+    private final ArrayList<TodoList> todoLists;
 
-    private ArrayList<TodoList> todoLists;
-    private DashboardActivity dashboardActivity;
-
-    public TodoListAdapter(DashboardActivity dashboardActivity, ArrayList<TodoList> todoLists) {
+    public TodoListAdapter(DashboardActivity dashboardActivity, RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ArrayList<TodoList> todoLists) {
+        super(dashboardActivity, recyclerView, layoutManager, todoLists);
         this.todoLists = todoLists;
-        this.dashboardActivity = dashboardActivity;
     }
 
-    // @subs called to create each todolist grid cell based on position
-    @NonNull
-    @Override
-    public TodoListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View todoListCell = LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_list_view, parent, false);
-        return new TodoListHolder(todoListCell, parent);
-    }
-
-    // @subs puts stuff inside each ViewHolder, ie, Each todo List grid
-    @Override
-    public void onBindViewHolder(@NonNull TodoListHolder holder, int position) {
-        TodoList tl = todoLists.get(position);
-        holder.heading.setText(tl.getHeading());
-        holder.todosLayout.removeAllViews();
-        for(Todo todo : tl.getTodos()) {
-            TextView todoView = (TextView) LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_view, holder.todosLayout, false);
-            todoView.setText(todo.getTask());
-            holder.todosLayout.addView(todoView);
-        }
-        holder.updateList(tl);
-        holder.itemView.setOnClickListener((v) -> {
-            dashboardActivity.gotoTodoListActivity(holder.todoList);
-        });
-    }
 
     @Override
     public int getItemCount() {
         return todoLists.size();
     }
 
-    // @subs this is a class to encapsulate each TodoList cell of the todoList grid
-    public static class TodoListHolder extends RecyclerView.ViewHolder {
+    // @subs fyi this is a class to encapsulate each TodoList cell of the todoList grid
+    public static class TodoListHolder extends NormalViewHolder {
         private final TextView heading;
         private final LinearLayout todosLayout;
-        private TodoList todoList;
-        private final ViewGroup parent;
-        public TodoListHolder(@NonNull View itemView, @NonNull ViewGroup parent) {
+        public TodoListHolder(@NonNull View itemView) {
             super(itemView);
             heading = itemView.findViewById(R.id.heading);
             todosLayout = itemView.findViewById(R.id.todos_layout);
-            this.parent = parent;
         }
-        public void updateList(TodoList todoList) {
-            this.todoList = todoList;
-            heading.setText(todoList.getHeading());
-            for(Todo todo : todoList.getTodos()) {
-                todosLayout.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_view, parent, false));
-            }
+    }
+
+    // @subs this encapsulates a single todolist search result
+    // decide what all it should show
+    public static class TodoListSearchResultHolder extends SearchResultViewHolder {
+        private final TextView heading;
+        private final LinearLayout todosLayout;
+        public TodoListSearchResultHolder(@NonNull View itemView) {
+            super(itemView);
+            heading = itemView.findViewById(R.id.heading);
+            todosLayout = itemView.findViewById(R.id.todos_layout);
         }
+    }
+
+
+    // @subs do funs here, this function is called whenever holder is selected
+    // make the holder.itemView look like it is selected
+    @Override
+    protected void onHolderSelected(RecyclerView.ViewHolder holder) {
+        System.out.println("I am selected yo");
+    }
+
+    @Override
+    protected NormalViewHolder createNormalViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new TodoListHolder(LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_list_view, parent, false));
+    }
+
+    @Override
+    protected SearchResultViewHolder createSearchViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new TodoListSearchResultHolder(LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_list_view, parent, false));
+    }
+
+    @Override
+    protected void onNormalBind(@NonNull NormalViewHolder normalViewHolder, int position) {
+        TodoList tl = todoLists.get(position);
+        TodoListHolder holder = (TodoListHolder) normalViewHolder;
+
+        holder.heading.setText(tl.getHeading());
+        holder.todosLayout.removeAllViews();
+        for (Todo todo : tl.getTodos()) {
+            TextView todoView = (TextView) LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_view, holder.todosLayout, false);
+            todoView.setText(todo.getTask());
+            holder.todosLayout.addView(todoView);
+        }
+
+        holder.itemView.setOnLongClickListener((v) -> {return true;});
+        holder.itemView.setOnClickListener((v) -> {
+            dashboardActivity.gotoTodoListActivity(todoLists.get(holder.getAdapterPosition()));
+        });
+    }
+
+    @Override
+    protected void onSearchBind(@NonNull SearchResultViewHolder searchResultViewHolder, int position) {
+        TodoList tl = todoLists.get(position);
+        TodoListSearchResultHolder holder = (TodoListSearchResultHolder) searchResultViewHolder;
+
+        holder.heading.setText(tl.getHeading());
+        holder.todosLayout.removeAllViews();
+        for (Todo todo : tl.getTodos()) {
+            TextView todoView = (TextView) LayoutInflater.from(dashboardActivity).inflate(R.layout.todo_view, holder.todosLayout, false);
+            todoView.setText(todo.getTask());
+            holder.todosLayout.addView(todoView);
+        }
+
+        holder.itemView.setOnLongClickListener((v) -> {return true;});
+        holder.itemView.setOnClickListener((v) -> {
+            dashboardActivity.gotoTodoListActivity(todoLists.get(holder.getAdapterPosition()));
+        });
+    }
+
+    @Override
+    protected boolean holderContainsString(@NonNull SearchResultViewHolder searchResultViewHolder, String searchString) {
+        TodoListSearchResultHolder holder = (TodoListSearchResultHolder) searchResultViewHolder;
+        if(containsIgnoreCase(String.valueOf(holder.heading.getText()),searchString)) return true;
+
+        for(int i = 0; i < holder.todosLayout.getChildCount(); i++) {
+            TextView tv = (TextView) holder.todosLayout.getChildAt(i);
+            if(containsIgnoreCase(String.valueOf(tv.getText()), searchString)) return true;
+        }
+
+        return false;
     }
 
 }
