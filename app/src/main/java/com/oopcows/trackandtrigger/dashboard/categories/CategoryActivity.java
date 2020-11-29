@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -55,15 +54,12 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         specialCategoryName = "";
 
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-
         Intent intent = getIntent();
         category = (Category) intent.getExtras().get(CATEGORY_INTENT_KEY);
         binding.categoryName.setText(category.getCategoryName());
         itemAdapter = new ItemAdapter(this, binding.itemsLayout, new LinearLayoutManager(this), category.getItems());
         binding.addItemButton.setOnClickListener((v) -> {
-            category.getItems().add(new CategoryItem("", "", 0, ""));
+            category.getItems().add(new CategoryItem("", "", 0));
             itemAdapter.notifyItemChanged(category.getItems().size()-1);
         });
 
@@ -128,7 +124,6 @@ public class CategoryActivity extends AppCompatActivity {
                                 String picturePath = cursor.getString(columnIndex);
                                 Bitmap bmp = BitmapFactory.decodeFile(picturePath);
                                 itemAdapter.getSelectedImageButton().setImageBitmap(bmp);
-                                itemAdapter.setImgPathOfCurrentImgButton(picturePath);
                                 cursor.close();
                             }
                         }
