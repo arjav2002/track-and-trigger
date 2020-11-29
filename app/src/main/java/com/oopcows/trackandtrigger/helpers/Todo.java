@@ -13,14 +13,9 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.room.Ignore;
 
-import com.google.firebase.firestore.auth.User;
-import com.google.type.DateTime;
 import com.oopcows.trackandtrigger.dashboard.DashboardActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -60,10 +55,10 @@ public class Todo implements Parcelable {
         eventId = (int)(Math.random()*2000); // surely theyll never add so many tasks right?
     }
 
-    public Todo(String task, boolean done, String str) {
+    public Todo(String task, boolean done, String s) {
         this.task = task;
         this.done = done;
-        int[] arr = getTimeFromString(str);
+        int[] arr = getTimeFromString(s);
         this.year = arr[0];
         this.month = arr[1];
         this.day = arr[2];

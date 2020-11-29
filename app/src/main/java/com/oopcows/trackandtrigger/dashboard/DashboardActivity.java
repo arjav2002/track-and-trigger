@@ -1,42 +1,36 @@
 package com.oopcows.trackandtrigger.dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
-import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.oopcows.trackandtrigger.MainActivity;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
-import com.oopcows.trackandtrigger.helpers.Category;
-import com.oopcows.trackandtrigger.helpers.CustomAlarmReceiver;
-import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+import com.oopcows.trackandtrigger.helpers.Category;
+import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
@@ -65,12 +59,15 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
     private boolean canUseInternet = false;
+    private DatabaseReference databaseReference;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         isNewAccount = getIntent().getBooleanExtra(IS_NEW_ACCOUNT_INTENT_KEY, false);
@@ -157,15 +154,27 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             switchFragment(binding.triggerRoot);
         });
 
+        binding.logoutButton.setOnClickListener((v) -> {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+            firebaseAuth.signOut();
+            Intent mainActivity = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(mainActivity);
+        });
+
         searchBar = binding.searchBar;
         searchBar.setSpeechMode(true);
         searchBar.addTextChangeListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(String.valueOf(charSequence).isEmpty()) {
+                if (String.valueOf(charSequence).isEmpty()) {
                     binding.addCategory.setVisibility(View.VISIBLE);
                     binding.addTodoList.setVisibility(View.VISIBLE);
                 }
@@ -289,6 +298,9 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
     private void uploadCategory(Category category) {
         // @vraj fill pls
+        databaseReference.child(FirebaseAuth.getInstance().getUid()).child(category.getCategoryName());
+
+
     }
 
     private void uploadTodoList(TodoList todoList) {
