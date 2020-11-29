@@ -104,6 +104,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
+                                System.out.println(picturePath);
                                 itemAdapter.getSelectedImageButton().setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
                             }
