@@ -92,8 +92,7 @@ public class TodoAdapter extends ResultRecyclerView {
                 todoListActivity.setDateTime();
             });
             arr = Todo.getTimeFromString(todos.get(position).getTimeString());
-            System.out.println(arr);
-            todoHolder.dateTimeView.setText(arr[2] + "/" + arr[3] + "/" + arr[4] + "\t" + (arr[1] < 10 ? "0"+arr[1] : arr[1]) +":" + (arr[0] < 10 ? "0"+arr[0] : arr[0]));
+            todoHolder.dateTimeView.setText(arr[2] + "/" + arr[1] + "/" + arr[0] + "\t" + (arr[3] < 10 ? "0"+arr[3] : arr[3]) +":" + (arr[4] < 10 ? "0"+arr[4] : arr[4]));
         }
         else {
             AddTodoHolder addTodoHolder = (AddTodoHolder) holder;
@@ -138,19 +137,19 @@ public class TodoAdapter extends ResultRecyclerView {
     }
 
     public void setTime(int hour, int minute) {
-        arr[1] = hour;
-        arr[0] = minute;
+        arr[3] = hour;
+        arr[4] = minute;
     }
 
     public void setDate(int year, int month, int day) {
-        arr[4] = year;
-        arr[3] = month;
+        arr[0] = year;
+        arr[1] = month;
         arr[2] = day;
     }
 
     public void finishSettingDateTime() {
         TodoHolder holder = (TodoHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(itemSelected));
-        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone(), arr[4], arr[3], arr[2], arr[1], arr[0], todos.get(itemSelected).getIntent(), todos.get(itemSelected).getEventId()));
-        holder.dateTimeView.setText(arr[2] + "/" + arr[3] + "/" + arr[4] + "\t" + (arr[1] < 10 ? "0"+arr[1] : arr[1]) +":" + (arr[0] < 10 ? "0"+arr[0] : arr[0]));
+        todos.set(itemSelected, new Todo(todos.get(itemSelected).getTask(), todos.get(itemSelected).isDone(), arr[0], arr[1], arr[2], arr[3], arr[4], todos.get(itemSelected).getIntent(), todos.get(itemSelected).getEventId()));
+        holder.dateTimeView.setText(arr[2] + "/" + arr[1] + "/" + arr[0] + "\t" + (arr[3] < 10 ? "0"+arr[3] : arr[3]) +":" + (arr[4] < 10 ? "0"+arr[4] : arr[4]));
     }
 }
