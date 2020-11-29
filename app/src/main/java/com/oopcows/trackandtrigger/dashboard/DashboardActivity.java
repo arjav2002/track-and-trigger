@@ -35,6 +35,8 @@ import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+
+import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
@@ -66,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private String searchString;
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
+    private boolean canUseInternet = false;
+  
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -84,8 +89,14 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         createUI();
 
-        downloadAndSortCategories();
-        downloadTodoLists();
+        if(!canUseInternet) {
+            downloadAndSortCategories();
+            downloadTodoLists();
+        }
+        else {
+            loadAndSortCategories();
+            loadTodoLists();
+        }
         clearDatabase();
         writeToDatabase();
     }
@@ -104,13 +115,19 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             binding.categoriesView.setVisibility(View.VISIBLE);
             binding.emptyCategory.setVisibility(View.GONE);
         }
-
         if (todoListAdapter.getItemCount() == 0) {
             binding.todoListsView.setVisibility(View.GONE);
             binding.emptyTodo.setVisibility(View.VISIBLE);
         } else {
             binding.todoListsView.setVisibility(View.VISIBLE);
             binding.emptyTodo.setVisibility(View.GONE);
+        }
+
+        todoListAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PICTURE_REQUEST_CODE);
         }
     }
 
@@ -149,10 +166,15 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         setContentView(view);
 
         leftRL = (RelativeLayout) binding.whatYouWantInLeftDrawer;
+        leftRL = (RelativeLayout) binding.leftDrawer;
         drawerLayout = (DrawerLayout) binding.drawerLayout;
 
         binding.menuButton.setOnClickListener((v) -> {
             drawerLayout.openDrawer(leftRL);
+        });
+
+        binding.triggerButton.setOnClickListener((v) -> {
+            switchFragment(binding.triggerRoot);
         });
 
         searchBar = binding.searchBar;
@@ -196,6 +218,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             categories.add(category);
             gotoCategoryActivity(category);
         });
+
+        switchFragment(binding.dashboardRoot);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,6 +232,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 todoListClicked = -1;
                 dh.insertTodoList(todoList);
                 uploadTodoList(todoList);
+                for(Todo todo : todoList.getTodos()) {
+                    System.out.println(todo.getTimeString());
+                    todo.scheduleNotif(this, userAccount);
+                }
             }
         }
         else if (requestCode == CATEGORY_REQUEST_CODE) {
@@ -331,4 +359,31 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
         categories.add(c);
     }
+
+    private void switchFragment(View view) {
+        binding.drawerLayout.removeAllViews();
+        binding.drawerLayout.addView(view);
+        binding.drawerLayout.addView(binding.leftDrawer);
+    }
+
+    private void loadAndSortCategories() {
+        ArrayList<Category> categories = new ArrayList<>(dh.getCategories());
+        for(Category c : categories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                this.categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
+    }
+
+    private void loadTodoLists() {
+        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        this.todoLists.addAll(todoLists);
+    }
+
+
 }
