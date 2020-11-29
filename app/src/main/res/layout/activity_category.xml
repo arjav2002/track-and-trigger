@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="330dp"
-        android:layout_height="117dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,9 +18,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:text="Name of Category"
+            android:text="@string/name_of_category"
             android:textAlignment="center"
             android:textSize="18sp" />
 
@@ -32,8 +32,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_layout"
-        android:layout_width="408dp"
-        android:layout_height="491dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/add_item_button"
         app:layout_constraintEnd_toEndOf="parent"

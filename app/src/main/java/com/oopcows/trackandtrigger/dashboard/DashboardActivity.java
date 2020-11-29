@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
+import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
@@ -107,6 +109,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         todoListAdapter.notifyDataSetChanged();
         categoryAdapter.notifyDataSetChanged();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PICTURE_REQUEST_CODE);
+        }
     }
 
     private void displayDialogue() {

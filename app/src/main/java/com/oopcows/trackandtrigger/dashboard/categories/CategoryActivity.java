@@ -1,21 +1,39 @@
 package com.oopcows.trackandtrigger.dashboard.categories;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ImageDecoder;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.databinding.ActivityCategoryBinding;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.CategoryItem;
+
+import java.io.File;
+import java.io.IOException;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
@@ -81,6 +99,7 @@ public class CategoryActivity extends AppCompatActivity {
         finish();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -101,10 +120,10 @@ public class CategoryActivity extends AppCompatActivity {
                                     filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
-
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                itemAdapter.getSelectedImageButton().setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                Bitmap bmp = BitmapFactory.decodeFile(picturePath);
+                                itemAdapter.getSelectedImageButton().setImageBitmap(bmp);
                                 cursor.close();
                             }
                         }
