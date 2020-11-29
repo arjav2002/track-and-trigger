@@ -109,21 +109,21 @@ public class PhNoOtpActivity extends AppCompatActivity {
     private void signInTheUserByCredentials(PhoneAuthCredential credential) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(PhNoOtpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            System.out.println("Success");
-                            userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
-                            Intent emailVerifyActivity = new Intent(getBaseContext(), EmailVerifyActivitiy.class);
-                            emailVerifyActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
-                            startActivity(emailVerifyActivity);
-                            finish();
-                        } else {
-                            Toast.makeText(PhNoOtpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+            .addOnCompleteListener(PhNoOtpActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        System.out.println("Success");
+                        userAccount = new UserAccount(userAccount.getUsername(), "", String.valueOf(binding.phnoField.getText()), Profession.nullProfession);
+                        Intent emailVerifyActivity = new Intent(getBaseContext(), EmailVerifyActivitiy.class);
+                        emailVerifyActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
+                        startActivity(emailVerifyActivity);
+                        finish();
+                    } else {
+                        Toast.makeText(PhNoOtpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
     }
 
 }

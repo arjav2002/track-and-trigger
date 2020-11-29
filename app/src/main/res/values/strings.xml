@@ -32,16 +32,11 @@
     <string name="new_category">New Category</string>
     <string name="add_item">Add Item</string>
     <string name="empty_category_name">Empty Category Name is not allowed</string>
+    <string name="empty_category">There are no categories yet. Add a new one!</string>
     <string name="empty_todo">There are no To-do lists yet. Add a new one!</string>
     <string name="is_reserved_category_name">is a reserved Category name</string>
     <string name="cannot_change_category_name">Cannot change the name of a reserved Category</string>
     <string name="change_it_back">Change it back to</string>
     <string name="logout">Logout</string>
-    <string name="set_date_and_time">Set Date and Time</string>
-    <string name="trigger">Trigger</string>
-    <string name="dashboard">Dashboard</string>
-    <string name="channel_name">Mynotifchannel</string>
-    <string name="channel_description">ChannelDescription</string>
-    <string name="name_of_category">Name of Category</string>
 
 </resources>
