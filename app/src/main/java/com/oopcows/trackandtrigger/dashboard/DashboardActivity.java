@@ -1,33 +1,28 @@
 package com.oopcows.trackandtrigger.dashboard;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 
-import com.google.android.material.navigation.NavigationView;
 import com.mancj.materialsearchbar.MaterialSearchBar;
-import com.mancj.materialsearchbar.SimpleOnSearchActionListener;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
@@ -35,6 +30,7 @@ import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -66,12 +62,14 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private String searchString;
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
+    private boolean canUseInternet = false;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         isNewAccount = getIntent().getBooleanExtra(IS_NEW_ACCOUNT_INTENT_KEY, false);
         dh = DatabaseHelper.getInstance(this);
@@ -84,8 +82,14 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         createUI();
 
-        downloadAndSortCategories();
-        downloadTodoLists();
+        if(!canUseInternet) {
+            downloadAndSortCategories();
+            downloadTodoLists();
+        }
+        else {
+            loadAndSortCategories();
+            loadTodoLists();
+        }
         clearDatabase();
         writeToDatabase();
     }
@@ -94,17 +98,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     protected void onStart() {
         super.onStart();
 
-        todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
-        categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
-
-        if (categoryAdapter.getItemCount() == 0) {
-            binding.categoriesView.setVisibility(View.GONE);
-            binding.emptyCategory.setVisibility(View.VISIBLE);
-        } else {
-            binding.categoriesView.setVisibility(View.VISIBLE);
-            binding.emptyCategory.setVisibility(View.GONE);
-        }
-
         if (todoListAdapter.getItemCount() == 0) {
             binding.todoListsView.setVisibility(View.GONE);
             binding.emptyTodo.setVisibility(View.VISIBLE);
@@ -112,6 +105,9 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             binding.todoListsView.setVisibility(View.VISIBLE);
             binding.emptyTodo.setVisibility(View.GONE);
         }
+
+        todoListAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
     }
 
     private void displayDialogue() {
@@ -148,11 +144,15 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         View view = binding.getRoot();
         setContentView(view);
 
-        leftRL = (RelativeLayout) binding.whatYouWantInLeftDrawer;
+        leftRL = (RelativeLayout) binding.leftDrawer;
         drawerLayout = (DrawerLayout) binding.drawerLayout;
 
         binding.menuButton.setOnClickListener((v) -> {
             drawerLayout.openDrawer(leftRL);
+        });
+
+        binding.triggerButton.setOnClickListener((v) -> {
+            switchFragment(binding.triggerRoot);
         });
 
         searchBar = binding.searchBar;
@@ -196,6 +196,8 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             categories.add(category);
             gotoCategoryActivity(category);
         });
+
+        switchFragment(binding.dashboardRoot);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,6 +210,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 todoListClicked = -1;
                 dh.insertTodoList(todoList);
                 uploadTodoList(todoList);
+                for(Todo todo : todoList.getTodos()) {
+                    System.out.println(todo.getTimeString());
+                    todo.scheduleNotif(this, userAccount);
+                }
             }
         }
         else if (requestCode == CATEGORY_REQUEST_CODE) {
@@ -216,6 +222,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 setCategory(category);
                 dh.insertCategory(category);
                 uploadCategory(category);
+
             }
         }
     }
@@ -331,4 +338,30 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
         categories.add(c);
     }
+
+    private void switchFragment(View view) {
+        binding.drawerLayout.removeAllViews();
+        binding.drawerLayout.addView(view);
+        binding.drawerLayout.addView(binding.leftDrawer);
+    }
+
+    private void loadAndSortCategories() {
+        ArrayList<Category> categories = new ArrayList<>(dh.getCategories());
+        for(Category c : categories) {
+            String name = c.getCategoryName();
+            int specialCategoryIndex = getSpecialCategoryIndex(name);
+            if(specialCategoryIndex == -1) {
+                this.categories.add(c);
+            }
+            else {
+                specialCategories[specialCategoryIndex] = c;
+            }
+        }
+    }
+
+    private void loadTodoLists() {
+        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
+        this.todoLists.addAll(todoLists);
+    }
+
 }
