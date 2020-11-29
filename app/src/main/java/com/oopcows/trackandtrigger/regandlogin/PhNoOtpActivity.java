@@ -54,6 +54,11 @@ public class PhNoOtpActivity extends AppCompatActivity {
             if (binding.phnoField.getText().toString().isEmpty() || binding.phnoField.getText().toString().length() != 10) {
                 binding.phnoField.setError("Enter valid phone number");
             } else {
+                SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PHNO_COLUMN_NAME, binding.phnoField.getText().toString());
+                editor.apply();
+                System.out.println(binding.phnoField.getText().toString());
                 sendVerificationCodeToUser(COUNTRY_CODE + binding.phnoField.getText().toString());
             }
         });
@@ -165,11 +170,8 @@ public class PhNoOtpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             System.out.println("Success");
-                            SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(PHNO_COLUMN_NAME, binding.phnoField.getText().toString());
+
                             String p = binding.phnoField.getText().toString();
-                            editor.apply();
                             userAccount = new UserAccount(userAccount.getUsername(), "", p, Profession.nullProfession);
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                 Intent registerActivity = new Intent(getBaseContext(), RegisterActivity.class);

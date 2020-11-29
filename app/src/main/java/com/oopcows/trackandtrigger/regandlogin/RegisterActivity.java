@@ -48,8 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (inputsAreValid()) {
+                    SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
-                    userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), binding.passwordField.getText().toString(), userAccount.getPhno(), Profession.nullProfession);
+                    userAccount = new UserAccount(String.valueOf(binding.usernameField.getText()), binding.passwordField.getText().toString(), preferences.getString(PHNO_COLUMN_NAME, ""), Profession.nullProfession);
                     uploadAccountToFirebase();
                     Intent dashboardActivity = new Intent(getBaseContext(), DashboardActivity.class);
                     dashboardActivity.putExtra(USER_ACCOUNT_INTENT_KEY, userAccount);
