@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.oopcows.trackandtrigger.R;
@@ -35,6 +36,8 @@ public class CategoryActivity extends AppCompatActivity {
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         specialCategoryName = "";
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Intent intent = getIntent();
         category = (Category) intent.getExtras().get(CATEGORY_INTENT_KEY);
