@@ -38,5 +38,7 @@
     <string name="change_it_back">Change it back to</string>
     <string name="logout">Logout</string>
     <string name="set_date_and_time">Set Date and Time</string>
+    <string name="trigger">Trigger</string>
+    <string name="dashboard">Dashboard</string>
 
 </resources>

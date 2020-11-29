@@ -7,9 +7,6 @@ import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.helpers.Todo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-import io.perfmark.Link;
 
 public class Converters {
 
@@ -28,7 +25,7 @@ public class Converters {
     public static String fromTodos(ArrayList<Todo> todos) {
         StringBuilder result= new StringBuilder();
         for(Todo todo : todos) {
-            result.append(todo.getTask()).append(todo).append('\1').append(todo.isDone() ? '\1' : '\2').append(todo.getString()).append('\3');
+            result.append(todo.getTask()).append(todo).append('\1').append(todo.isDone() ? '\1' : '\2').append(todo.getTimeString()).append('\3');
         }
         return result.toString();
     }
