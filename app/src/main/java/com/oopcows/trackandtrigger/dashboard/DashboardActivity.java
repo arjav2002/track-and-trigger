@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,6 +44,7 @@ import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
 import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
+import com.oopcows.trackandtrigger.helpers.Todo;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -102,6 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             loadAndSortCategories();
             loadTodoLists();
         }
+    }
 
     @Override
     protected void onStart() {
@@ -352,7 +355,7 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private void switchFragment(View view) {
         binding.drawerLayout.removeAllViews();
         binding.drawerLayout.addView(view);
-        binding.drawerLayout.addView(binding.leftDrawer);
+        binding.drawerLayout.addView(binding.drawerLayout);
     }
 
     private void loadAndSortCategories() {

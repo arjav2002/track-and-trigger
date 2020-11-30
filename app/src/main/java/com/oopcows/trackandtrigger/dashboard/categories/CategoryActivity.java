@@ -26,6 +26,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.oopcows.trackandtrigger.R;
