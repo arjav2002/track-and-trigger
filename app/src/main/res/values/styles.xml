@@ -31,4 +31,14 @@
         <item name="backgroundTint">@color/Dark_blue</item>
     </style>
 
+    <style name="SearchBar" parent="MaterialSearchBarLight">
+        <item name="mt_textColor">@color/Gunmetal</item>
+        <item name="mt_hintColor">@color/Light_grey</item>
+    </style>
+
+    <style name="SearchBarDark" parent="MaterialSearchBarDark">
+        <item name="mt_textColor">@color/white</item>
+        <item name="mt_hintColor">@color/Light_grey</item>
+    </style>
+
 </resources>

@@ -7,27 +7,25 @@
     <com.oopcows.trackandtrigger.dashboard.todolists.DragButton
         android:id="@+id/dragButton"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_baseline_drag_indicator_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-        <!-- @subs make/get smol img like in google keep, which is used to grab and drag each
-        todo and make it the src for this child of imageview,
-         also pls delete all of "@subs" once you're done with implementing them
-         -->
 
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dragButton" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dragButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/todo_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/remove_todo"
         app:layout_constraintStart_toEndOf="@+id/checkbox"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,35 +33,46 @@
     <ImageButton
         android:id="@+id/remove_todo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_baseline_remove_24"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/set_date_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_remove_24"
-        android:text="@string/set_date_and_time"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/date_time_label"
-        app:layout_constraintTop_toBottomOf="@+id/todo_field"
-        app:layout_constraintStart_toEndOf="@+id/dragButton"
-        />
-
-    <TextView
-        android:id="@+id/date_time_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_remove_24"
-        android:fontFamily="@font/digital"
-        android:textColor="@color/Green"
-        android:background="@android:color/background_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/setDate"
+        android:text="Set Date"
+        app:layout_constraintStart_toEndOf="@id/dragButton"
         app:layout_constraintTop_toBottomOf="@id/todo_field"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/setTime"
+        android:text="Set Time"
+        app:layout_constraintStart_toEndOf="@id/setDate"
+        app:layout_constraintTop_toBottomOf="@id/todo_field"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Date"
+        app:layout_constraintStart_toEndOf="@id/setTime"
+        android:text="19/11/2020"
+        app:layout_constraintTop_toBottomOf="@id/todo_field"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="19:30"
+        app:layout_constraintTop_toBottomOf="@id/todo_field"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
