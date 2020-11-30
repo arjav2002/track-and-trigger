@@ -1,40 +1,22 @@
 package com.oopcows.trackandtrigger.dashboard.categories;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.ImageDecoder;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.databinding.ActivityCategoryBinding;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.CategoryItem;
-
-import java.io.File;
-import java.io.IOException;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
@@ -54,18 +36,15 @@ public class CategoryActivity extends AppCompatActivity {
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         specialCategoryName = "";
-      
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-      
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
 
         Intent intent = getIntent();
         category = (Category) intent.getExtras().get(CATEGORY_INTENT_KEY);
         binding.categoryName.setText(category.getCategoryName());
         itemAdapter = new ItemAdapter(this, binding.itemsLayout, new LinearLayoutManager(this), category.getItems());
         binding.addItemButton.setOnClickListener((v) -> {
-            category.getItems().add(new CategoryItem("", "", 0, ""));
+            category.getItems().add(new CategoryItem("", "", 0));
             itemAdapter.notifyItemChanged(category.getItems().size()-1);
         });
 
@@ -98,9 +77,6 @@ public class CategoryActivity extends AppCompatActivity {
                 return;
             }
         }
-        for(CategoryItem item : category.getItems()) {
-            System.out.println(item.getItemName());
-        }
         Category newCategory = new Category(String.valueOf(binding.categoryName.getText()), category.getItems());
         Intent intent = new Intent();
         intent.putExtra(CATEGORY_INTENT_KEY, newCategory);
@@ -108,7 +84,6 @@ public class CategoryActivity extends AppCompatActivity {
         finish();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,11 +104,10 @@ public class CategoryActivity extends AppCompatActivity {
                                     filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
+
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                Bitmap bmp = BitmapFactory.decodeFile(picturePath);
-                                itemAdapter.getSelectedImageButton().setImageBitmap(bmp);
-                                itemAdapter.setImgPathOfCurrentImgButton(picturePath);
+                                itemAdapter.getSelectedImageButton().setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
                             }
                         }

@@ -26,19 +26,11 @@ import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.navigation.NavigationView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.SimpleOnSearchActionListener;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
-import com.oopcows.trackandtrigger.database.Converters;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
@@ -51,7 +43,6 @@ import java.util.ArrayList;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
-import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.TODO_LIST_REQUEST_CODE;
@@ -75,7 +66,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     private String searchString;
     private DrawerLayout drawerLayout;
     private RelativeLayout leftRL;
-    private boolean canUseInternet = false;
     // @subs dashboardActivity should be in a sort of shadow while the dialogue is open
     // so that it is not visible until the profession has been chosen
 
@@ -94,14 +84,11 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
 
         createUI();
 
-        if(canUseInternet) {
-            downloadAndSortCategories();
-            downloadTodoLists();
-        }
-        else {
-            loadAndSortCategories();
-            loadTodoLists();
-        }
+        downloadAndSortCategories();
+        downloadTodoLists();
+        clearDatabase();
+        writeToDatabase();
+    }
 
     @Override
     protected void onStart() {
@@ -135,10 +122,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     @Override
     public void fillDetails(Profession profession) {
         userAccount = new UserAccount(userAccount.getUsername(), userAccount.getGmailId(), userAccount.getPhno(), profession);
-        SharedPreferences sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(PROF_COLUMN_NAME, profession.toString());
-        editor.apply();
         dh.updateUser(userAccount);
         addSpecialCategoryButtons();
     }
@@ -197,10 +180,10 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             public void afterTextChanged(Editable editable) {}
         });
 
+        addSpecialCategoryButtons();
+
         todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
         categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
-
-        addSpecialCategoryButtons();
 
         binding.addTodoList.setOnClickListener((v) -> {
             TodoList todoList = new TodoList();
@@ -347,35 +330,5 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         }
         specialCategories[getSpecialCategoryIndex(categoryNameResId)] = c;
         categories.add(c);
-    }
-
-    private void switchFragment(View view) {
-        binding.drawerLayout.removeAllViews();
-        binding.drawerLayout.addView(view);
-        binding.drawerLayout.addView(binding.leftDrawer);
-    }
-
-    private void loadAndSortCategories() {
-        ArrayList<Category> categories = new ArrayList<>(dh.getCategories());
-        for(Category c : categories) {
-            String name = c.getCategoryName();
-            int specialCategoryIndex = getSpecialCategoryIndex(name);
-            if(specialCategoryIndex == -1) {
-                this.categories.add(c);
-            }
-            else {
-                specialCategories[specialCategoryIndex] = c;
-            }
-        }
-    }
-
-    private void loadTodoLists() {
-        ArrayList<TodoList> todoLists = new ArrayList<TodoList>(dh.getTodoLists());
-        for(TodoList todoList : todoLists) {
-            for(Todo todo : todoList.getTodos()) {
-                System.out.println(todo.getTask() + " " +todo.isDone());
-            }
-        }
-        this.todoLists.addAll(todoLists);
     }
 }
