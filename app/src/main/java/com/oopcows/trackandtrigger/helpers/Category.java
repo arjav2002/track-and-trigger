@@ -45,7 +45,8 @@ public class Category implements Parcelable {
             String itemName = in.readString();
             String imgPath = in.readString();
             int quantity = in.readInt();
-            items.add(new CategoryItem(itemName, imgPath, quantity));
+            String downPath = in.readString();
+            items.add(new CategoryItem(itemName, imgPath, quantity,  downPath));
         }
     }
 
@@ -77,6 +78,7 @@ public class Category implements Parcelable {
             parcel.writeString(item.getItemName());
             parcel.writeString(item.getImgPath());
             parcel.writeInt(item.getQuantity());
+            parcel.writeString(item.getDownPath());
         }
     }
 }
