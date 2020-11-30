@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,6 +24,7 @@ import com.oopcows.trackandtrigger.dashboard.ResultRecyclerView;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.helpers.CategoryItem;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
@@ -66,7 +69,7 @@ public class ItemAdapter extends ResultRecyclerView {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    items.set(pos, new CategoryItem(String.valueOf(itemHolder.itemName.getText()), items.get(pos).getImgPath(), items.get(pos).getQuantity()));
+                    items.set(pos, new CategoryItem(String.valueOf(itemHolder.itemName.getText()), items.get(pos).getImgPath(), items.get(pos).getQuantity(), items.get(pos).getDownPath()));
                 }
 
                 @Override
@@ -84,6 +87,25 @@ public class ItemAdapter extends ResultRecyclerView {
                 itemHolder.itemImage.setClickable(false);
                 setImage(itemHolder, items.get(pos).getImgPath());
             }
+            itemHolder.shareButton.setOnClickListener((v) -> {
+                Uri imageUri = Uri.parse(items.get(itemHolder.getAdapterPosition()).getDownPath());
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                //Target whatsapp:
+                shareIntent.setPackage("com.whatsapp");
+                //Add text and then Image URI
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Item: " + itemHolder.itemName.getText());
+                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                shareIntent.setType("image/jpeg");
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                try {
+                    categoryActivity.startActivity(shareIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+
+            });
         }
     }
 
@@ -102,6 +124,7 @@ public class ItemAdapter extends ResultRecyclerView {
         private final ImageButton incQuantity, decQuantity;
         private final EditText itemName;
         private final TextView quantity;
+        private final ImageButton shareButton;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +133,7 @@ public class ItemAdapter extends ResultRecyclerView {
             decQuantity = itemView.findViewById(R.id.decreaseQuantity);
             itemName = itemView.findViewById(R.id.item_name);
             quantity = itemView.findViewById(R.id.quantity);
+            shareButton = itemView.findViewById(R.id.share_button);
         }
     }
 
@@ -146,6 +170,6 @@ public class ItemAdapter extends ResultRecyclerView {
 
     public void setImgPathOfCurrentImgButton(String imgPath) {
         CategoryItem item = items.get(selectedHolder.getAdapterPosition());
-        items.set(selectedHolder.getAdapterPosition(), new CategoryItem(item.getItemName(), imgPath, item.getQuantity()));
+        items.set(selectedHolder.getAdapterPosition(), new CategoryItem(item.getItemName(), imgPath, item.getQuantity(), imgPath));
     }
 }
