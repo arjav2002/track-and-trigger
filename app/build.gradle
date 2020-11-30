@@ -41,11 +41,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.2"
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.firebase:firebase-database:19.5.1'
     def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
     def arch_version = "2.1.0"

@@ -1,16 +1,31 @@
 package com.oopcows.trackandtrigger.dashboard;
 
-import android.Manifest;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,16 +34,15 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mancj.materialsearchbar.MaterialSearchBar;
-import com.oopcows.trackandtrigger.MainActivity;
+import com.mancj.materialsearchbar.SimpleOnSearchActionListener;
 import com.oopcows.trackandtrigger.R;
 import com.oopcows.trackandtrigger.dashboard.categories.CategoryActivity;
 import com.oopcows.trackandtrigger.dashboard.todolists.TodoListActivity;
 import com.oopcows.trackandtrigger.database.Converters;
 import com.oopcows.trackandtrigger.database.DatabaseHelper;
-import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.Category;
 import com.oopcows.trackandtrigger.helpers.Profession;
-import com.oopcows.trackandtrigger.helpers.Todo;
+import com.oopcows.trackandtrigger.databinding.ActivityDashboardBinding;
 import com.oopcows.trackandtrigger.helpers.TodoList;
 import com.oopcows.trackandtrigger.helpers.UserAccount;
 
@@ -36,7 +50,6 @@ import java.util.ArrayList;
 
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.CATEGORY_REQUEST_CODE;
-import static com.oopcows.trackandtrigger.helpers.CowConstants.CHOOSE_PICTURE_REQUEST_CODE;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.IS_NEW_ACCOUNT_INTENT_KEY;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.PROF_COLUMN_NAME;
 import static com.oopcows.trackandtrigger.helpers.CowConstants.SPECIAL_CATEGORIES_NAME_RESIDS;
@@ -69,7 +82,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         userAccount = getIntent().getExtras().getParcelable(USER_ACCOUNT_INTENT_KEY);
         isNewAccount = getIntent().getBooleanExtra(IS_NEW_ACCOUNT_INTENT_KEY, false);
         dh = DatabaseHelper.getInstance(this);
@@ -90,13 +102,21 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             loadAndSortCategories();
             loadTodoLists();
         }
-        clearDatabase();
-        writeToDatabase();
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        todoListAdapter = new TodoListAdapter(this, binding.todoListsView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), todoLists);
+        categoryAdapter = new CategoryAdapter(this, binding.categoriesView, new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL), categories);
+
+        if (categoryAdapter.getItemCount() == 0) {
+            binding.categoriesView.setVisibility(View.GONE);
+            binding.emptyCategory.setVisibility(View.VISIBLE);
+        } else {
+            binding.categoriesView.setVisibility(View.VISIBLE);
+            binding.emptyCategory.setVisibility(View.GONE);
+        }
 
         if (todoListAdapter.getItemCount() == 0) {
             binding.todoListsView.setVisibility(View.GONE);
@@ -104,13 +124,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         } else {
             binding.todoListsView.setVisibility(View.VISIBLE);
             binding.emptyTodo.setVisibility(View.GONE);
-        }
-
-        todoListAdapter.notifyDataSetChanged();
-        categoryAdapter.notifyDataSetChanged();
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PICTURE_REQUEST_CODE);
         }
     }
 
@@ -152,38 +165,22 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         View view = binding.getRoot();
         setContentView(view);
 
-        leftRL = (RelativeLayout) binding.leftDrawer;
+        leftRL = (RelativeLayout) binding.whatYouWantInLeftDrawer;
         drawerLayout = (DrawerLayout) binding.drawerLayout;
 
         binding.menuButton.setOnClickListener((v) -> {
             drawerLayout.openDrawer(leftRL);
         });
 
-        binding.triggerButton.setOnClickListener((v) -> {
-            switchFragment(binding.triggerRoot);
-        });
-
-        binding.logoutButton.setOnClickListener((v) -> {
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
-            firebaseAuth.signOut();
-            Intent mainActivity = new Intent(getBaseContext(), MainActivity.class);
-            startActivity(mainActivity);
-        });
-
         searchBar = binding.searchBar;
         searchBar.setSpeechMode(true);
         searchBar.addTextChangeListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (String.valueOf(charSequence).isEmpty()) {
+                if(String.valueOf(charSequence).isEmpty()) {
                     binding.addCategory.setVisibility(View.VISIBLE);
                     binding.addTodoList.setVisibility(View.VISIBLE);
                 }
@@ -216,8 +213,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
             categories.add(category);
             gotoCategoryActivity(category);
         });
-
-        switchFragment(binding.dashboardRoot);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -230,10 +225,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 todoListClicked = -1;
                 dh.insertTodoList(todoList);
                 uploadTodoList(todoList);
-                for(Todo todo : todoList.getTodos()) {
-                    System.out.println(todo.getTimeString());
-                    todo.scheduleNotif(this, userAccount);
-                }
             }
         }
         else if (requestCode == CATEGORY_REQUEST_CODE) {
@@ -242,7 +233,6 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
                 setCategory(category);
                 dh.insertCategory(category);
                 uploadCategory(category);
-
             }
         }
     }
@@ -388,5 +378,4 @@ public class DashboardActivity extends AppCompatActivity implements ProfessionCh
         }
         this.todoLists.addAll(todoLists);
     }
-
 }
